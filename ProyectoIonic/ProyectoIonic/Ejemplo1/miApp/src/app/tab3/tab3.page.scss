@@ -1,0 +1,53 @@
+.filter-buttons {
+  margin: 20px 0;
+}
+
+.tasks-container {
+  margin-top: 20px;
+}
+
+.completed-task {
+  opacity: 0.7;
+  --background: var(--ion-color-light);
+}
+
+.task-completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.actions-section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.completed-text {
+  color: var(--ion-color-success);
+}
+
+.pending-text {
+  color: var(--ion-color-warning);
+}
+
+ion-card h3 {
+  margin: 10px 0 5px 0;
+  color: var(--ion-color-primary);
+}
+
+ion-card p {
+  margin: 0;
+  color: var(--ion-color-medium);
+  font-size: 0.9rem;
+}
+
+ion-segment {
+  margin-bottom: 10px;
+}
+
+ion-checkbox {
+  margin-right: 10px;
+}
+
+.task-item {
+  --padding-start: 0;
+}

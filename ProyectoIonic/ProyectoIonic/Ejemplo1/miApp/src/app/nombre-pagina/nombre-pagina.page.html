@@ -1,0 +1,110 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Calculadora Simple</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="calculator-simple-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="calculator" color="tertiary"></ion-icon>
+          Suma de Dos Números
+        </ion-card-title>
+        <ion-card-subtitle>Introduce dos números para sumarlos</ion-card-subtitle>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <ion-item>
+          <ion-label position="floating">Primer número</ion-label>
+          <ion-input 
+            type="number" 
+            [(ngModel)]="num1" 
+            placeholder="0"
+            (ionInput)="onInputChange()">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Segundo número</ion-label>
+          <ion-input 
+            type="number" 
+            [(ngModel)]="num2" 
+            placeholder="0"
+            (ionInput)="onInputChange()">
+          </ion-input>
+        </ion-item>
+
+        <div class="operation-display" *ngIf="num1 || num2">
+          <h3>{{ num1 || 0 }} + {{ num2 || 0 }} = ?</h3>
+        </div>
+
+        <ion-button 
+          expand="block" 
+          (click)="sumar()" 
+          color="success"
+          [disabled]="!num1 && !num2">
+          <ion-icon name="add" slot="start"></ion-icon>
+          Calcular Suma
+        </ion-button>
+
+        <div class="result-section" *ngIf="resultado !== null">
+          <ion-item lines="none" class="result-item">
+            <ion-icon name="checkmark-circle" slot="start" color="success"></ion-icon>
+            <ion-label>
+              <h2>Resultado: {{ resultado }}</h2>
+              <p>{{ num1 || 0 }} + {{ num2 || 0 }} = {{ resultado }}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+
+        <ion-button 
+          expand="block" 
+          fill="clear" 
+          (click)="limpiar()" 
+          color="medium"
+          *ngIf="num1 || num2 || resultado !== null">
+          <ion-icon name="refresh" slot="start"></ion-icon>
+          Limpiar
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Navigation buttons -->
+    <div class="navigation-section">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Navegación</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12" size-md="4">
+                <ion-button expand="block" routerLink="/tabs/tab1" fill="outline">
+                  <ion-icon name="home" slot="start"></ion-icon>
+                  Inicio
+                </ion-button>
+              </ion-col>
+              <ion-col size="12" size-md="4">
+                <ion-button expand="block" routerLink="/tabs/tab2" fill="outline" color="secondary">
+                  <ion-icon name="calculator" slot="start"></ion-icon>
+                  Calculadora
+                </ion-button>
+              </ion-col>
+              <ion-col size="12" size-md="4">
+                <ion-button expand="block" (click)="irATab3()" fill="outline" color="tertiary">
+                  <ion-icon name="list" slot="start"></ion-icon>
+                  Tareas
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

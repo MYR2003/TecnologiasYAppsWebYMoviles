@@ -1,0 +1,130 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
+    <ion-title>
+      Lista de Tareas
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Mis Tareas</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Add new task -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="add-circle" color="primary"></ion-icon>
+        Agregar Nueva Tarea
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Descripción de la tarea</ion-label>
+        <ion-input 
+          type="text" 
+          [(ngModel)]="newTaskText" 
+          (keydown.enter)="addTask()"
+          placeholder="Escribe tu tarea aquí...">
+        </ion-input>
+      </ion-item>
+      
+      <ion-button 
+        expand="block" 
+        (click)="addTask()" 
+        [disabled]="!newTaskText?.trim()"
+        color="primary">
+        <ion-icon name="add" slot="start"></ion-icon>
+        Agregar Tarea
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Task statistics -->
+  <ion-card>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="4" class="ion-text-center">
+            <h3>{{ getTotalTasks() }}</h3>
+            <p>Total</p>
+          </ion-col>
+          <ion-col size="4" class="ion-text-center">
+            <h3 class="completed-text">{{ getCompletedTasks() }}</h3>
+            <p>Completadas</p>
+          </ion-col>
+          <ion-col size="4" class="ion-text-center">
+            <h3 class="pending-text">{{ getPendingTasks() }}</h3>
+            <p>Pendientes</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Filter buttons -->
+  <div class="filter-buttons">
+    <ion-segment [(ngModel)]="filter" (ionChange)="onFilterChange($event)">
+      <ion-segment-button value="all">
+        <ion-label>Todas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="pending">
+        <ion-label>Pendientes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="completed">
+        <ion-label>Completadas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <!-- Tasks list -->
+  <div class="tasks-container">
+    <ion-card *ngIf="getFilteredTasks().length === 0">
+      <ion-card-content class="ion-text-center">
+        <ion-icon name="document-text-outline" size="large" color="medium"></ion-icon>
+        <h3>No hay tareas</h3>
+        <p *ngIf="filter === 'all'">¡Agrega tu primera tarea!</p>
+        <p *ngIf="filter === 'pending'">No tienes tareas pendientes</p>
+        <p *ngIf="filter === 'completed'">No tienes tareas completadas</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngFor="let task of getFilteredTasks(); trackBy: trackByTaskId" [class.completed-task]="task.completed">
+      <ion-item>
+        <ion-checkbox 
+          slot="start" 
+          [(ngModel)]="task.completed"
+          (ionChange)="toggleTask(task)">
+        </ion-checkbox>
+        
+        <ion-label [class.task-completed]="task.completed">
+          <h3>{{ task.text }}</h3>
+          <p>{{ formatDate(task.createdAt) }}</p>
+        </ion-label>
+
+        <ion-button 
+          slot="end" 
+          fill="clear" 
+          color="danger" 
+          (click)="deleteTask(task.id)">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card>
+  </div>
+
+  <!-- Clear all completed tasks -->
+  <div class="actions-section" *ngIf="getCompletedTasks() > 0">
+    <ion-button 
+      expand="block" 
+      fill="outline" 
+      color="danger" 
+      (click)="clearCompleted()">
+      <ion-icon name="trash" slot="start"></ion-icon>
+      Eliminar Tareas Completadas
+    </ion-button>
+  </div>
+</ion-content>
