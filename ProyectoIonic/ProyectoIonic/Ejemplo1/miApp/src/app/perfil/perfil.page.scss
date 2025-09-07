@@ -1,0 +1,53 @@
+/* Estilos para la página de perfil con toggle de tema */
+
+.theme-info {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--clinic-accent);
+  border-radius: 8px;
+  border: 1px solid var(--clinic-border);
+  
+  .info-text {
+    margin: 0;
+    color: var(--clinic-neutral);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    ion-icon {
+      color: var(--ion-color-primary);
+      font-size: 1.2rem;
+    }
+  }
+}
+
+ion-card {
+  margin-bottom: 16px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+ion-toggle {
+  --background: var(--clinic-border);
+  --background-checked: var(--ion-color-primary);
+  --handle-background: var(--clinic-surface);
+  --handle-background-checked: var(--clinic-surface);
+}
+
+ion-avatar {
+  background: var(--clinic-accent);
+  
+  &::before {
+    content: "👨‍⚕️";
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+}

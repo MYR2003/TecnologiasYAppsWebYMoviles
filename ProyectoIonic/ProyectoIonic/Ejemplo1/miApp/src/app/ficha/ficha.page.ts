@@ -17,7 +17,8 @@ export class FichaPage implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {

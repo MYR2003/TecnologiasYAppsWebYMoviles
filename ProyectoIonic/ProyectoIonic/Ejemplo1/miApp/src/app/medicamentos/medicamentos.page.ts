@@ -11,7 +11,8 @@ import { Router } from '@angular/router';
   imports: [CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonButton],
 })
 export class MedicamentosPage {
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
 
   verProcedimientos() {
     this.router.navigate(['/tabs/procedimientos']);

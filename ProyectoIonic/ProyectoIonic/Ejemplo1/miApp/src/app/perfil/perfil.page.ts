@@ -14,7 +14,12 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
+  IonToggle,
+  IonIcon,
+  IonButtons,
 } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-perfil',
@@ -36,6 +41,22 @@ import {
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
+    IonToggle,
+    IonIcon,
+    IonButtons,
   ],
 })
-export class PerfilPage {}
+export class PerfilPage {
+  constructor(
+    private router: Router,
+    public themeService: ThemeService
+  ) {}
+
+  verHabitos() {
+    this.router.navigate(['/tabs/habitos']);
+  }
+
+  toggleTheme(event: any) {
+    this.themeService.setTheme(event.detail.checked);
+  }
+}

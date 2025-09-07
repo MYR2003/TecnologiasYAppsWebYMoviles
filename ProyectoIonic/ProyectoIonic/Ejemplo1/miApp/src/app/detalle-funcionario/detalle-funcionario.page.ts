@@ -17,7 +17,8 @@ export class DetalleFuncionarioPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {

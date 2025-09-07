@@ -1,51 +1,47 @@
-// Sistema de Colores Adaptativo para Clínicas - Modo Claro y Oscuro
-// =================================================================
-
 :root {
-  // MODO CLARO - Paleta principal adaptativa
-  --ion-color-primary: #2563EB;           // Azul médico adaptativo
+  // MODO CLARO
+  --ion-color-primary: #2563EB;
   --ion-color-primary-rgb: 37, 99, 235;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
   --ion-color-primary-shade: #1D4ED8;
   --ion-color-primary-tint: #3B82F6;
 
-  --ion-color-secondary: #0891B2;         // Azul cyan médico
+  --ion-color-secondary: #0891B2;
   --ion-color-secondary-rgb: 8, 145, 178;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
   --ion-color-secondary-shade: #0E7490;
   --ion-color-secondary-tint: #06B6D4;
 
-  --ion-color-tertiary: #6366F1;          // Indigo profesional
+  --ion-color-tertiary: #6366F1;
   --ion-color-tertiary-rgb: 99, 102, 241;
   --ion-color-tertiary-contrast: #ffffff;
   --ion-color-tertiary-contrast-rgb: 255, 255, 255;
   --ion-color-tertiary-shade: #4F46E5;
   --ion-color-tertiary-tint: #8B5CF6;
 
-  --ion-color-success: #10B981;           // Verde médico optimizado
+  --ion-color-success: #10B981;
   --ion-color-success-rgb: 16, 185, 129;
   --ion-color-success-contrast: #ffffff;
   --ion-color-success-contrast-rgb: 255, 255, 255;
   --ion-color-success-shade: #059669;
   --ion-color-success-tint: #34D399;
 
-  --ion-color-warning: #F59E0B;           // Ámbar profesional
+  --ion-color-warning: #F59E0B;
   --ion-color-warning-rgb: 245, 158, 11;
   --ion-color-warning-contrast: #000000;
   --ion-color-warning-contrast-rgb: 0, 0, 0;
   --ion-color-warning-shade: #D97706;
   --ion-color-warning-tint: #FBBF24;
 
-  --ion-color-danger: #EF4444;            // Rojo médico suave
+  --ion-color-danger: #EF4444;
   --ion-color-danger-rgb: 239, 68, 68;
   --ion-color-danger-contrast: #ffffff;
   --ion-color-danger-contrast-rgb: 255, 255, 255;
   --ion-color-danger-shade: #DC2626;
   --ion-color-danger-tint: #F87171;
 
-  // Superficies adaptativas - MODO CLARO
   --ion-background-color: #FAFAFA;
   --ion-background-color-rgb: 250, 250, 250;
   
@@ -58,7 +54,6 @@
   --ion-border-color: #E5E7EB;
   --ion-toolbar-background: var(--ion-color-primary);
   
-  // Variables clínica adaptativas
   --clinic-surface: #ffffff;
   --clinic-surface-secondary: #F9FAFB;
   --clinic-accent: #EFF6FF;
@@ -68,53 +63,51 @@
   --clinic-shadow: rgba(0, 0, 0, 0.1);
 }
 
-// MODO OSCURO - Paleta adaptativa automática
+// MODO OSCURO
 @media (prefers-color-scheme: dark) {
   :root {
-    // Colores principales optimizados para oscuro
-    --ion-color-primary: #3B82F6;         // Azul más brillante para oscuro
+    --ion-color-primary: #3B82F6;
     --ion-color-primary-rgb: 59, 130, 246;
     --ion-color-primary-contrast: #000000;
     --ion-color-primary-contrast-rgb: 0, 0, 0;
     --ion-color-primary-shade: #2563EB;
     --ion-color-primary-tint: #60A5FA;
 
-    --ion-color-secondary: #06B6D4;       // Cyan más vibrante
+    --ion-color-secondary: #06B6D4;
     --ion-color-secondary-rgb: 6, 182, 212;
     --ion-color-secondary-contrast: #000000;
     --ion-color-secondary-contrast-rgb: 0, 0, 0;
     --ion-color-secondary-shade: #0891B2;
     --ion-color-secondary-tint: #22D3EE;
 
-    --ion-color-tertiary: #8B5CF6;        // Violeta suave
+    --ion-color-tertiary: #8B5CF6;
     --ion-color-tertiary-rgb: 139, 92, 246;
     --ion-color-tertiary-contrast: #000000;
     --ion-color-tertiary-contrast-rgb: 0, 0, 0;
     --ion-color-tertiary-shade: #7C3AED;
     --ion-color-tertiary-tint: #A78BFA;
 
-    --ion-color-success: #34D399;         // Verde más visible
+    --ion-color-success: #34D399;
     --ion-color-success-rgb: 52, 211, 153;
     --ion-color-success-contrast: #000000;
     --ion-color-success-contrast-rgb: 0, 0, 0;
     --ion-color-success-shade: #10B981;
     --ion-color-success-tint: #6EE7B7;
 
-    --ion-color-warning: #FBBF24;         // Ámbar brillante
+    --ion-color-warning: #FBBF24;
     --ion-color-warning-rgb: 251, 191, 36;
     --ion-color-warning-contrast: #000000;
     --ion-color-warning-contrast-rgb: 0, 0, 0;
     --ion-color-warning-shade: #F59E0B;
     --ion-color-warning-tint: #FCD34D;
 
-    --ion-color-danger: #F87171;          // Rojo suave para oscuro
+    --ion-color-danger: #F87171;
     --ion-color-danger-rgb: 248, 113, 113;
     --ion-color-danger-contrast: #000000;
     --ion-color-danger-contrast-rgb: 0, 0, 0;
     --ion-color-danger-shade: #EF4444;
     --ion-color-danger-tint: #FCA5A5;
 
-    // Superficies - MODO OSCURO
     --ion-background-color: #111827;
     --ion-background-color-rgb: 17, 24, 39;
     
@@ -127,7 +120,6 @@
     --ion-border-color: #374151;
     --ion-toolbar-background: #1F2937;
     
-    // Variables clínica - MODO OSCURO
     --clinic-surface: #1F2937;
     --clinic-surface-secondary: #111827;
     --clinic-accent: #1E3A8A;
@@ -138,7 +130,6 @@
   }
 }
 
-// Clases forzadas para control manual del tema
 .theme-dark {
   --ion-color-primary: #3B82F6;
   --ion-color-primary-rgb: 59, 130, 246;
