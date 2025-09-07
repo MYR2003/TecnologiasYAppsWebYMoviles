@@ -1,53 +1,74 @@
+// =====================================================
+// SOLUCIÓN SIMPLE PARA HEADER OVERLAP
+// =====================================================
+
+// Header global: FIJO en la parte superior 
+app-tabs ion-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  ion-toolbar {
+    height: 56px;
+  }
+}
+
+// Tabs container ajustado para dejar espacio al header fijo
 ion-tabs {
+  padding-top: 56px; /* Espacio para el header fijo */
+  height: 100vh;
+  box-sizing: border-box;
+  
   ion-tab-bar {
-    position: relative;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     z-index: 10;
   }
-}
 
-ion-header {
-  ion-toolbar {
-    --min-height: 56px;
+  // El router outlet ya no necesita margin-top porque el contenedor ya tiene padding-top
+  ion-router-outlet {
+    height: calc(100% - 56px); /* Altura total menos el tab-bar */
+    padding-bottom: 56px; /* Espacio para el tab-bar */
+    box-sizing: border-box;
   }
 }
 
-ion-router-outlet {
-  padding-top: 0;
-  
-  ion-content {
-    --padding-top: 8px;
-    
-    &.content-professional {
-      --padding-top: 16px;
-    }
-  }
-}
+// =====================================================
+// RESPONSIVE DESIGN
+// =====================================================
 
-.welcome-section {
-  padding-top: 8px;
-}
-
-ion-card {
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-
+// Tablet (768px y menor)
 @media (max-width: 768px) {
-  ion-router-outlet ion-content {
-    --padding-top: 12px;
+  app-tabs ion-header ion-toolbar {
+    height: 64px;
   }
   
-  .welcome-section {
-    padding-top: 12px;
+  ion-tabs {
+    padding-top: 64px;
   }
 }
 
+// Móvil (480px y menor)  
 @media (max-width: 480px) {
-  ion-router-outlet ion-content {
-    --padding-top: 16px;
+  app-tabs ion-header ion-toolbar {
+    height: 72px;
   }
   
-  .welcome-section {
-    padding-top: 16px;
+  ion-tabs {
+    padding-top: 72px;
   }
+}
+
+// =====================================================
+// AJUSTES PARA ELEMENTOS ESPECÍFICOS
+// =====================================================
+
+// Asegurar que las páginas con headers propios no tengan doble espacio
+ion-content[has-header="true"] {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }

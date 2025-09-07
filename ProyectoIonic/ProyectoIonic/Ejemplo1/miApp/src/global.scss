@@ -352,12 +352,13 @@ ion-list {
   }
 }
 
-/**
- * Solución para evitar que el header global tape el contenido
- * ===========================================================
- */
+// =====================================================
+// SOLO ESTILOS DE RESPALDO PARA HEADER OVERLAP
+// =====================================================
+// La solución principal está en tabs.page.scss
+// Estos son estilos de respaldo por si las reglas principales no se aplican
 
-// Asegurar que el header global tenga altura fija
+// Header básico
 app-tabs ion-header {
   position: sticky;
   top: 0;
@@ -369,82 +370,17 @@ app-tabs ion-header {
   }
 }
 
-// Compensar la altura del header en el contenido de las páginas
+// Respaldo básico para contenido
 app-tabs ion-tabs {
   height: calc(100vh - 56px);
-  
-  ion-router-outlet {
-    height: 100%;
-    
-    // Todas las páginas dentro del router-outlet
-    * {
-      ion-content {
-        // Padding superior para evitar que quede debajo del header
-        --padding-top: 16px !important;
-        
-        // Para la página de inicio específicamente
-        &.content-professional {
-          --padding-top: 20px !important;
-        }
-        
-        // Para páginas con ion-padding
-        &.ion-padding {
-          --padding-top: 24px !important;
-        }
-      }
-    }
-  }
 }
 
-// Ajustes específicos para el contenido de la página de inicio
+// Ajustes para elementos internos
 .welcome-section {
-  padding-top: 16px !important;
+  padding-top: 0 !important;
   margin-top: 0 !important;
 }
 
-// Asegurar que las cards tengan espacio apropiado
-.quick-actions {
-  padding-top: 8px;
-}
-
-// Para las páginas de dashboards
 ion-grid {
-  padding-top: 8px;
-}
-
-// Responsive adjustments
-@media (max-width: 768px) {
-  app-tabs ion-tabs ion-router-outlet * ion-content {
-    --padding-top: 20px !important;
-    
-    &.content-professional {
-      --padding-top: 24px !important;
-    }
-    
-    &.ion-padding {
-      --padding-top: 28px !important;
-    }
-  }
-  
-  .welcome-section {
-    padding-top: 20px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  app-tabs ion-tabs ion-router-outlet * ion-content {
-    --padding-top: 24px !important;
-    
-    &.content-professional {
-      --padding-top: 28px !important;
-    }
-    
-    &.ion-padding {
-      --padding-top: 32px !important;
-    }
-  }
-  
-  .welcome-section {
-    padding-top: 24px !important;
-  }
+  padding-top: 0;
 }
