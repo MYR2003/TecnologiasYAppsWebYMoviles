@@ -4,14 +4,14 @@ import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-martin02',
-    templateUrl: 'martin02.page.html',
-    styleUrls: ['martin02.page.scss'],
+    selector: 'app-martin03',
+    templateUrl: 'martin03.page.html',
+    styleUrls: ['martin03.page.scss'],
     imports: [IonContent, RouterModule, IonButton ],
 })
-export class Martin02 {
+export class Martin03 {
     constructor(private router: Router) {}
 
-    Anterior() {this.router.navigate(['tabs/martin01']);}
-    Siguiente() {this.router.navigate(['tabs/martin03']);}
+    Anterior() {this.router.navigate(['tabs/martin02']);}
+    Siguiente() {this.router.navigate(['tabs/martin04']);}
 }

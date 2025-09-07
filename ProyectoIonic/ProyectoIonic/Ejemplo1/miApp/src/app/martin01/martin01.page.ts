@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonContent, IonCard, IonCardContent, IonIcon, IonButton } from '@ionic/angular/standalone';
+import { IonContent, IonButton } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
     selector: 'app-martin01',
     templateUrl: 'martin01.page.html',
     styleUrls: ['martin01.page.scss'],
-    imports: [IonContent, IonCard, IonCardContent, IonIcon, RouterModule, IonButton],
+    imports: [IonContent, RouterModule, IonButton],
 })
 export class Martin01 {
     constructor(private router: Router) {}
