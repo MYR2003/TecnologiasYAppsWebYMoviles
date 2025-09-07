@@ -24,6 +24,8 @@ export const routes: Routes = [
       { path: 'historial', loadComponent: () => import('../historial/historial.page').then(m => m.HistorialPage) },
       { path: 'detalle-funcionario', loadComponent: () => import('../detalle-funcionario/detalle-funcionario.page').then(m => m.DetalleFuncionarioPage) },
       { path: 'detalle-beneficio', loadComponent: () => import('../detalle-beneficio/detalle-beneficio.page').then(m => m.DetalleBeneficioPage) },
+      { path: 'martin01', loadComponent: () => import('../martin01/martin01.page').then(m => m.Martin01) },
+      { path: 'martin02', loadComponent: () => import('../martin02/martin02.page').then(m => m.Martin02) },
       { path: '', redirectTo: '/tabs/home', pathMatch: 'full' },
     ],
   },
