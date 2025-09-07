@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonList,
   IonItem,
@@ -16,7 +13,6 @@ import {
   IonCardContent,
   IonToggle,
   IonIcon,
-  IonButtons,
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { ThemeService } from '../services/theme.service';
@@ -28,9 +24,6 @@ import { ThemeService } from '../services/theme.service';
   styleUrls: ['./perfil.page.scss'],
   imports: [
     CommonModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
     IonList,
     IonItem,
@@ -43,7 +36,6 @@ import { ThemeService } from '../services/theme.service';
     IonCardContent,
     IonToggle,
     IonIcon,
-    IonButtons,
   ],
 })
 export class PerfilPage {

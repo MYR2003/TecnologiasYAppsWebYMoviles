@@ -3,20 +3,42 @@
     <ion-title>Medicamentos</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
-  <ion-list>
-    <ion-item><ion-label>Paracetamol — 500mg — Cada 8 horas</ion-label></ion-item>
-    <ion-item><ion-label>Ibuprofeno — 400mg — Cada 12 horas</ion-label></ion-item>
-    <ion-item><ion-label>Amoxicilina — 250mg — Cada 8 horas</ion-label></ion-item>
-    <ion-item><ion-label>Omeprazol — 20mg — Una vez al día</ion-label></ion-item>
-  </ion-list>
 
-  <div style="padding: 20px;">
-    <ion-button expand="block" color="success" (click)="verProcedimientos()">
-      Ver Procedimientos
-    </ion-button>
-    <ion-button expand="block" color="warning" (click)="verAlergias()" style="margin-top: 10px;">
-      Ver Alergias
-    </ion-button>
-  </div>
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title color="primary">Medicamentos Recetados</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>Paracetamol — 500mg — Cada 8 horas</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Ibuprofeno — 400mg — Cada 12 horas</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Amoxicilina — 250mg — Cada 8 horas</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Omeprazol — 20mg — Una vez al día</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6">
+        <ion-button expand="block" color="success" (click)="verProcedimientos()">
+          Ver Procedimientos
+        </ion-button>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <ion-button expand="block" color="warning" (click)="verAlergias()">
+          Ver Alergias
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
