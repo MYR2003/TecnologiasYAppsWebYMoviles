@@ -40,8 +40,8 @@ export class NombrePaginaPage implements OnInit {
     this.resultado = null;
   }
 
-  irATab3() {
-    this.router.navigate(['/tabs/tab3']);       
+  irAFuncionarios() {
+    this.router.navigate(['/tabs/funcionarios']);       
   }
 
   ngOnInit() {}
