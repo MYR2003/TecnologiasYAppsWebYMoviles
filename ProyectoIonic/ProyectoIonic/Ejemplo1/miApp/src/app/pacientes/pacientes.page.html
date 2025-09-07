@@ -64,12 +64,18 @@
         Ver Ficha
       </ion-button>
     </ion-item>
-  </ion-list>
-</ion-content>
+
+    <ion-item class="patient-item">
+      <ion-avatar slot="start">
+        <ion-icon name="person-circle" class="avatar-icon"></ion-icon>
+      </ion-avatar>
+      <ion-label>
         <h3>Andrea Silva</h3>
-        <p>F. nac: 2000-05-15</p>
+        <p>F. nac: 2000-05-15 • 24 años</p>
+        <p class="patient-id">ID: 005</p>
       </ion-label>
       <ion-button slot="end" fill="outline" color="primary" (click)="verFichaPaciente('005')">
+        <ion-icon name="document-text-outline" slot="start"></ion-icon>
         Ver Ficha
       </ion-button>
     </ion-item>

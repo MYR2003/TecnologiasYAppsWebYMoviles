@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonButton } from '@ionic/angular/standalone';
+import { IonContent, IonList, IonItem, IonLabel, IonButton, IonAvatar, IonIcon } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   standalone: true,
   templateUrl: 'pacientes.page.html',
   styleUrls: ['pacientes.scss'],
-  imports: [CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonButton],
+  imports: [CommonModule, IonContent, IonList, IonItem, IonLabel, IonButton, IonAvatar, IonIcon],
 })
 export class PacientesPage {
   constructor(private router: Router) {}
