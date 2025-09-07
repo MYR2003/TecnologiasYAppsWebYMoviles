@@ -1,53 +1,71 @@
-<ion-header translucent>
-  <ion-toolbar color="primary">
-    <ion-title>Lista Pacientes</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <ion-list>
-    <ion-item>
+  <div class="page-header">
+    <h1>Lista de Pacientes</h1>
+    <p>Gestión y seguimiento de pacientes registrados</p>
+  </div>
+
+  <ion-list class="patients-list">
+    <ion-item class="patient-item">
+      <ion-avatar slot="start">
+        <ion-icon name="person-circle" class="avatar-icon"></ion-icon>
+      </ion-avatar>
       <ion-label>
         <h3>María González</h3>
-        <p>F. nac: 1988-04-12</p>
+        <p>F. nac: 1988-04-12 • 35 años</p>
+        <p class="patient-id">ID: 001</p>
       </ion-label>
       <ion-button slot="end" fill="outline" color="primary" (click)="verFichaPaciente('001')">
+        <ion-icon name="document-text-outline" slot="start"></ion-icon>
         Ver Ficha
       </ion-button>
     </ion-item>
 
-    <ion-item>
+    <ion-item class="patient-item">
+      <ion-avatar slot="start">
+        <ion-icon name="person-circle" class="avatar-icon"></ion-icon>
+      </ion-avatar>
       <ion-label>
         <h3>Juan Pérez</h3>
-        <p>F. nac: 1975-11-02</p>
+        <p>F. nac: 1975-11-02 • 49 años</p>
+        <p class="patient-id">ID: 002</p>
       </ion-label>
       <ion-button slot="end" fill="outline" color="primary" (click)="verFichaPaciente('002')">
+        <ion-icon name="document-text-outline" slot="start"></ion-icon>
         Ver Ficha
       </ion-button>
     </ion-item>
 
-    <ion-item>
+    <ion-item class="patient-item">
+      <ion-avatar slot="start">
+        <ion-icon name="person-circle" class="avatar-icon"></ion-icon>
+      </ion-avatar>
       <ion-label>
         <h3>Lucía Torres</h3>
-        <p>F. nac: 1992-07-22</p>
+        <p>F. nac: 1992-07-22 • 32 años</p>
+        <p class="patient-id">ID: 003</p>
       </ion-label>
       <ion-button slot="end" fill="outline" color="primary" (click)="verFichaPaciente('003')">
+        <ion-icon name="document-text-outline" slot="start"></ion-icon>
         Ver Ficha
       </ion-button>
     </ion-item>
 
-    <ion-item>
+    <ion-item class="patient-item">
+      <ion-avatar slot="start">
+        <ion-icon name="person-circle" class="avatar-icon"></ion-icon>
+      </ion-avatar>
       <ion-label>
         <h3>Carlos Ramírez</h3>
-        <p>F. nac: 1969-01-30</p>
+        <p>F. nac: 1969-01-30 • 55 años</p>
+        <p class="patient-id">ID: 004</p>
       </ion-label>
       <ion-button slot="end" fill="outline" color="primary" (click)="verFichaPaciente('004')">
+        <ion-icon name="document-text-outline" slot="start"></ion-icon>
         Ver Ficha
       </ion-button>
     </ion-item>
-
-    <ion-item>
-      <ion-label>
+  </ion-list>
+</ion-content>
         <h3>Andrea Silva</h3>
         <p>F. nac: 2000-05-15</p>
       </ion-label>

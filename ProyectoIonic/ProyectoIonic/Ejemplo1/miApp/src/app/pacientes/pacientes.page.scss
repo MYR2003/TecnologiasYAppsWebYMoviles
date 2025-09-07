@@ -1,0 +1,139 @@
+/* Estilos profesionales para la página de Pacientes */
+
+.page-header {
+  text-align: center;
+  padding: 32px 20px 24px;
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-tint) 100%);
+  color: white;
+  margin: -16px -16px 24px;
+  
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  
+  p {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin: 0;
+    font-weight: 400;
+  }
+}
+
+.patients-list {
+  margin: 0 16px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--clinic-surface);
+  box-shadow: 0 4px 12px var(--clinic-shadow);
+}
+
+.patient-item {
+  border-bottom: 1px solid var(--clinic-border);
+  padding: 16px;
+  transition: all 0.2s ease;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  &:hover {
+    background: var(--clinic-accent);
+  }
+  
+  ion-avatar {
+    width: 56px;
+    height: 56px;
+    margin-right: 16px;
+    
+    .avatar-icon {
+      font-size: 3rem;
+      color: var(--ion-color-primary);
+    }
+  }
+  
+  ion-label {
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--ion-text-color);
+      margin-bottom: 4px;
+    }
+    
+    p {
+      font-size: 0.9rem;
+      color: var(--clinic-neutral);
+      margin: 2px 0;
+      
+      &.patient-id {
+        font-size: 0.8rem;
+        color: var(--clinic-neutral-light);
+        font-weight: 500;
+      }
+    }
+  }
+  
+  ion-button {
+    --border-radius: 12px;
+    height: 40px;
+    font-weight: 600;
+    
+    ion-icon {
+      margin-right: 4px;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+/* Responsive design */
+@media (min-width: 768px) {
+  .patients-list {
+    margin: 0 32px;
+  }
+  
+  .page-header {
+    h1 {
+      font-size: 2.2rem;
+    }
+    
+    p {
+      font-size: 1.1rem;
+    }
+  }
+  
+  .patient-item {
+    padding: 20px;
+    
+    ion-avatar {
+      width: 64px;
+      height: 64px;
+      
+      .avatar-icon {
+        font-size: 3.5rem;
+      }
+    }
+  }
+}
+
+/* Animaciones */
+.patient-item {
+  animation: slideInUp 0.3s ease-out;
+  
+  &:nth-child(2) { animation-delay: 0.1s; }
+  &:nth-child(3) { animation-delay: 0.2s; }
+  &:nth-child(4) { animation-delay: 0.3s; }
+  &:nth-child(5) { animation-delay: 0.4s; }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
