@@ -52,10 +52,6 @@ export class PerfilPage {
     public themeService: ThemeService
   ) {}
 
-  verHabitos() {
-    this.router.navigate(['/tabs/habitos']);
-  }
-
   toggleTheme(event: any) {
     this.themeService.setTheme(event.detail.checked);
   }
