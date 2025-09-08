@@ -1,25 +1,120 @@
-<ion-content class="mi-seccion-principal">
-  <div>
-    <h1 class="mi-H1">Pagina con links de Martin</h1>
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Reportes y Análisis</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="hero-section">
+    <h1>Centro de Análisis Médico</h1>
+    <p>Accede a reportes estadísticos, análisis de datos y métricas de rendimiento del centro médico</p>
   </div>
-  <div>
-    <p class="mi-seccion">
-      Contenido de la pagina
-    </p>
+
+  <div class="reports-grid">
+    <ion-card class="report-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="bar-chart-outline"></ion-icon>
+          Estadísticas de Pacientes
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Análisis demográfico y estadísticas de atención</p>
+        <ion-button fill="clear" color="primary" (click)="IrAmartin02()">
+          Ver Reporte
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="report-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="trending-up-outline"></ion-icon>
+          Rendimiento Médico
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Métricas de consultas y efectividad de tratamientos</p>
+        <ion-button fill="clear" color="primary" (click)="IrAmartin03()">
+          Ver Análisis
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="report-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="pie-chart-outline"></ion-icon>
+          Análisis Financiero
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Reportes de ingresos, gastos y rentabilidad</p>
+        <ion-button fill="clear" color="primary" (click)="IrAmartin04()">
+          Ver Finanzas
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="report-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="calendar-outline"></ion-icon>
+          Reportes Mensuales
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Resúmenes ejecutivos y reportes periódicos</p>
+        <ion-button fill="clear" color="primary" (click)="IrAmartin05()">
+          Ver Reportes
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="report-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="document-text-outline"></ion-icon>
+          Exportar Datos
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Generación de reportes personalizados y exportación</p>
+        <ion-button fill="clear" color="primary" (click)="IrAmartin06()">
+          Generar
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
   </div>
-  <div>
-    <ion-button (click)="IrAmartin02()">Botón página 2</ion-button>
-  </div>
-  <div>
-    <ion-button (click)="IrAmartin03()">Botón página 3</ion-button>
-  </div>
-  <div>
-    <ion-button (click)="IrAmartin04()">Botón página 4</ion-button>
-  </div>
-  <div>
-    <ion-button (click)="IrAmartin05()">Botón página 5</ion-button>
-  </div>
-  <div>
-    <ion-button (click)="IrAmartin06()">Botón página 6</ion-button>
+
+  <div class="quick-stats">
+    <h2>Resumen del Día</h2>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <ion-icon name="people-outline" color="primary"></ion-icon>
+        <h3>42</h3>
+        <p>Consultas Hoy</p>
+      </div>
+      <div class="stat-item">
+        <ion-icon name="medical-outline" color="success"></ion-icon>
+        <h3>28</h3>
+        <p>Tratamientos</p>
+      </div>
+      <div class="stat-item">
+        <ion-icon name="cash-outline" color="warning"></ion-icon>
+        <h3>$15,840</h3>
+        <p>Ingresos Hoy</p>
+      </div>
+      <div class="stat-item">
+        <ion-icon name="time-outline" color="medium"></ion-icon>
+        <h3>95%</h3>
+        <p>Puntualidad</p>
+      </div>
+    </div>
   </div>
 </ion-content>

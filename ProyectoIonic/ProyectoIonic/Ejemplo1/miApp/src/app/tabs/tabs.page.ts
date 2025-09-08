@@ -1,7 +1,7 @@
 import { Component, EnvironmentInjector, inject } from '@angular/core';
 import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, IonButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { triangle, ellipse, square, peopleOutline, peopleCircleOutline, medicalOutline, sunnyOutline, moonOutline } from 'ionicons/icons';
+import { triangle, ellipse, square, peopleOutline, peopleCircleOutline, medicalOutline, sunnyOutline, moonOutline, analyticsOutline, settingsOutline, person, documentTextOutline, barChartOutline, trendingUpOutline, pieChartOutline, calendarOutline, arrowForwardOutline, cashOutline, timeOutline } from 'ionicons/icons';
 import { ThemeService } from '../services/theme.service';
 
 @Component({
@@ -22,7 +22,18 @@ export class TabsPage {
       peopleCircleOutline, 
       medicalOutline, 
       sunnyOutline, 
-      moonOutline 
+      moonOutline,
+      analyticsOutline,
+      settingsOutline,
+      person,
+      documentTextOutline,
+      barChartOutline,
+      trendingUpOutline,
+      pieChartOutline,
+      calendarOutline,
+      arrowForwardOutline,
+      cashOutline,
+      timeOutline
     });
   }
 

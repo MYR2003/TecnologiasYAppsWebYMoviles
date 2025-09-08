@@ -1,76 +1,147 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Equipo Polo - Polo 1</ion-title>
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Administración del Sistema</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <div class="contenedor-principal">
-    <div class="stats-jugador">
-      <h2>Ficha del Jugador</h2>
-      <div class="stat-item">
-        <ion-label>Nombre:</ion-label>
-        <span>Polo 1</span>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="admin-hero">
+    <h1>Panel de Administración</h1>
+    <p>Gestión integral del sistema MediClinic Pro</p>
+  </div>
+
+  <div class="admin-grid">
+    <ion-card class="admin-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="people-outline"></ion-icon>
+          Gestión de Usuarios
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Administrar cuentas, permisos y roles del personal médico</p>
+        <ion-button fill="clear" color="primary" (click)="IrApolo2()">
+          Gestionar
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="admin-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          Seguridad y Permisos
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Configurar niveles de acceso y políticas de seguridad</p>
+        <ion-button fill="clear" color="primary" (click)="IrApolo3()">
+          Configurar
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="admin-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="cog-outline"></ion-icon>
+          Configuración del Sistema
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Ajustes generales, parámetros y personalización</p>
+        <ion-button fill="clear" color="primary" (click)="IrApolo4()">
+          Ajustar
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="admin-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="document-text-outline"></ion-icon>
+          Auditoría y Logs
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Registro de actividades y seguimiento de acciones</p>
+        <ion-button fill="clear" color="primary" (click)="IrApolo5()">
+          Revisar
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="admin-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="server-outline"></ion-icon>
+          Mantenimiento
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Respaldos, actualizaciones y mantenimiento del sistema</p>
+        <ion-button fill="clear" color="primary" (click)="IrApolo6()">
+          Mantener
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div class="system-status">
+    <h2>Estado del Sistema</h2>
+    <div class="status-grid">
+      <div class="status-item status-online">
+        <ion-icon name="checkmark-circle-outline" color="success"></ion-icon>
+        <h3>Sistema Operativo</h3>
+        <p>Funcionando correctamente</p>
       </div>
-      <div class="stat-item">
-        <ion-label>Posición:</ion-label>
-        <span>Extremo</span>
+      <div class="status-item">
+        <ion-icon name="server-outline" color="primary"></ion-icon>
+        <h3>Base de Datos</h3>
+        <p>99.9% disponibilidad</p>
       </div>
-      <div class="stat-item">
-        <ion-label>País:</ion-label>
-        <span>España</span>
+      <div class="status-item">
+        <ion-icon name="wifi-outline" color="warning"></ion-icon>
+        <h3>Conectividad</h3>
+        <p>Latencia: 45ms</p>
       </div>
-      <div class="stat-item">
-        <ion-label>Estatura:</ion-label>
-        <span>1.75 m</span>
-      </div>
-      <div class="stat-item">
-        <ion-label>Pie dominante:</ion-label>
-        <span>Derecho</span>
-      </div>
-      <div class="stat-separator"></div>
-      <h3>Estadísticas</h3>
-      <div class="stat-item">
-        <ion-label>Goles:</ion-label>
-        <span>12</span>
-      </div>
-      <div class="stat-item">
-        <ion-label>Asistencias:</ion-label>
-        <span>8</span>
-      </div>
-      <div class="stat-item">
-        <ion-label>Amarillas:</ion-label>
-        <span>3</span>
-      </div>
-      <div class="stat-item">
-        <ion-label>Rojas:</ion-label>
-        <span>0</span>
+      <div class="status-item">
+        <ion-icon name="lock-closed-outline" color="success"></ion-icon>
+        <h3>Seguridad</h3>
+        <p>SSL Activo</p>
       </div>
     </div>
+  </div>
 
-    <div class="campo-futbol">
-      <div class="fila delanteros">
-        <ion-button routerLink="/tabs/polo1" color="success">Polo 1</ion-button>
-        <ion-button routerLink="/tabs/polo2">Polo 2</ion-button>
-        <ion-button routerLink="/tabs/polo3">Polo 3</ion-button>
-      </div>
-
-      <div class="fila mediocampistas">
-        <ion-button routerLink="/tabs/polo4">Polo 4</ion-button>
-        <ion-button routerLink="/tabs/polo5">Polo 5</ion-button>
-        <ion-button routerLink="/tabs/polo6">Polo 6</ion-button>
-      </div>
-
-      <div class="fila defensas">
-        <ion-button disabled>DEF</ion-button>
-        <ion-button disabled>DEF</ion-button>
-        <ion-button disabled>DEF</ion-button>
-        <ion-button disabled>DEF</ion-button>
-      </div>
-
-      <div class="fila portero">
-        <ion-button disabled>POR</ion-button>
-      </div>
-    </div>
+  <div class="recent-activity">
+    <h2>Actividad Reciente</h2>
+    <ion-list>
+      <ion-item>
+        <ion-icon name="person-add-outline" slot="start" color="success"></ion-icon>
+        <ion-label>
+          <h3>Nuevo usuario registrado</h3>
+          <p>Dr. María González - hace 2 horas</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="shield-outline" slot="start" color="warning"></ion-icon>
+        <ion-label>
+          <h3>Cambio de permisos</h3>
+          <p>Enfermera Ana López - hace 4 horas</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="download-outline" slot="start" color="primary"></ion-icon>
+        <ion-label>
+          <h3>Respaldo automático</h3>
+          <p>Completado exitosamente - hace 6 horas</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>
