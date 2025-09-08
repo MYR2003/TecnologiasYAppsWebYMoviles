@@ -1,41 +1,89 @@
-<ion-header>
-  <ion-toolbar color="primary">
+<ion-header class="medical-header">
+  <ion-toolbar color="primary" class="enhanced-toolbar">
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button class="menu-button-enhanced">
+        <ion-icon name="medical-outline"></ion-icon>
+      </ion-menu-button>
     </ion-buttons>
-    <ion-title>MediClinic Pro</ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="toggleTheme()">
+    
+    <ion-title class="medical-title">
+      <div class="title-container">
+        <div class="title-main">
+          <ion-icon name="document-text" class="title-icon"></ion-icon>
+          <span class="app-name">MediClinic Pro</span>
+        </div>
+        <div class="title-subtitle">Sistema de Gestión Médica</div>
+      </div>
+    </ion-title>
+    
+    <ion-buttons slot="end" class="header-actions">
+      <!-- Notificaciones médicas -->
+      <ion-button fill="clear" class="notification-button" (click)="openNotifications()">
+        <ion-icon name="notifications-outline" color="light"></ion-icon>
+        <ion-badge color="danger" class="notification-badge" *ngIf="notificationCount > 0">{{notificationCount}}</ion-badge>
+      </ion-button>
+      
+      <!-- Búsqueda rápida -->
+      <ion-button fill="clear" class="search-button" (click)="openQuickSearch()">
+        <ion-icon name="search-outline" color="light"></ion-icon>
+      </ion-button>
+      
+      <!-- Toggle tema mejorado -->
+      <ion-button fill="clear" (click)="toggleTheme()" class="theme-button">
         <ion-icon 
-          [name]="getCurrentTheme() ? 'sunny-outline' : 'moon-outline'"
-          color="light">
+          [name]="getCurrentTheme() ? 'sunny' : 'moon'"
+          color="light"
+          class="theme-icon">
         </ion-icon>
+      </ion-button>
+      
+      <!-- Perfil de usuario -->
+      <ion-button fill="clear" class="profile-button" (click)="openUserProfile()">
+        <ion-avatar class="profile-avatar">
+          <ion-icon name="person" color="light"></ion-icon>
+        </ion-avatar>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  
+  <!-- Barra de estado médico -->
+  <div class="medical-status-bar">
+    <div class="status-item">
+      <ion-icon name="pulse" color="success"></ion-icon>
+      <span>Sistema: Operativo</span>
+    </div>
+    <div class="status-item">
+      <ion-icon name="time" color="primary"></ion-icon>
+      <span>Última sincronización: {{lastSync}}</span>
+    </div>
+    <div class="status-item">
+      <ion-icon name="people" color="tertiary"></ion-icon>
+      <span>{{activeUsers}} usuarios activos</span>
+    </div>
+  </div>
 </ion-header>
 
 <ion-tabs>
   <ion-tab-bar slot="bottom">
-    <!-- 1. MÓDULO PRINCIPAL: Gestión de Personas -->
+    <!-- 1. FICHAS MÉDICAS: Centro del Sistema -->
     <ion-tab-button tab="pacientes" href="/tabs/pacientes">
-      <ion-icon name="people-outline"></ion-icon>
-      <ion-label>Personas</ion-label>
+      <ion-icon name="document-text-outline"></ion-icon>
+      <ion-label>Fichas</ion-label>
     </ion-tab-button>
     
-    <!-- 2. MÓDULO CLÍNICO: Consultas y Procedimientos -->
+    <!-- 2. HISTORIA CLÍNICA: Seguimiento Médico -->
     <ion-tab-button tab="consultas" href="/tabs/consultas">
       <ion-icon name="medical-outline"></ion-icon>
-      <ion-label>Clínica</ion-label>
+      <ion-label>Historia</ion-label>
     </ion-tab-button>
 
-    <!-- 3. MÓDULO ANÁLISIS: Reportes e Información -->
+    <!-- 3. REPORTES MÉDICOS: Análisis de Pacientes -->
     <ion-tab-button tab="martin01" href="/tabs/martin01">
       <ion-icon name="analytics-outline"></ion-icon>
-      <ion-label>Análisis</ion-label>
+      <ion-label>Reportes</ion-label>
     </ion-tab-button>
 
-    <!-- 4. MÓDULO ADMINISTRACIÓN: Sistema y Configuración -->
+    <!-- 4. CONFIGURACIÓN: Sistema y Personal -->
     <ion-tab-button tab="polo1" href="/tabs/polo1">
       <ion-icon name="settings-outline"></ion-icon>
       <ion-label>Sistema</ion-label>

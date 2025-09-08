@@ -12,6 +12,11 @@ import {
   IonCardContent,
   IonToggle,
   IonIcon,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonButton,
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { ThemeService } from '../services/theme.service';
@@ -34,6 +39,11 @@ import { ThemeService } from '../services/theme.service';
     IonCardContent,
     IonToggle,
     IonIcon,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonButton,
   ],
 })
 export class PerfilPage {
@@ -44,5 +54,22 @@ export class PerfilPage {
 
   toggleTheme(event: any) {
     this.themeService.setTheme(event.detail.checked);
+  }
+
+  // Métodos para el header de perfil
+  shareProfile() {
+    // Funcionalidad para compartir perfil
+    console.log('Compartir perfil del médico');
+  }
+
+  editProfile() {
+    // Navegar a edición de perfil
+    console.log('Editar perfil médico');
+    // this.router.navigate(['/editar-perfil']);
+  }
+
+  showNotifications() {
+    // Mostrar notificaciones del perfil
+    console.log('Mostrar notificaciones del perfil');
   }
 }

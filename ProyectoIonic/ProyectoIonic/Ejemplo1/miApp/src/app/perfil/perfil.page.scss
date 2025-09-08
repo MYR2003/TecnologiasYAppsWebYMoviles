@@ -1,5 +1,37 @@
 /* Estilos profesionales para la página de Perfil */
 
+// Header específico de la página de perfil
+.profile-page-header {
+  --background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  --color: white;
+  --border-width: 0;
+  position: relative;
+  z-index: 10;
+  
+  ion-toolbar {
+    --background: transparent;
+    --color: white;
+    
+    ion-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    ion-buttons {
+      ion-button {
+        --color: white;
+        --background-hover: rgba(255, 255, 255, 0.1);
+        --border-radius: 12px;
+        
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+}
+
 .profile-header {
   text-align: center;
   padding: 40px 20px 32px;
@@ -7,6 +39,8 @@
   color: white;
   margin: -16px -16px 24px;
   border-radius: 0 0 24px 24px;
+  position: relative;
+  z-index: 5;
   
   .profile-avatar {
     width: 120px;
