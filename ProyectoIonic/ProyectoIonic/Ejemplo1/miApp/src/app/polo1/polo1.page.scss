@@ -1,0 +1,120 @@
+.contenedor-principal {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  height: calc(100vh - 56px);
+  align-items: center;
+  justify-content: center;
+}
+
+.stats-jugador {
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  padding: 15px;
+  width: 250px;
+  height: 400px;
+  overflow-y: auto;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-item {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-separator {
+  height: 1px;
+  background-color: #ddd;
+  margin: 15px 0;
+}
+
+h2 {
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+h3 {
+  color: #666;
+  font-size: 1rem;
+  margin: 10px 0;
+}
+
+.stat-item ion-label {
+  color: #666;
+  font-weight: bold;
+}
+
+.stat-item span {
+  color: #333;
+}
+
+.campo-futbol {
+  height: 400px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 10px;
+  background-color: #4CAF50;
+  background-image: linear-gradient(#4CAF50, #45a049);
+  position: relative;
+  border-radius: 10px;
+}
+
+.fila {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.delanteros {
+  margin-top: 5%;
+}
+
+.mediocampistas {
+  margin-top: 5%;
+}
+
+.defensas {
+  margin-top: 5%;
+}
+
+.portero {
+  margin-bottom: 2%;
+}
+
+ion-button {
+  --border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  --padding-start: 0;
+  --padding-end: 0;
+  font-size: 12px;
+}
+
+.campo-futbol::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.campo-futbol::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+}
