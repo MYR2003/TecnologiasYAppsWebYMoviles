@@ -1,147 +1,477 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
-    <ion-title>Administración del Sistema</ion-title>
+    <ion-title>
+      <ion-icon name="settings" class="header-icon"></ion-icon>
+      Centro de Administración Médica
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <ion-badge color="danger" *ngIf="notificationCount > 0">{{notificationCount}}</ion-badge>
+      </ion-button>
+      <ion-button fill="clear">
+        <ion-icon name="help-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <div class="admin-hero">
-    <h1>Panel de Administración</h1>
-    <p>Gestión integral del sistema MediClinic Pro</p>
-  </div>
-
-  <div class="admin-grid">
-    <ion-card class="admin-card">
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="people-outline"></ion-icon>
-          Gestión de Usuarios
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Administrar cuentas, permisos y roles del personal médico</p>
-        <ion-button fill="clear" color="primary" (click)="IrApolo2()">
-          Gestionar
-          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card class="admin-card">
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="shield-checkmark-outline"></ion-icon>
-          Seguridad y Permisos
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Configurar niveles de acceso y políticas de seguridad</p>
-        <ion-button fill="clear" color="primary" (click)="IrApolo3()">
-          Configurar
-          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card class="admin-card">
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="cog-outline"></ion-icon>
-          Configuración del Sistema
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Ajustes generales, parámetros y personalización</p>
-        <ion-button fill="clear" color="primary" (click)="IrApolo4()">
-          Ajustar
-          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card class="admin-card">
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="document-text-outline"></ion-icon>
-          Auditoría y Logs
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Registro de actividades y seguimiento de acciones</p>
-        <ion-button fill="clear" color="primary" (click)="IrApolo5()">
-          Revisar
-          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card class="admin-card">
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="server-outline"></ion-icon>
-          Mantenimiento
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Respaldos, actualizaciones y mantenimiento del sistema</p>
-        <ion-button fill="clear" color="primary" (click)="IrApolo6()">
-          Mantener
-          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
-  </div>
-
-  <div class="system-status">
-    <h2>Estado del Sistema</h2>
-    <div class="status-grid">
-      <div class="status-item status-online">
-        <ion-icon name="checkmark-circle-outline" color="success"></ion-icon>
-        <h3>Sistema Operativo</h3>
-        <p>Funcionando correctamente</p>
+<ion-content [fullscreen]="true" class="admin-content">
+  <!-- Sistema de monitoreo en tiempo real -->
+  <div class="system-monitor">
+    <div class="monitor-header">
+      <h2>
+        <ion-icon name="pulse" color="success"></ion-icon>
+        Estado del Sistema en Tiempo Real
+      </h2>
+      <div class="last-update">
+        <ion-icon name="time-outline"></ion-icon>
+        Última actualización: {{lastUpdate}}
       </div>
-      <div class="status-item">
-        <ion-icon name="server-outline" color="primary"></ion-icon>
-        <h3>Base de Datos</h3>
-        <p>99.9% disponibilidad</p>
+    </div>
+    
+    <div class="monitor-grid">
+      <div class="monitor-card system-health">
+        <div class="monitor-icon">
+          <ion-icon name="heart" color="success"></ion-icon>
+        </div>
+        <div class="monitor-info">
+          <h3>Sistema Operativo</h3>
+          <p class="status-text success">100% Funcional</p>
+          <div class="metric-bar">
+            <div class="metric-fill success" style="width: 100%"></div>
+          </div>
+        </div>
       </div>
-      <div class="status-item">
-        <ion-icon name="wifi-outline" color="warning"></ion-icon>
-        <h3>Conectividad</h3>
-        <p>Latencia: 45ms</p>
+      
+      <div class="monitor-card database-status">
+        <div class="monitor-icon">
+          <ion-icon name="server" color="primary"></ion-icon>
+        </div>
+        <div class="monitor-info">
+          <h3>Base de Datos Médica</h3>
+          <p class="status-text primary">99.8% Disponible</p>
+          <div class="metric-bar">
+            <div class="metric-fill primary" style="width: 99.8%"></div>
+          </div>
+        </div>
       </div>
-      <div class="status-item">
-        <ion-icon name="lock-closed-outline" color="success"></ion-icon>
-        <h3>Seguridad</h3>
-        <p>SSL Activo</p>
+      
+      <div class="monitor-card network-status">
+        <div class="monitor-icon">
+          <ion-icon name="wifi" color="warning"></ion-icon>
+        </div>
+        <div class="monitor-info">
+          <h3>Red & Conectividad</h3>
+          <p class="status-text warning">Latencia: 42ms</p>
+          <div class="metric-bar">
+            <div class="metric-fill warning" style="width: 85%"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="monitor-card security-status">
+        <div class="monitor-icon">
+          <ion-icon name="shield-checkmark" color="success"></ion-icon>
+        </div>
+        <div class="monitor-info">
+          <h3>Seguridad Médica</h3>
+          <p class="status-text success">SSL + HIPAA</p>
+          <div class="metric-bar">
+            <div class="metric-fill success" style="width: 100%"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="recent-activity">
-    <h2>Actividad Reciente</h2>
-    <ion-list>
-      <ion-item>
-        <ion-icon name="person-add-outline" slot="start" color="success"></ion-icon>
-        <ion-label>
-          <h3>Nuevo usuario registrado</h3>
-          <p>Dr. María González - hace 2 horas</p>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-icon name="shield-outline" slot="start" color="warning"></ion-icon>
-        <ion-label>
-          <h3>Cambio de permisos</h3>
-          <p>Enfermera Ana López - hace 4 horas</p>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-icon name="download-outline" slot="start" color="primary"></ion-icon>
-        <ion-label>
-          <h3>Respaldo automático</h3>
-          <p>Completado exitosamente - hace 6 horas</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
+  <!-- Módulos de administración -->
+  <div class="admin-modules">
+    <div class="section-header">
+      <h2>
+        <ion-icon name="grid" color="primary"></ion-icon>
+        Módulos de Administración
+      </h2>
+      <p class="section-subtitle">Gestión integral del sistema médico profesional</p>
+    </div>
+
+    <div class="admin-grid">
+      <!-- Gestión de Usuarios -->
+      <ion-card class="admin-card users-module">
+        <ion-card-header>
+          <div class="card-icon-header">
+            <ion-icon name="people-circle" color="primary"></ion-icon>
+            <ion-card-title>Gestión de Personal Médico</ion-card-title>
+          </div>
+          <div class="module-stats">
+            <span class="stat-badge active">127 Activos</span>
+            <span class="stat-badge pending">5 Pendientes</span>
+          </div>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="module-description">
+            Administrar cuentas, permisos y roles del personal médico y administrativo
+          </p>
+          <div class="quick-actions">
+            <ion-button fill="outline" size="small" color="primary">
+              <ion-icon name="person-add-outline" slot="start"></ion-icon>
+              Nuevo Usuario
+            </ion-button>
+            <ion-button fill="outline" size="small" color="secondary">
+              <ion-icon name="key-outline" slot="start"></ion-icon>
+              Permisos
+            </ion-button>
+          </div>
+          <ion-button fill="solid" color="primary" expand="block" (click)="IrApolo2()">
+            <ion-icon name="settings-outline" slot="start"></ion-icon>
+            Administrar Personal
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Seguridad y Compliance -->
+      <ion-card class="admin-card security-module">
+        <ion-card-header>
+          <div class="card-icon-header">
+            <ion-icon name="shield-checkmark" color="success"></ion-icon>
+            <ion-card-title>Seguridad & Compliance</ion-card-title>
+          </div>
+          <div class="module-stats">
+            <span class="stat-badge secure">HIPAA Compliant</span>
+            <span class="stat-badge warning">3 Alertas</span>
+          </div>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="module-description">
+            Configurar niveles de acceso, políticas de seguridad y cumplimiento normativo
+          </p>
+          <div class="quick-actions">
+            <ion-button fill="outline" size="small" color="success">
+              <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+              Audit Log
+            </ion-button>
+            <ion-button fill="outline" size="small" color="warning">
+              <ion-icon name="warning-outline" slot="start"></ion-icon>
+              Alertas
+            </ion-button>
+          </div>
+          <ion-button fill="solid" color="success" expand="block" (click)="IrApolo3()">
+            <ion-icon name="shield-outline" slot="start"></ion-icon>
+            Configurar Seguridad
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Configuración del Sistema -->
+      <ion-card class="admin-card system-module">
+        <ion-card-header>
+          <div class="card-icon-header">
+            <ion-icon name="cog" color="tertiary"></ion-icon>
+            <ion-card-title>Configuración del Sistema</ion-card-title>
+          </div>
+          <div class="module-stats">
+            <span class="stat-badge info">v2.4.1</span>
+            <span class="stat-badge success">Actualizado</span>
+          </div>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="module-description">
+            Ajustes generales, parámetros clínicos y personalización del entorno médico
+          </p>
+          <div class="quick-actions">
+            <ion-button fill="outline" size="small" color="tertiary">
+              <ion-icon name="download-outline" slot="start"></ion-icon>
+              Backup
+            </ion-button>
+            <ion-button fill="outline" size="small" color="info">
+              <ion-icon name="refresh-outline" slot="start"></ion-icon>
+              Actualizar
+            </ion-button>
+          </div>
+          <ion-button fill="solid" color="tertiary" expand="block" (click)="IrApolo4()">
+            <ion-icon name="construct-outline" slot="start"></ion-icon>
+            Configurar Sistema
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Auditoría y Logs -->
+      <ion-card class="admin-card audit-module">
+        <ion-card-header>
+          <div class="card-icon-header">
+            <ion-icon name="document-text" color="secondary"></ion-icon>
+            <ion-card-title>Auditoría & Logs Médicos</ion-card-title>
+          </div>
+          <div class="module-stats">
+            <span class="stat-badge info">2,847 Eventos</span>
+            <span class="stat-badge success">Sin incidentes</span>
+          </div>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="module-description">
+            Registro detallado de actividades médicas y seguimiento de acciones críticas
+          </p>
+          <div class="quick-actions">
+            <ion-button fill="outline" size="small" color="secondary">
+              <ion-icon name="search-outline" slot="start"></ion-icon>
+              Buscar
+            </ion-button>
+            <ion-button fill="outline" size="small" color="info">
+              <ion-icon name="download-outline" slot="start"></ion-icon>
+              Exportar
+            </ion-button>
+          </div>
+          <ion-button fill="solid" color="secondary" expand="block" (click)="IrApolo5()">
+            <ion-icon name="eye-outline" slot="start"></ion-icon>
+            Revisar Auditoría
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Mantenimiento y Soporte -->
+      <ion-card class="admin-card maintenance-module">
+        <ion-card-header>
+          <div class="card-icon-header">
+            <ion-icon name="build" color="warning"></ion-icon>
+            <ion-card-title>Mantenimiento & Soporte</ion-card-title>
+          </div>
+          <div class="module-stats">
+            <span class="stat-badge success">Sistema Estable</span>
+            <span class="stat-badge info">Último: 2h</span>
+          </div>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="module-description">
+            Respaldos automáticos, actualizaciones del sistema y mantenimiento preventivo
+          </p>
+          <div class="quick-actions">
+            <ion-button fill="outline" size="small" color="warning">
+              <ion-icon name="hammer-outline" slot="start"></ion-icon>
+              Diagnóstico
+            </ion-button>
+            <ion-button fill="outline" size="small" color="success">
+              <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+              Estado
+            </ion-button>
+          </div>
+          <ion-button fill="solid" color="warning" expand="block" (click)="IrApolo6()">
+            <ion-icon name="build-outline" slot="start"></ion-icon>
+            Centro de Mantenimiento
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Reportes Administrativos -->
+      <ion-card class="admin-card reports-module">
+        <ion-card-header>
+          <div class="card-icon-header">
+            <ion-icon name="bar-chart" color="dark"></ion-icon>
+            <ion-card-title>Reportes Administrativos</ion-card-title>
+          </div>
+          <div class="module-stats">
+            <span class="stat-badge dark">15 Reportes</span>
+            <span class="stat-badge success">Actualizados</span>
+          </div>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="module-description">
+            Generación de reportes ejecutivos, estadísticas operacionales y análisis de rendimiento
+          </p>
+          <div class="quick-actions">
+            <ion-button fill="outline" size="small" color="dark">
+              <ion-icon name="pie-chart-outline" slot="start"></ion-icon>
+              Dashboard
+            </ion-button>
+            <ion-button fill="outline" size="small" color="tertiary">
+              <ion-icon name="print-outline" slot="start"></ion-icon>
+              Imprimir
+            </ion-button>
+          </div>
+          <ion-button fill="solid" color="dark" expand="block" (click)="verReportesAdmin()">
+            <ion-icon name="analytics-outline" slot="start"></ion-icon>
+            Generar Reportes
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+  <!-- Actividad del sistema en tiempo real -->
+  <div class="activity-monitor">
+    <div class="section-header">
+      <h2>
+        <ion-icon name="pulse" color="primary"></ion-icon>
+        Actividad del Sistema en Tiempo Real
+      </h2>
+      <div class="activity-controls">
+        <ion-button fill="outline" size="small" color="primary">
+          <ion-icon name="refresh-outline" slot="start"></ion-icon>
+          Actualizar
+        </ion-button>
+        <ion-button fill="outline" size="small" color="secondary">
+          <ion-icon name="filter-outline" slot="start"></ion-icon>
+          Filtrar
+        </ion-button>
+      </div>
+    </div>
+
+    <div class="activity-timeline">
+      <ion-card class="activity-card critical">
+        <ion-card-content>
+          <div class="activity-header">
+            <div class="activity-icon critical">
+              <ion-icon name="alert-circle"></ion-icon>
+            </div>
+            <div class="activity-info">
+              <h3>Evento Crítico del Sistema</h3>
+              <p class="timestamp">Hace 15 minutos</p>
+            </div>
+            <ion-chip color="danger" outline>
+              <ion-label>CRÍTICO</ion-label>
+            </ion-chip>
+          </div>
+          <p class="activity-description">
+            Intento de acceso no autorizado detectado desde IP 192.168.1.247. Sistema de seguridad activado.
+          </p>
+          <div class="activity-actions">
+            <ion-button fill="outline" size="small" color="danger">
+              <ion-icon name="eye-outline" slot="start"></ion-icon>
+              Investigar
+            </ion-button>
+            <ion-button fill="clear" size="small" color="medium">
+              <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+              Marcar como Revisado
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="activity-card success">
+        <ion-card-content>
+          <div class="activity-header">
+            <div class="activity-icon success">
+              <ion-icon name="person-add"></ion-icon>
+            </div>
+            <div class="activity-info">
+              <h3>Nuevo Personal Médico Registrado</h3>
+              <p class="timestamp">Hace 2 horas</p>
+            </div>
+            <ion-chip color="success" outline>
+              <ion-label>COMPLETADO</ion-label>
+            </ion-chip>
+          </div>
+          <p class="activity-description">
+            Dr. María Elena González ha sido registrada como Cardióloga en el departamento de Medicina Interna.
+          </p>
+          <div class="activity-actions">
+            <ion-button fill="outline" size="small" color="success">
+              <ion-icon name="person-outline" slot="start"></ion-icon>
+              Ver Perfil
+            </ion-button>
+            <ion-button fill="clear" size="small" color="medium">
+              <ion-icon name="mail-outline" slot="start"></ion-icon>
+              Enviar Bienvenida
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="activity-card warning">
+        <ion-card-content>
+          <div class="activity-header">
+            <div class="activity-icon warning">
+              <ion-icon name="shield"></ion-icon>
+            </div>
+            <div class="activity-info">
+              <h3>Cambio de Permisos de Seguridad</h3>
+              <p class="timestamp">Hace 4 horas</p>
+            </div>
+            <ion-chip color="warning" outline>
+              <ion-label>PENDIENTE</ion-label>
+            </ion-chip>
+          </div>
+          <p class="activity-description">
+            Enfermera Ana López requiere elevación de permisos para acceso a historiales críticos.
+          </p>
+          <div class="activity-actions">
+            <ion-button fill="outline" size="small" color="warning">
+              <ion-icon name="key-outline" slot="start"></ion-icon>
+              Revisar Solicitud
+            </ion-button>
+            <ion-button fill="clear" size="small" color="medium">
+              <ion-icon name="close-outline" slot="start"></ion-icon>
+              Rechazar
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="activity-card info">
+        <ion-card-content>
+          <div class="activity-header">
+            <div class="activity-icon info">
+              <ion-icon name="cloud-download"></ion-icon>
+            </div>
+            <div class="activity-info">
+              <h3>Respaldo Automático Completado</h3>
+              <p class="timestamp">Hace 6 horas</p>
+            </div>
+            <ion-chip color="primary" outline>
+              <ion-label>AUTOMÁTICO</ion-label>
+            </ion-chip>
+          </div>
+          <p class="activity-description">
+            Respaldo automático del sistema ejecutado exitosamente. 2.4 GB de datos médicos respaldados.
+          </p>
+          <div class="activity-actions">
+            <ion-button fill="outline" size="small" color="primary">
+              <ion-icon name="folder-outline" slot="start"></ion-icon>
+              Ver Archivos
+            </ion-button>
+            <ion-button fill="clear" size="small" color="medium">
+              <ion-icon name="download-outline" slot="start"></ion-icon>
+              Descargar Log
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="activity-card secondary">
+        <ion-card-content>
+          <div class="activity-header">
+            <div class="activity-icon secondary">
+              <ion-icon name="refresh"></ion-icon>
+            </div>
+            <div class="activity-info">
+              <h3>Actualización del Sistema</h3>
+              <p class="timestamp">Hace 12 horas</p>
+            </div>
+            <ion-chip color="secondary" outline>
+              <ion-label>PROGRAMADO</ion-label>
+            </ion-chip>
+          </div>
+          <p class="activity-description">
+            Actualización de seguridad v2.4.1 programada para esta noche a las 02:00 AM.
+          </p>
+          <div class="activity-actions">
+            <ion-button fill="outline" size="small" color="secondary">
+              <ion-icon name="time-outline" slot="start"></ion-icon>
+              Reprogramar
+            </ion-button>
+            <ion-button fill="clear" size="small" color="medium">
+              <ion-icon name="information-circle-outline" slot="start"></ion-icon>
+              Detalles
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div class="activity-footer">
+      <ion-button fill="outline" expand="block" color="primary">
+        <ion-icon name="list-outline" slot="start"></ion-icon>
+        Ver Historial Completo de Actividades
+      </ion-button>
+    </div>
   </div>
 </ion-content>
