@@ -1,18 +1,18 @@
 // Polo1 - Administration Panel - Professional Medical System Management
 // Based on international clinical applications administrative interfaces
 
-// Medical Administrative Color Palette
+// Medical Administrative Color Palette - Adaptive for Dark/Light Mode
 :root {
-  --admin-primary: #0066cc;
-  --admin-primary-light: #4d94d9;
-  --admin-success: #28a745;
-  --admin-warning: #ffc107;
-  --admin-danger: #dc3545;
-  --admin-info: #17a2b8;
-  --admin-secondary: #6c757d;
-  --admin-tertiary: #6f42c1;
-  --admin-dark: #343a40;
-  --admin-light: #f8f9fa;
+  --admin-primary: var(--ion-color-primary);
+  --admin-primary-light: var(--ion-color-primary-tint);
+  --admin-success: var(--ion-color-success);
+  --admin-warning: var(--ion-color-warning);
+  --admin-danger: var(--ion-color-danger);
+  --admin-info: var(--ion-color-tertiary);
+  --admin-secondary: var(--ion-color-medium);
+  --admin-tertiary: var(--ion-color-secondary);
+  --admin-dark: var(--ion-color-dark);
+  --admin-light: var(--ion-color-light);
   
   // Administrative shadows and borders
   --admin-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -24,7 +24,7 @@
 
 // Administration Content Background
 .admin-content {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--ion-background-color);
   min-height: 100vh;
   padding: 16px;
   
@@ -89,7 +89,7 @@ ion-header {
       gap: 12px;
       font-size: 1.8rem;
       font-weight: 600;
-      color: var(--admin-dark);
+      color: var(--ion-color-primary);
       margin: 0;
       
       ion-icon {
@@ -102,8 +102,8 @@ ion-header {
       align-items: center;
       gap: 6px;
       font-size: 0.9rem;
-      color: var(--admin-secondary);
-      background: white;
+      color: var(--ion-color-medium);
+      background: var(--ion-card-background);
       padding: 8px 12px;
       border-radius: var(--admin-border-radius-sm);
       box-shadow: var(--admin-shadow-sm);
@@ -120,7 +120,7 @@ ion-header {
     gap: 16px;
     
     .monitor-card {
-      background: white;
+      background: var(--ion-card-background);
       border-radius: var(--admin-border-radius);
       padding: 20px;
       box-shadow: var(--admin-shadow-md);
@@ -146,12 +146,12 @@ ion-header {
     gap: 20px;
     
     .admin-card {
-      background: white;
+      background: var(--ion-card-background);
       border-radius: var(--admin-border-radius);
       box-shadow: var(--admin-shadow-md);
       transition: all 0.3s ease;
       overflow: hidden;
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--ion-color-light);
       margin: 0;
       
       &:hover {
@@ -170,12 +170,12 @@ ion-header {
     gap: 16px;
     
     .activity-card {
-      background: white;
+      background: var(--ion-card-background);
       border-radius: var(--admin-border-radius);
       box-shadow: var(--admin-shadow-md);
       transition: all 0.3s ease;
       overflow: hidden;
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--ion-color-light);
       margin: 0;
       
       &:hover {

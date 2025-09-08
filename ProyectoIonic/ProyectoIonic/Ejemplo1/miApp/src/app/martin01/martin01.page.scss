@@ -1,33 +1,33 @@
 // Martin01 - Analytics Center - Professional Medical Dashboard Styling
-// Based on international clinical applications like HealthTap, Oracle Health, Epic
+// Adaptado para modo oscuro y claro automático
 
-// Medical Color Palette (Professional Clinical Theme)
+// Medical Color Palette (Adaptativo)
 :root {
-  --medical-primary: #0066cc;
-  --medical-primary-light: #4d94d9;
-  --medical-primary-dark: #004c99;
-  --medical-success: #28a745;
-  --medical-success-light: #5cb85c;
-  --medical-warning: #ffc107;
-  --medical-warning-light: #ffda6a;
-  --medical-danger: #dc3545;
-  --medical-info: #17a2b8;
-  --medical-light: #f8f9fa;
-  --medical-dark: #343a40;
-  --medical-secondary: #6c757d;
-  --medical-tertiary: #6f42c1;
+  --medical-primary: var(--ion-color-primary);
+  --medical-primary-light: var(--ion-color-primary-tint);
+  --medical-primary-dark: var(--ion-color-primary-shade);
+  --medical-success: var(--ion-color-success);
+  --medical-success-light: var(--ion-color-success-tint);
+  --medical-warning: var(--ion-color-warning);
+  --medical-warning-light: var(--ion-color-warning-tint);
+  --medical-danger: var(--ion-color-danger);
+  --medical-info: var(--ion-color-secondary);
+  --medical-light: var(--ion-background-color);
+  --medical-dark: var(--ion-text-color);
+  --medical-secondary: var(--clinic-neutral);
+  --medical-tertiary: var(--ion-color-tertiary);
   
-  // Card shadows and borders
-  --medical-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --medical-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --medical-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+  // Card shadows and borders adaptativos
+  --medical-shadow-sm: var(--clinic-shadow);
+  --medical-shadow-md: var(--clinic-shadow);
+  --medical-shadow-lg: var(--clinic-shadow);
   --medical-border-radius: 12px;
   --medical-border-radius-sm: 8px;
 }
 
 // Analytics Content Background
 .analytics-content {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--ion-background-color);
   min-height: 100vh;
   padding: 16px;
   
@@ -75,7 +75,7 @@ ion-header {
   padding: 0 4px;
   
   .metric-card {
-    background: white;
+    background: var(--ion-card-background);
     border-radius: var(--medical-border-radius);
     padding: 20px;
     box-shadow: var(--medical-shadow-md);
@@ -102,22 +102,22 @@ ion-header {
     
     &.primary {
       border-left-color: var(--medical-primary);
-      background: linear-gradient(135deg, rgba(0, 102, 204, 0.03), white);
+      background: var(--ion-card-background);
     }
     
     &.success {
       border-left-color: var(--medical-success);
-      background: linear-gradient(135deg, rgba(40, 167, 69, 0.03), white);
+      background: var(--ion-card-background);
     }
     
     &.warning {
       border-left-color: var(--medical-warning);
-      background: linear-gradient(135deg, rgba(255, 193, 7, 0.03), white);
+      background: var(--ion-card-background);
     }
     
     &.info {
       border-left-color: var(--medical-info);
-      background: linear-gradient(135deg, rgba(23, 162, 184, 0.03), white);
+      background: var(--ion-card-background);
     }
     
     .metric-header {
@@ -134,7 +134,7 @@ ion-header {
       .metric-title {
         font-size: 0.95rem;
         font-weight: 500;
-        color: var(--medical-secondary);
+        color: var(--ion-color-medium);
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }
@@ -143,7 +143,7 @@ ion-header {
     .metric-value {
       font-size: 2.2rem;
       font-weight: 700;
-      color: var(--medical-dark);
+      color: var(--ion-color-primary);
       margin: 8px 0;
       line-height: 1.2;
     }
@@ -153,7 +153,7 @@ ion-header {
       align-items: center;
       gap: 6px;
       font-size: 0.85rem;
-      color: var(--medical-secondary);
+      color: var(--ion-color-medium);
       
       ion-icon {
         font-size: 1rem;
@@ -168,24 +168,22 @@ ion-header {
     text-align: center;
     margin: 32px 0 24px 0;
     
-    h2 {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      font-size: 1.8rem;
-      font-weight: 600;
-      color: var(--medical-dark);
-      margin: 0 0 8px 0;
-      
-      ion-icon {
+      h2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--ion-color-primary);
+        margin: 0 0 8px 0;      ion-icon {
         font-size: 2rem;
       }
     }
     
     .section-subtitle {
       font-size: 1rem;
-      color: var(--medical-secondary);
+      color: var(--ion-color-medium);
       margin: 0;
       font-weight: 400;
     }
@@ -200,12 +198,12 @@ ion-header {
   margin-bottom: 32px;
   
   .report-card {
-    background: white;
+    background: var(--ion-card-background);
     border-radius: var(--medical-border-radius);
     box-shadow: var(--medical-shadow-md);
     transition: all 0.3s ease;
     overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--ion-color-light);
     margin: 0;
     
     &:hover {
@@ -232,7 +230,7 @@ ion-header {
     
     &.export-card {
       border-top: 4px solid var(--medical-dark);
-      background: linear-gradient(135deg, rgba(52, 58, 64, 0.02), white);
+      background: var(--ion-card-background);
     }
     
     ion-card-header {
@@ -251,7 +249,7 @@ ion-header {
         ion-card-title {
           font-size: 1.1rem;
           font-weight: 600;
-          color: var(--medical-dark);
+          color: var(--ion-color-primary);
           margin: 0;
         }
       }
@@ -263,24 +261,22 @@ ion-header {
       .report-stats {
         margin-bottom: 16px;
         
-        .stat-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 8px 0;
-          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-          
-          &:last-child {
-            border-bottom: none;
-          }
-          
-          .stat-label {
-            font-size: 0.9rem;
-            color: var(--medical-secondary);
-            font-weight: 500;
-          }
-          
-          .stat-value {
+          .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--ion-color-light);
+            
+            &:last-child {
+              border-bottom: none;
+            }
+            
+            .stat-label {
+              font-size: 0.9rem;
+              color: var(--ion-color-medium);
+              font-weight: 500;
+            }          .stat-value {
             font-weight: 700;
             font-size: 1rem;
             
@@ -292,14 +288,12 @@ ion-header {
         }
       }
       
-      .export-description {
-        font-size: 0.9rem;
-        color: var(--medical-secondary);
-        margin-bottom: 16px;
-        line-height: 1.5;
-      }
-      
-      .export-options {
+        .export-description {
+          font-size: 0.9rem;
+          color: var(--ion-color-medium);
+          margin-bottom: 16px;
+          line-height: 1.5;
+        }      .export-options {
         display: flex;
         gap: 8px;
         margin-bottom: 16px;

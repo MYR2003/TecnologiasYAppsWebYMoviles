@@ -1,27 +1,27 @@
-/* Estilos médicos profesionales inspirados en aplicaciones clínicas internacionales */
+/* Estilos médicos profesionales que respetan el modo oscuro */
 
-/* Variables de colores médicos */
+/* Variables de colores médicos adaptativas */
 :root {
-  --medical-primary: #0066cc;
-  --medical-success: #28a745;
-  --medical-danger: #dc3545;
-  --medical-warning: #ffc107;
-  --medical-info: #17a2b8;
-  --medical-light: #f8f9fa;
-  --medical-dark: #343a40;
-  --medical-blue: #007bff;
-  --medical-green: #20c997;
-  --medical-teal: #20c997;
-  --medical-bg: #f4f6f9;
-  --medical-card-bg: #ffffff;
-  --medical-border: #e1e5e9;
-  --medical-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  --medical-shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --medical-primary: var(--ion-color-primary);
+  --medical-success: var(--ion-color-success);
+  --medical-danger: var(--ion-color-danger);
+  --medical-warning: var(--ion-color-warning);
+  --medical-info: var(--ion-color-secondary);
+  --medical-light: var(--ion-background-color);
+  --medical-dark: var(--ion-text-color);
+  --medical-blue: var(--ion-color-primary);
+  --medical-green: var(--ion-color-success);
+  --medical-teal: var(--ion-color-secondary);
+  --medical-bg: var(--ion-background-color);
+  --medical-card-bg: var(--ion-card-background);
+  --medical-border: var(--ion-border-color);
+  --medical-shadow: var(--clinic-shadow);
+  --medical-shadow-hover: var(--clinic-shadow);
 }
 
 /* Contenido médico general */
 .medical-content {
-  background: linear-gradient(135deg, var(--medical-bg) 0%, #e8f4f8 100%);
+  background: var(--ion-background-color);
   --padding-start: 0;
   --padding-end: 0;
   --padding-top: 0;
@@ -49,7 +49,7 @@
   align-items: center;
   min-width: 120px;
   padding: 12px 16px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafe 100%);
+  background: var(--medical-card-bg);
   border-radius: 12px;
   border: 1px solid var(--medical-border);
   box-shadow: var(--medical-shadow);
