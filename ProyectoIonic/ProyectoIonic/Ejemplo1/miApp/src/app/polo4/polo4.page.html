@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Equipo Polo - Polo 4</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="campo-futbol">
+    <div class="fila delanteros">
+      <ion-button routerLink="/tabs/polo1">Polo 1</ion-button>
+      <ion-button routerLink="/tabs/polo2">Polo 2</ion-button>
+      <ion-button routerLink="/tabs/polo3">Polo 3</ion-button>
+    </div>
+
+    <div class="fila mediocampistas">
+      <ion-button routerLink="/tabs/polo4" color="success">Polo 4</ion-button>
+      <ion-button routerLink="/tabs/polo5">Polo 5</ion-button>
+      <ion-button routerLink="/tabs/polo6">Polo 6</ion-button>
+    </div>
+
+    <div class="fila defensas">
+      <ion-button disabled>DEF</ion-button>
+      <ion-button disabled>DEF</ion-button>
+      <ion-button disabled>DEF</ion-button>
+      <ion-button disabled>DEF</ion-button>
+    </div>
+
+    <div class="fila portero">
+      <ion-button disabled>POR</ion-button>
+    </div>
+  </div>
+</ion-content>

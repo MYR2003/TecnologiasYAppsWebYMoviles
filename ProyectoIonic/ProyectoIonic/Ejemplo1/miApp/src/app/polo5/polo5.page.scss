@@ -1,0 +1,69 @@
+.campo-futbol {
+  height: 70vh; // Altura fija que ocupará el 70% de la altura visible
+  max-width: 400px; // Ancho máximo para mantener proporciones
+  margin: 0 auto; // Centrar horizontalmente
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly; // Distribuye el espacio uniformemente
+  padding: 10px;
+  background-color: #4CAF50;
+  background-image: linear-gradient(#4CAF50, #45a049);
+  position: relative;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.fila {
+  display: flex;
+  justify-content: center;
+  gap: 10px; // Reducido el espacio entre botones
+}
+
+.delanteros {
+  margin-top: 5%; // Reducido el margen
+}
+
+.mediocampistas {
+  margin-top: 5%; // Reducido el margen
+}
+
+.defensas {
+  margin-top: 5%; // Reducido el margen
+}
+
+.portero {
+  margin-bottom: 2%; // Reducido el margen
+}
+
+ion-button {
+  --border-radius: 50%;
+  width: 45px; // Reducido el tamaño del botón
+  height: 45px; // Reducido el tamaño del botón
+  --padding-start: 0;
+  --padding-end: 0;
+  font-size: 12px; // Texto más pequeño
+}
+
+// Líneas del campo más sutiles
+.campo-futbol::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+// Círculo central más pequeño
+.campo-futbol::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px; // Reducido el tamaño
+  height: 60px; // Reducido el tamaño
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+}
