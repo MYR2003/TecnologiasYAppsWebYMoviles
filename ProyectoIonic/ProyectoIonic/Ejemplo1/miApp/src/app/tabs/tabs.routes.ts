@@ -36,8 +36,8 @@ export const routes: Routes = [
       { path: 'polo4', loadComponent: () => import('../polo4/polo4.page').then(m => m.Polo4Page) },
       { path: 'polo5', loadComponent: () => import('../polo5/polo5.page').then(m => m.Polo5Page) },
       { path: 'polo6', loadComponent: () => import('../polo6/polo6.page').then(m => m.Polo6Page) },
-      { path: '', redirectTo: '/tabs/home', pathMatch: 'full' },
+      { path: '', redirectTo: '/tabs/pacientes', pathMatch: 'full' },
     ],
   },
-  { path: '', redirectTo: '/tabs/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/tabs/pacientes', pathMatch: 'full' },
 ];
