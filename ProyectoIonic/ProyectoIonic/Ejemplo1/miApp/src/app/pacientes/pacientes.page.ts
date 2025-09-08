@@ -41,6 +41,11 @@ export class PacientesPage {
     this.router.navigate(['/tabs/historial'], { queryParams: { ficha: fichaId } });
   }
 
+  verFichaPaciente(fichaId: string) {
+    console.log(`Ver ficha médica del paciente ${fichaId}`);
+    this.router.navigate(['/tabs/ficha'], { queryParams: { ficha: fichaId, modo: 'ver' } });
+  }
+
   imprimirFicha(fichaId: string) {
     console.log(`Imprimiendo ficha médica ${fichaId}`);
     // Funcionalidad de impresión

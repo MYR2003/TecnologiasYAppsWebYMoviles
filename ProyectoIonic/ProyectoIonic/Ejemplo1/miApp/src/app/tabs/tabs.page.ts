@@ -1,4 +1,5 @@
 import { Component, EnvironmentInjector, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, IonButton, IonBadge, IonAvatar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { triangle, ellipse, square, peopleOutline, peopleCircleOutline, medicalOutline, sunnyOutline, moonOutline, analyticsOutline, settingsOutline, person, documentTextOutline, barChartOutline, trendingUpOutline, pieChartOutline, calendarOutline, arrowForwardOutline, cashOutline, timeOutline, notificationsOutline, searchOutline, sunny, moon, pulse, documentText } from 'ionicons/icons';
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
-  imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, IonButton, IonBadge, IonAvatar],
+  imports: [CommonModule, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, IonButton, IonBadge, IonAvatar],
 })
 export class TabsPage {
   public environmentInjector = inject(EnvironmentInjector);
