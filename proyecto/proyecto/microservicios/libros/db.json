@@ -1,0 +1,7 @@
+{
+  "libros": [
+    { "id": 1, "titulo": "Introducción a Ionic", "autor": "I. Dev", "stock": 3 },
+    { "id": 2, "titulo": "Angular Moderno", "autor": "A. Ng", "stock": 5 },
+    { "id": 3, "titulo": "Patrones de Diseño", "autor": "G. Gamma", "stock": 2 }
+  ]
+}
