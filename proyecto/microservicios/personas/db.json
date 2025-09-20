@@ -1,0 +1,17 @@
+{
+  "personas": [
+    {
+      "idPersona": 1,
+      "nombre": "Juan",
+      "apellido": "Pérez",
+      "rut": "12345678-9",
+      "fechaNacimiento": "1980-01-01",
+      "sistemaDeSalud": "Fonasa",
+      "domicilio": "Calle Falsa 123",
+      "numero": "987654321",
+      "alergias": [1],
+      "contactosEmergencia": [1],
+      "fichasMedicas": [1]
+    }
+  ]
+}

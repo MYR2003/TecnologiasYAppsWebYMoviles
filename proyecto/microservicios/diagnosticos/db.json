@@ -1,0 +1,16 @@
+{
+  "diagnosticos": [
+    {
+      "idDiagnostico": 1,
+      "idTipoDiagnostico": 1,
+      "diagnostico": "Migraña",
+      "codigoCIE": "G43"
+    }
+  ],
+  "tipoDiagnostico": [
+    {
+      "idTipoDiagnostico": 1,
+      "tipoDiagnostico": "General"
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "personas": [
+    {
+      "idPersona": 1,
+      "nombre": "Juan",
+      "apellido": "Pérez",
+      "rut": "12345678-9",
+      "fechaNacimiento": "1980-01-01",
+      "sistemaDeSalud": "Fonasa",
+      "domicilio": "Calle Falsa 123",
+      "numero": "987654321",
+      "alergias": [1],
+      "contactosEmergencia": [1],
+      "fichasMedicas": [1]
+    }
+  ],
+  "alergias": [
+    {
+      "idAlergia": 1,
+      "alergia": "Penicilina"
+    }
+  ],
+  "contactosEmergencia": [
+    {
+      "idContacto": 1,
+      "nombre": "Ana",
+      "apellido": "Gómez",
+      "rut": "98765432-1",
+      "fechaNacimiento": "1975-05-05",
+      "telefono": "123456789",
+      "direccion": "Calle Real 456"
+    }
+  ],
+  "especialidades": [
+    {
+      "idEspecialidad": 1,
+      "especialidad": "Cardiología"
+    }
+  ],
+  "medicos": [
+    {
+      "idMedico": 1,
+      "idEspecialidad": 1,
+      "nombre": "Dr. Luis",
+      "apellido": "Martínez",
+      "rut": "11223344-5",
+      "fechaNacimiento": "1970-03-15",
+      "telefono": "5551234",
+      "email": "luis.martinez@hospital.com"
+    }
+  ],
+  "fichasMedicas": [
+    {
+      "idFicha": 1,
+      "idPersona": 1,
+      "idMedico": 1,
+      "fecha": "2025-09-20T10:00:00",
+      "altura": 1.75,
+      "peso": 80.5,
+      "presion": "120/80",
+      "observaciones": "Paciente estable"
+    }
+  ],
+  "consultas": [
+    {
+      "idConsulta": 1,
+      "idPersona": 1,
+      "idMedico": 1,
+      "fecha": "2025-09-20T11:00:00",
+      "motivo": "Dolor de cabeza",
+      "duracionMinutos": 30,
+      "observaciones": "Se recomienda reposo"
+    }
+  ],
+  "sintomas": [
+    {
+      "idSintoma": 1,
+      "sintoma": "Dolor de cabeza"
+    }
+  ],
+  "consultaSintoma": [
+    {
+      "idConsulta": 1,
+      "idSintoma": 1,
+      "severidad": 2,
+      "nota": "Moderado"
+    }
+  ],
+  "medicamentos": [
+    {
+      "idMedicamento": 1,
+      "medicamento": "Paracetamol",
+      "presentacion": "Tableta"
+    }
+  ],
+  "consultaMedicamento": [
+    {
+      "idConsulta": 1,
+      "idMedicamento": 1,
+      "dosis": "500mg",
+      "frecuencia": "Cada 8 horas",
+      "duracion": "3 días",
+      "indicaciones": "Tomar con agua"
+    }
+  ],
+  "tipoDiagnostico": [
+    {
+      "idTipoDiagnostico": 1,
+      "tipoDiagnostico": "General"
+    }
+  ],
+  "diagnosticos": [
+    {
+      "idDiagnostico": 1,
+      "idTipoDiagnostico": 1,
+      "diagnostico": "Migraña",
+      "codigoCIE": "G43"
+    }
+  ],
+  "consultaDiagnostico": [
+    {
+      "idConsulta": 1,
+      "idDiagnostico": 1,
+      "esPrincipal": true
+    }
+  ],
+  "tipoTratamiento": [
+    {
+      "idTipoTratamiento": 1,
+      "tipoTratamiento": "Farmacológico"
+    }
+  ],
+  "tratamientos": [
+    {
+      "idTratamiento": 1,
+      "idTipoTratamiento": 1,
+      "tratamiento": "Reposo y medicación",
+      "descripcion": "Reposo absoluto y paracetamol"
+    }
+  ],
+  "consultaTratamiento": [
+    {
+      "idConsulta": 1,
+      "idTratamiento": 1,
+      "instrucciones": "Reposo en casa",
+      "fechaInicio": "2025-09-20",
+      "fechaFin": "2025-09-23"
+    }
+  ]
+}

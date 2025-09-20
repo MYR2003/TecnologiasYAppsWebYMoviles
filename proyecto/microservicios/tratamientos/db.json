@@ -1,0 +1,16 @@
+{
+  "tratamientos": [
+    {
+      "idTratamiento": 1,
+      "idTipoTratamiento": 1,
+      "tratamiento": "Reposo y medicación",
+      "descripcion": "Reposo absoluto y paracetamol"
+    }
+  ],
+  "tipoTratamiento": [
+    {
+      "idTipoTratamiento": 1,
+      "tipoTratamiento": "Farmacológico"
+    }
+  ]
+}
