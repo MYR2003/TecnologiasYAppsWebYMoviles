@@ -1,8 +1,8 @@
 -- Seeds de ejemplo para MySQL
 -- Mismas inserciones que en el seed de PostgreSQL, respetando el orden
 
--- Alergias
-INSERT INTO alergias (alergia) VALUES
+-- Alergia
+INSERT INTO alergia (alergia) VALUES
 ('Penicilina'),
 ('Polen'),
 ('Mariscos');
@@ -12,8 +12,8 @@ INSERT INTO persona (nombre, apellido, rut, fechaNacimiento, sistemaDeSalud, dom
 ('Juan', 'Pérez', '12.345.678-9', '1980-04-12', 'Fonasa', 'Av. Siempre Viva 123', '+56912345678'),
 ('María', 'González', '11.222.333-4', '1990-09-30', 'Isapre', 'Calle Falsa 456', '+56987654321');
 
--- AlergiasPersona
-INSERT INTO alergias_persona (idPersona, idAlergia, nota) VALUES
+-- AlergiaPersona
+INSERT INTO alergia_persona (idPersona, idAlergia, nota) VALUES
 (1, 1, 'Anafilaxia leve'),
 (2, 2, 'Rinitis estacional');
 

@@ -1,7 +1,7 @@
 -- Esquema PostgreSQL para sistema de fichas médicas
 -- Basado en el modelo final acordado
 
-CREATE TABLE alergias (
+CREATE TABLE alergia (
     idAlergia SERIAL PRIMARY KEY,
     alergia VARCHAR(255) NOT NULL
 );
@@ -17,13 +17,13 @@ CREATE TABLE persona (
     numero VARCHAR(50)
 );
 
-CREATE TABLE alergias_persona (
+CREATE TABLE alergia_persona (
     idPersona INT NOT NULL,
     idAlergia INT NOT NULL,
     nota TEXT,
     PRIMARY KEY (idPersona, idAlergia),
     FOREIGN KEY (idPersona) REFERENCES persona(idPersona) ON DELETE CASCADE,
-    FOREIGN KEY (idAlergia) REFERENCES alergias(idAlergia) ON DELETE CASCADE
+    FOREIGN KEY (idAlergia) REFERENCES alergia(idAlergia) ON DELETE CASCADE
 );
 
 CREATE TABLE contacto_emergencia (

@@ -17,11 +17,11 @@ DROP TABLE IF EXISTS medico;
 DROP TABLE IF EXISTS especialidad;
 DROP TABLE IF EXISTS persona_contacto;
 DROP TABLE IF EXISTS contacto_emergencia;
-DROP TABLE IF EXISTS alergias_persona;
+DROP TABLE IF EXISTS alergia_persona;
 DROP TABLE IF EXISTS persona;
-DROP TABLE IF EXISTS alergias;
+DROP TABLE IF EXISTS alergia;
 
-CREATE TABLE alergias (
+CREATE TABLE alergia (
     idAlergia INT AUTO_INCREMENT PRIMARY KEY,
     alergia VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB;
@@ -37,13 +37,13 @@ CREATE TABLE persona (
     numero VARCHAR(50)
 ) ENGINE=InnoDB;
 
-CREATE TABLE alergias_persona (
+CREATE TABLE alergia_persona (
     idPersona INT NOT NULL,
     idAlergia INT NOT NULL,
     nota TEXT,
     PRIMARY KEY (idPersona, idAlergia),
     FOREIGN KEY (idPersona) REFERENCES persona(idPersona) ON DELETE CASCADE,
-    FOREIGN KEY (idAlergia) REFERENCES alergias(idAlergia) ON DELETE CASCADE
+    FOREIGN KEY (idAlergia) REFERENCES alergia(idAlergia) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE contacto_emergencia (
