@@ -37,10 +37,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Personas</ion-title>
-    <ion-buttons slot="end">
-      <app-reservas-mini></app-reservas-mini>
-      <ion-button (click)="irAPrestamos()">Ir a Préstamos</ion-button>
-    </ion-buttons>
+    <!-- Sin botón global de ficha médica -->
   </ion-toolbar>
 </ion-header>
 
@@ -59,8 +56,9 @@
   <ng-container *ngIf="!personaEdit">
     <ng-container *ngFor="let p of personas">
       <app-tarjeta-persona [persona]="p"></app-tarjeta-persona>
-      <ion-button color="primary" (click)="editarPersona(p)">Editar</ion-button>
-      <ion-button color="danger" (click)="eliminarPersona(p.idPersona)">Eliminar</ion-button>
+  <ion-button color="primary" (click)="editarPersona(p)">Editar</ion-button>
+  <ion-button color="danger" (click)="eliminarPersona(p.idPersona)">Eliminar</ion-button>
+  <ion-button color="secondary" (click)="irAFichaMedica(p.idPersona)">Ver Ficha Médica</ion-button>
     </ng-container>
   </ng-container>
 </ion-content>

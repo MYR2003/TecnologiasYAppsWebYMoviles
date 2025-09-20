@@ -6,11 +6,14 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { PersonasService, Persona } from '../core/servicios/personas.service';
 import { TarjetaPersonaComponent } from '../compartidos/componentes/tarjeta-persona/tarjeta-persona.component';
+// El componente reservas-mini no existe, así que se comenta el import
+// import { ReservasMiniComponent } from '../compartidos/componentes/reservas-mini/reservas-mini.component';
 
 @Component({
   selector: 'app-tab1',
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterModule, TarjetaPersonaComponent],
+  // Se comenta el componente inexistente para evitar error
+  imports: [IonicModule, CommonModule, FormsModule, RouterModule, TarjetaPersonaComponent /*, ReservasMiniComponent*/],
   templateUrl: './tab1.page.html',
   styleUrls: ['./tab1.page.scss']
 })
@@ -19,6 +22,11 @@ export class Tab1Page {
   private router = inject(Router);
   personas: Persona[] = [];
   personaEdit: Persona | null = null;
+
+  // Método para navegación a préstamos
+  irAFichaMedica(idPersona: number) {
+    this.router.navigate(['/fichas-medicas', idPersona]);
+  }
 
   ngOnInit() {
     this.svc.listar().subscribe(ls => this.personas = ls);
