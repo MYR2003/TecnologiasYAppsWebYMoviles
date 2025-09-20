@@ -1,7 +1,0 @@
-{
-  "name": "biblioteca-ms",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular-standalone"
-}
