@@ -1,17 +1,43 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+    <ion-title>Consultas médicas</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <form *ngIf="!consultaEdit" #consultaForm="ngForm" (ngSubmit)="agregarConsulta(consultaForm)" class="persona-form">
+    <ion-item><ion-input ngModel name="motivo" placeholder="Motivo" required></ion-input></ion-item>
+  <ion-item><ion-input ngModel name="duracionMinutos" type="number" min="0" placeholder="Duración (minutos)" required></ion-input></ion-item>
+    <ion-item><ion-input ngModel name="observaciones" placeholder="Observaciones"></ion-input></ion-item>
+    <ion-button expand="block" type="submit">Agregar consulta</ion-button>
+  </form>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <div *ngIf="consultaEdit">
+    <ion-label color="primary" class="edicion-indicador">Modo edición de consulta</ion-label>
+    <div class="espacio-edicion"></div>
+    <form #editForm="ngForm" (ngSubmit)="guardarEdicion(editForm)" class="persona-form">
+      <ion-item>
+        <ion-label position="stacked">Motivo</ion-label>
+        <ion-input [(ngModel)]="consultaEdit.motivo" name="motivo" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Duración (minutos)</ion-label>
+  <ion-input [(ngModel)]="consultaEdit.duracionMinutos" name="duracionMinutos" type="number" min="0" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Observaciones</ion-label>
+        <ion-input [(ngModel)]="consultaEdit.observaciones" name="observaciones"></ion-input>
+      </ion-item>
+      <ion-button expand="block" type="submit">Guardar cambios</ion-button>
+      <ion-button expand="block" color="danger" (click)="consultaEdit = null" type="button">Cancelar</ion-button>
+    </form>
+  </div>
+
+  <ng-container *ngIf="!consultaEdit">
+    <ng-container *ngFor="let c of consultas">
+      <app-tarjeta-consulta [consulta]="c"></app-tarjeta-consulta>
+      <ion-button color="primary" (click)="editarConsulta(c)">Editar</ion-button>
+      <ion-button color="danger" (click)="eliminarConsulta(c.idConsulta)">Eliminar</ion-button>
+    </ng-container>
+  </ng-container>
 </ion-content>

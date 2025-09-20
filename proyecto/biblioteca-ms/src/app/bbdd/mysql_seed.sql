@@ -1,6 +1,3 @@
--- Seeds de ejemplo para MySQL
--- Mismas inserciones que en el seed de PostgreSQL, respetando el orden
-
 -- Alergia
 INSERT INTO alergia (alergia) VALUES
 ('Penicilina'),

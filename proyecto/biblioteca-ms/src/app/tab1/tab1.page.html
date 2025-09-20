@@ -1,6 +1,42 @@
+  <div *ngIf="personaEdit" class="edicion-container">
+    <ion-label color="primary" class="edicion-indicador">Modo edición de persona</ion-label>
+    <div class="espacio-edicion"></div>
+    <form #editForm="ngForm" (ngSubmit)="guardarEdicion(editForm)" class="persona-form">
+      <ion-item>
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input [(ngModel)]="personaEdit.nombre" name="nombre" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Apellido</ion-label>
+        <ion-input [(ngModel)]="personaEdit.apellido" name="apellido" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">RUT</ion-label>
+        <ion-input [(ngModel)]="personaEdit.rut" name="rut" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Fecha de nacimiento</ion-label>
+        <ion-input [(ngModel)]="personaEdit.fechaNacimiento" name="fechaNacimiento" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Sistema de salud</ion-label>
+        <ion-input [(ngModel)]="personaEdit.sistemaDeSalud" name="sistemaDeSalud"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Domicilio</ion-label>
+        <ion-input [(ngModel)]="personaEdit.domicilio" name="domicilio"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Teléfono</ion-label>
+        <ion-input [(ngModel)]="personaEdit.numero" name="numero"></ion-input>
+      </ion-item>
+      <ion-button expand="block" type="submit">GUARDAR CAMBIOS</ion-button>
+      <ion-button expand="block" color="danger" (click)="personaEdit = null" type="button">CANCELAR</ion-button>
+    </form>
+  </div>
 <ion-header>
   <ion-toolbar>
-    <ion-title>Libros</ion-title>
+    <ion-title>Personas</ion-title>
     <ion-buttons slot="end">
       <app-reservas-mini></app-reservas-mini>
       <ion-button (click)="irAPrestamos()">Ir a Préstamos</ion-button>
@@ -9,7 +45,22 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ng-container *ngFor="let l of libros">
-    <app-tarjeta-libro [libro]="l"></app-tarjeta-libro>
+  <form *ngIf="!personaEdit" #personaForm="ngForm" (ngSubmit)="agregarPersona(personaForm)" class="persona-form">
+    <ion-item><ion-input ngModel name="nombre" placeholder="Nombre" required></ion-input></ion-item>
+    <ion-item><ion-input ngModel name="apellido" placeholder="Apellido" required></ion-input></ion-item>
+    <ion-item><ion-input ngModel name="rut" placeholder="RUT" required></ion-input></ion-item>
+    <ion-item><ion-input ngModel name="fechaNacimiento" placeholder="Fecha de nacimiento" required></ion-input></ion-item>
+    <ion-item><ion-input ngModel name="sistemaDeSalud" placeholder="Sistema de salud"></ion-input></ion-item>
+    <ion-item><ion-input ngModel name="domicilio" placeholder="Domicilio"></ion-input></ion-item>
+    <ion-item><ion-input ngModel name="numero" placeholder="Teléfono"></ion-input></ion-item>
+    <ion-button expand="block" type="submit">Agregar persona</ion-button>
+  </form>
+
+  <ng-container *ngIf="!personaEdit">
+    <ng-container *ngFor="let p of personas">
+      <app-tarjeta-persona [persona]="p"></app-tarjeta-persona>
+      <ion-button color="primary" (click)="editarPersona(p)">Editar</ion-button>
+      <ion-button color="danger" (click)="eliminarPersona(p.idPersona)">Eliminar</ion-button>
+    </ng-container>
   </ng-container>
 </ion-content>

@@ -5,8 +5,10 @@
 export const environment = {
   production: false,
   servicios: {
-    libros: 'http://localhost:4002',
-    prestamos: 'http://localhost:4003'
+    personas: 'http://localhost:3001',
+  medicos: 'http://localhost:3002',
+  consultas: 'http://localhost:3004',
+  fichasMedicas: 'http://localhost:3003'
   }
 };
 /*

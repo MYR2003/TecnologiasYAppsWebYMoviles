@@ -1,0 +1,11 @@
+@import 'src/theme/variables.scss';
+
+ion-card {
+  margin-bottom: 16px;
+}
+ion-card-title {
+  color: var(--ion-color-primary);
+}
+ion-card-content p {
+  margin: 4px 0;
+}

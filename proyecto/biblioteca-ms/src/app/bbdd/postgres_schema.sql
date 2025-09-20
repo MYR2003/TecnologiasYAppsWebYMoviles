@@ -1,6 +1,3 @@
--- Esquema PostgreSQL para sistema de fichas médicas
--- Basado en el modelo final acordado
-
 CREATE TABLE alergia (
     idAlergia SERIAL PRIMARY KEY,
     alergia VARCHAR(255) NOT NULL

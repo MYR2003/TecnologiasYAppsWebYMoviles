@@ -1,17 +1,58 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Préstamos</ion-title>
+    <ion-title>Médicos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-button expand="block" (click)="confirmarPrestamo()">Confirmar Préstamo</ion-button>
+  <form *ngIf="!medicoEdit" #medicoForm="ngForm" (ngSubmit)="agregarMedico(medicoForm)" class="persona-form">
+    <ion-item><ion-input ngModel name="nombre" placeholder="Nombre" required></ion-input></ion-item>
+    <ion-item><ion-input ngModel name="apellido" placeholder="Apellido" required></ion-input></ion-item>
+    <ion-item><ion-input ngModel name="rut" placeholder="RUT" required></ion-input></ion-item>
+    <ion-item><ion-input ngModel name="fechaNacimiento" placeholder="Fecha de nacimiento" required></ion-input></ion-item>
+    <ion-item><ion-input ngModel name="telefono" placeholder="Teléfono"></ion-input></ion-item>
+    <ion-item><ion-input ngModel name="email" placeholder="Email"></ion-input></ion-item>
+    <ion-button expand="block" type="submit">Agregar médico</ion-button>
+  </form>
 
-  <ion-list>
-    <ion-item *ngFor="let it of reservas">
-      <ion-label>Libro ID: {{ it.libroId }} — Días: {{ it.dias }}</ion-label>
-    </ion-item>
-  </ion-list>
+  <div *ngIf="medicoEdit" class="edicion-container">
+    <ion-label color="primary" class="edicion-indicador">Modo edición de médico</ion-label>
+    <div class="espacio-edicion"></div>
+    <form #editForm="ngForm" (ngSubmit)="guardarEdicion(editForm)" class="persona-form">
+      <ion-item>
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input [(ngModel)]="medicoEdit.nombre" name="nombre" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Apellido</ion-label>
+        <ion-input [(ngModel)]="medicoEdit.apellido" name="apellido" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">RUT</ion-label>
+        <ion-input [(ngModel)]="medicoEdit.rut" name="rut" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Fecha de nacimiento</ion-label>
+        <ion-input [(ngModel)]="medicoEdit.fechaNacimiento" name="fechaNacimiento" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Teléfono</ion-label>
+        <ion-input [(ngModel)]="medicoEdit.telefono" name="telefono"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input [(ngModel)]="medicoEdit.email" name="email"></ion-input>
+      </ion-item>
+      <ion-button expand="block" type="submit">Guardar cambios</ion-button>
+      <ion-button expand="block" color="danger" (click)="medicoEdit = null" type="button">Cancelar</ion-button>
+    </form>
+  </div>
 
-  <ion-text *ngIf="mensaje">{{ mensaje }}</ion-text>
+  <ng-container *ngIf="!medicoEdit">
+    <ng-container *ngFor="let m of medicos">
+      <app-tarjeta-medico [medico]="m"></app-tarjeta-medico>
+      <ion-button color="primary" (click)="editarMedico(m)">Editar</ion-button>
+      <ion-button color="danger" (click)="eliminarMedico(m.idMedico)">Eliminar</ion-button>
+    </ng-container>
+  </ng-container>
 </ion-content>

@@ -1,6 +1,3 @@
--- Seeds de ejemplo para PostgreSQL
--- Inserciones en el orden que respeta FK
-
 -- Alergia
 INSERT INTO alergia (alergia) VALUES
 ('Penicilina'),

@@ -1,6 +1,3 @@
--- Esquema MySQL para sistema de fichas médicas
--- Basado en el modelo final acordado
-
 DROP TABLE IF EXISTS consulta_tratamiento;
 DROP TABLE IF EXISTS tratamiento;
 DROP TABLE IF EXISTS tipo_tratamiento;
