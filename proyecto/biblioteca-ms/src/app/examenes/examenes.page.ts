@@ -18,7 +18,7 @@ export class ExamenesPage {
   error = '';
   empty = false;
   selectedFile: File | null = null;
-  idpersona = 1; // Simulación, luego usar auth
+    idPersona = 1; // Simulación, luego usar auth
   personas: Persona[] = [];
 
   constructor(private examenesService: ExamenesService, private personasService: PersonasService) {}
@@ -34,8 +34,8 @@ export class ExamenesPage {
         this.personas = data;
         console.log('Personas cargadas:', this.personas);
         if (this.personas.length > 0) {
-    this.idpersona = this.personas[0].idpersona;
-    console.log('idPersona inicial:', this.idpersona);
+            this.idPersona = this.personas[0].idPersona;
+  console.log('idPersona inicial:', this.idPersona);
         }
         this.cargarExamenes();
       },
@@ -48,7 +48,7 @@ export class ExamenesPage {
   cargarExamenes() {
     this.loading = true;
     this.error = '';
-  this.examenesService.getExamenesPorPersona(this.idpersona).subscribe({
+      this.examenesService.getExamenesPorPersona(this.idPersona).subscribe({
       next: (data) => {
         this.examenes = data;
         this.empty = data.length === 0;
@@ -68,11 +68,11 @@ export class ExamenesPage {
 
   subirImagen() {
   if (!this.selectedFile) return;
-  this.idpersona = Number(this.idpersona);
-  console.log('idPersona al subir:', this.idpersona);
+      this.idPersona = Number(this.idPersona);
+      console.log('idPersona al subir:', this.idPersona);
   this.loading = true;
   this.error = '';
-  this.examenesService.subirImagen(this.selectedFile, this.idpersona).subscribe({
+      this.examenesService.subirImagen(this.selectedFile, this.idPersona).subscribe({
       next: (examen) => {
         this.examenes.unshift(examen);
         this.selectedFile = null;

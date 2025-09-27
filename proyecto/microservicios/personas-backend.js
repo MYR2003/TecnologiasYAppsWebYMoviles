@@ -21,7 +21,15 @@ const pool = new Pool({
 app.get('/personas', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM persona');
-    res.json(result.rows);
+    // Mapear a camelCase para el frontend
+    const personas = result.rows.map(p => ({
+      idPersona: p.idpersona,
+      nombre: p.nombre,
+      apellido: p.apellido,
+      rut: p.rut,
+      fechaNacimiento: p.fechanacimiento
+    }));
+    res.json(personas);
   } catch (err) {
     console.error('Error al consultar personas:', err);
     if (err && err.stack) {
