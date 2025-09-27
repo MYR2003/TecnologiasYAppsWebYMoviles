@@ -92,6 +92,9 @@ app.post('/api/examenes/subir', upload.single('file'), async (req, res) => {
     res.json(examen);
   } catch (err) {
     console.error('Error al insertar en la base de datos:', err);
+    if (err && err.stack) {
+      console.error('Stack trace:', err.stack);
+    }
     res.status(500).json({ error: 'Error al guardar en la base de datos' });
   }
 });
@@ -105,6 +108,9 @@ app.get('/api/examenes', async (req, res) => {
     res.json(result.rows);
   } catch (err) {
     console.error('Error al consultar exámenes:', err);
+    if (err && err.stack) {
+      console.error('Stack trace:', err.stack);
+    }
     res.status(500).json({ error: 'Error al consultar exámenes en la base de datos' });
   }
 });
