@@ -23,6 +23,7 @@
         <p>Datos extraídos: {{ examen.datosExtraidos }}</p>
       </ion-label>
       <img *ngIf="examen.imagen" [src]="examen.imagen" class="examen-img" alt="Imagen del examen {{ examen.idExamen }}" title="Imagen del examen" />
+      <ion-button color="danger" (click)="eliminarExamen(examen.idExamen)" slot="end">Eliminar</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>
