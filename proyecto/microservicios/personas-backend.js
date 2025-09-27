@@ -13,7 +13,7 @@ const pool = new Pool({
   user: 'postgres', // Cambia por tu usuario
   host: 'localhost', // Cambia si tu BD está en otro host
   database: 'biblioteca', // Cambia por el nombre de tu BD
-  password: '1234', // Cambia por tu contraseña
+  password: '1234',
   port: 5432,
 });
 
