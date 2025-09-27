@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Exámenes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <label for="fileInput">Selecciona imagen (.JPG):</label>
+    <input id="fileInput" type="file" accept="image/jpeg" (change)="onFileChange($event)" title="Selecciona imagen JPG" />
+    <ion-button (click)="subirImagen()" [disabled]="!selectedFile || loading">Subir imagen</ion-button>
+  </ion-item>
+
+  <ion-spinner *ngIf="loading"></ion-spinner>
+  <ion-text color="danger" *ngIf="error">{{ error }}</ion-text>
+  <ion-text *ngIf="empty && !loading">No hay exámenes cargados.</ion-text>
+
+  <ion-list *ngIf="examenes.length > 0">
+    <ion-item *ngFor="let examen of examenes">
+      <ion-label>
+        <h2>Examen #{{ examen.idExamen }}</h2>
+        <p>Fecha: {{ examen.fecha }}</p>
+        <p>Datos extraídos: {{ examen.datosExtraidos }}</p>
+      </ion-label>
+      <img *ngIf="examen.imagen" [src]="examen.imagen" class="examen-img" alt="Imagen del examen {{ examen.idExamen }}" title="Imagen del examen" />
+    </ion-item>
+  </ion-list>
+</ion-content>

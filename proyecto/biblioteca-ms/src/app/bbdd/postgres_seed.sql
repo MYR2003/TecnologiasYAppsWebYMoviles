@@ -5,24 +5,24 @@ INSERT INTO alergia (alergia) VALUES
 ('Mariscos');
 
 -- Personas
-INSERT INTO persona (nombre, apellido, rut, fechaNacimiento, sistemaDeSalud, domicilio, numero) VALUES
-('Juan', 'Pérez', '12.345.678-9', '1980-04-12', 'Fonasa', 'Av. Siempre Viva 123', '+56912345678'),
-('María', 'González', '11.222.333-4', '1990-09-30', 'Isapre', 'Calle Falsa 456', '+56987654321');
+INSERT INTO persona (nombre, apellido, rut, fechaNacimiento) VALUES
+('Juan', 'Pérez', '12.345.678-9', '1980-04-12'),
+('María', 'González', '11.222.333-4', '1990-09-30');
 
 -- AlergiaPersona
-INSERT INTO alergia_persona (idPersona, idAlergia, nota) VALUES
-(1, 1, 'Anafilaxia leve'),
-(2, 2, 'Rinitis estacional');
+INSERT INTO alergia_persona (idPersona, idAlergia) VALUES
+(1, 1),
+(2, 2);
 
 -- Contactos de emergencia
-INSERT INTO contacto_emergencia (nombre, apellido, rut, fechaNacimiento, telefono, direccion) VALUES
-('Ana', 'Pérez', '21.111.222-3', '1960-01-05', '+56911223344', 'Av. Siempre Viva 124'),
-('Carlos', 'González', NULL, '1965-06-20', '+56999887766', 'Calle Falsa 457');
+INSERT INTO contacto_emergencia (nombre, apellido, rut, fechaNacimiento) VALUES
+('Ana', 'Pérez', '21.111.222-3', '1960-01-05'),
+('Carlos', 'González', NULL, '1965-06-20');
 
 -- PersonaContacto
-INSERT INTO persona_contacto (idPersona, idContacto, relacion, esPrincipal) VALUES
-(1, 1, 'conyuge', TRUE),
-(2, 2, 'padre', TRUE);
+INSERT INTO persona_contacto (idPersona, idContacto) VALUES
+(1, 1),
+(2, 2);
 
 -- Especialidades
 INSERT INTO especialidad (especialidad) VALUES
@@ -30,19 +30,16 @@ INSERT INTO especialidad (especialidad) VALUES
 ('Pediatría');
 
 -- Medicos
-INSERT INTO medico (idEspecialidad, nombre, apellido, rut, fechaNacimiento, telefono, email) VALUES
-(1, 'Dr. Martín', 'Rojas', '10.111.222-3', '1975-03-15', '+56922334455', 'martin.rojas@clinica.cl'),
-(2, 'Dra. Laura', 'Soto', '10.222.333-4', '1982-11-22', '+56933445566', 'laura.soto@clinica.cl');
+INSERT INTO medico (idEspecialidad, nombre, apellido, rut, fechaNacimiento) VALUES
+(1, 'Dr. Martín', 'Rojas', '10.111.222-3', '1975-03-15'),
+(2, 'Dra. Laura', 'Soto', '10.222.333-4', '1982-11-22');
 
--- Fichas médicas
-INSERT INTO ficha_medica (idPersona, idMedico, fecha, altura, peso, presion, observaciones) VALUES
-(1, 1, '2024-01-10 09:30:00', 1.75, 78.5, '120/80', 'Paciente en buen estado general'),
-(2, 2, '2024-02-05 11:00:00', 1.62, 60.2, '110/70', 'Sin observaciones importantes');
+
 
 -- Consultas
-INSERT INTO consulta (idPersona, idMedico, fecha, motivo, duracionMinutos, observaciones) VALUES
-(1, 1, '2024-03-01 08:30:00', 'Control anual', 20, 'Solicita exámenes de rutina'),
-(2, 2, '2024-03-15 10:00:00', 'Tos persistente', 30, 'Tratamiento prescrito');
+INSERT INTO consulta (idPersona, idMedico) VALUES
+(1, 1),
+(2, 2);
 
 -- Sintomas
 INSERT INTO sintoma (sintoma) VALUES
@@ -51,19 +48,19 @@ INSERT INTO sintoma (sintoma) VALUES
 ('Dolor de cabeza');
 
 -- ConsultaSintoma
-INSERT INTO consulta_sintoma (idConsulta, idSintoma, severidad, nota) VALUES
-(2, 1, 4, 'Productiva'),
-(2, 2, 2, 'Intermitente');
+INSERT INTO consulta_sintoma (idConsulta, idSintoma) VALUES
+(2, 1),
+(2, 2);
 
 -- Medicamentos
-INSERT INTO medicamento (medicamento, presentacion) VALUES
-('Amoxicilina', '500 mg'),
-('Paracetamol', '500 mg');
+INSERT INTO medicamento (medicamento) VALUES
+('Amoxicilina'),
+('Paracetamol');
 
 -- ConsultaMedicamento
-INSERT INTO consulta_medicamento (idConsulta, idMedicamento, dosis, frecuencia, duracion, indicaciones) VALUES
-(2, 1, '500 mg', 'cada 8 horas', '7 días', 'Tomar con comida'),
-(2, 2, '500 mg', 'cada 6-8 horas', 'según síntomas', 'No exceder 4 g/día');
+INSERT INTO consulta_medicamento (idConsulta, idMedicamento) VALUES
+(2, 1),
+(2, 2);
 
 -- Tipos de diagnóstico
 INSERT INTO tipo_diagnostico (tipoDiagnostico) VALUES
@@ -71,12 +68,12 @@ INSERT INTO tipo_diagnostico (tipoDiagnostico) VALUES
 ('Definitivo');
 
 -- Diagnósticos
-INSERT INTO diagnostico (idTipoDiagnostico, diagnostico, codigoCIE) VALUES
-(1, 'Infección respiratoria aguda', 'J06.9');
+INSERT INTO diagnostico (idTipoDiagnostico, diagnostico) VALUES
+(1, 'Infección respiratoria aguda');
 
 -- ConsultaDiagnostico
-INSERT INTO consulta_diagnostico (idConsulta, idDiagnostico, esPrincipal) VALUES
-(2, 1, TRUE);
+INSERT INTO consulta_diagnostico (idConsulta, idDiagnostico) VALUES
+(2, 1);
 
 -- Tipos de tratamiento
 INSERT INTO tipo_tratamiento (tipoTratamiento) VALUES
@@ -84,9 +81,9 @@ INSERT INTO tipo_tratamiento (tipoTratamiento) VALUES
 ('Terapéutico');
 
 -- Tratamientos
-INSERT INTO tratamiento (idTipoTratamiento, tratamiento, descripcion) VALUES
-(1, 'Antibiótico oral', 'Amoxicilina 500 mg cada 8 horas por 7 días');
+INSERT INTO tratamiento (idTipoTratamiento, tratamiento) VALUES
+(1, 'Antibiótico oral');
 
 -- ConsultaTratamiento
-INSERT INTO consulta_tratamiento (idConsulta, idTratamiento, instrucciones, fechaInicio, fechaFin) VALUES
-(2, 1, 'Completar ciclo', '2024-03-15', '2024-03-22');
+INSERT INTO consulta_tratamiento (idConsulta, idTratamiento) VALUES
+(2, 1);
