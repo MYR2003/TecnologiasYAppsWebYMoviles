@@ -34,6 +34,9 @@ export class ExamenesPage {
         this.personas = data;
         console.log('Personas cargadas:', this.personas);
         if (this.personas.length > 0) {
+          console.log('Primer persona:', this.personas[0]);
+        }
+        if (this.personas.length > 0) {
             this.idPersona = this.personas[0].idPersona;
   console.log('idPersona inicial:', this.idPersona);
         }
