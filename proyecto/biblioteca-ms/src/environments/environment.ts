@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   servicios: {
-    personas: 'http://52.87.237.243:3001',
+    personas: 'http://44.197.129.106:3001',
   medicos: 'http://localhost:3002',
   consultas: 'http://localhost:3004',
   fichasMedicas: 'http://localhost:3003'
