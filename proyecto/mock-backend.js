@@ -61,6 +61,10 @@ async function textractOCR(buffer) {
 app.post('/api/examenes/subir', upload.single('file'), async (req, res) => {
   const { idPersona } = req.body;
   if (!req.file) return res.status(400).json({ error: 'No se subió archivo' });
+  const idPersonaNum = Number(idPersona);
+  if (isNaN(idPersonaNum)) {
+    return res.status(400).json({ error: 'idPersona inválido' });
+  }
   let datosExtraidos = '';
   let imagen = '';
   let archivo = req.file.originalname;
@@ -78,12 +82,12 @@ app.post('/api/examenes/subir', upload.single('file'), async (req, res) => {
   try {
     const result = await pool.query(
       'INSERT INTO examen (idPersona, fecha, archivo, datosExtraidos) VALUES ($1, $2, $3, $4) RETURNING idExamen',
-      [Number(idPersona), new Date().toISOString().slice(0, 10), archivo, datosExtraidos]
+      [idPersonaNum, new Date().toISOString().slice(0, 10), archivo, datosExtraidos]
     );
     const idExamen = result.rows[0].idexamen;
     const examen = {
       idExamen,
-      idPersona: Number(idPersona),
+      idPersona: idPersonaNum,
       fecha: new Date().toISOString().slice(0, 10),
       imagen,
       datosExtraidos,
