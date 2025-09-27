@@ -125,3 +125,12 @@ CREATE TABLE consulta_tratamiento (
     FOREIGN KEY (idConsulta) REFERENCES consulta(idConsulta) ON DELETE CASCADE,
     FOREIGN KEY (idTratamiento) REFERENCES tratamiento(idTratamiento)
 );
+
+CREATE TABLE examen (
+    idExamen SERIAL PRIMARY KEY,
+    idPersona INT NOT NULL,
+    fecha DATE NOT NULL,
+    archivo VARCHAR(255), -- nombre o URL del archivo
+    datosExtraidos TEXT,
+    FOREIGN KEY (idPersona) REFERENCES persona(idPersona) ON DELETE CASCADE
+);

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ExamenesService, Examen } from '../core/servicios/examenes.service';
+import { PersonasService, Persona } from '../core/servicios/personas.service';
 
 @Component({
   selector: 'app-examenes',
@@ -17,11 +18,23 @@ export class ExamenesPage {
   empty = false;
   selectedFile: File | null = null;
   idPersona = 1; // Simulación, luego usar auth
+  personas: Persona[] = [];
 
-  constructor(private examenesService: ExamenesService) {}
+  constructor(private examenesService: ExamenesService, private personasService: PersonasService) {}
 
   ngOnInit() {
-    this.cargarExamenes();
+    this.personasService.listar().subscribe({
+      next: (data) => {
+        this.personas = data;
+        if (this.personas.length > 0) {
+          this.idPersona = this.personas[0].idPersona;
+        }
+        this.cargarExamenes();
+      },
+      error: () => {
+        this.error = 'Error al cargar personas';
+      }
+    });
   }
 
   cargarExamenes() {

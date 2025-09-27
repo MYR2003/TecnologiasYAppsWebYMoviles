@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
 const AWS = require('aws-sdk');
+const { Pool } = require('pg');
 const app = express();
 const port = 3000;
 
@@ -11,8 +12,14 @@ app.use(express.json());
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-let examenes = [];
-let idExamen = 1;
+// Configura tu conexión PostgreSQL aquí
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'biblioteca',
+  password: '1234',
+  port: 5432,
+});
 
 AWS.config.update({ region: 'us-east-1' });
 const rekognition = new AWS.Rekognition();
@@ -56,9 +63,10 @@ app.post('/api/examenes/subir', upload.single('file'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No se subió archivo' });
   let datosExtraidos = '';
   let imagen = '';
+  let archivo = req.file.originalname;
+
   if (req.file.mimetype === 'application/pdf') {
     datosExtraidos = await textractOCR(req.file.buffer);
-    // No se genera miniatura para PDF
     imagen = '';
   } else if (req.file.mimetype === 'image/jpeg' || req.file.mimetype === 'image/png') {
     datosExtraidos = await rekognitionOCR(req.file.buffer);
@@ -66,21 +74,39 @@ app.post('/api/examenes/subir', upload.single('file'), async (req, res) => {
   } else {
     return res.status(400).json({ error: 'Tipo de archivo no soportado' });
   }
-  const examen = {
-    idExamen: idExamen++,
-    idPersona: Number(idPersona),
-    fecha: new Date().toISOString().slice(0, 10),
-    imagen,
-    datosExtraidos
-  };
-  examenes.unshift(examen);
-  res.json(examen);
+
+  try {
+    const result = await pool.query(
+      'INSERT INTO examen (idPersona, fecha, archivo, datosExtraidos) VALUES ($1, $2, $3, $4) RETURNING idExamen',
+      [Number(idPersona), new Date().toISOString().slice(0, 10), archivo, datosExtraidos]
+    );
+    const idExamen = result.rows[0].idexamen;
+    const examen = {
+      idExamen,
+      idPersona: Number(idPersona),
+      fecha: new Date().toISOString().slice(0, 10),
+      imagen,
+      datosExtraidos,
+      archivo
+    };
+    res.json(examen);
+  } catch (err) {
+    console.error('Error al insertar en la base de datos:', err);
+    res.status(500).json({ error: 'Error al guardar en la base de datos' });
+  }
 });
 
-// Listar exámenes por persona
-app.get('/api/examenes', (req, res) => {
-  const idPersona = Number(req.query.idPersona);
-  res.json(examenes.filter(e => e.idPersona === idPersona));
+// Endpoint para obtener todos los exámenes desde la base de datos
+app.get('/api/examenes', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM examen');
+    // Si quieres incluir la imagen, deberás almacenarla en la BD o en un storage externo
+    // Aquí solo se devuelven los datos almacenados en la tabla examen
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error al consultar exámenes:', err);
+    res.status(500).json({ error: 'Error al consultar exámenes en la base de datos' });
+  }
 });
 
 // Obtener examen por id
