@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ExamenesService, Examen } from '../core/servicios/examenes.service';
 import { PersonasService, Persona } from '../core/servicios/personas.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-examenes',
   standalone: true,
-  imports: [CommonModule, IonicModule],
+  imports: [CommonModule, IonicModule, FormsModule],
   templateUrl: './examenes.page.html',
   styleUrls: ['./examenes.page.scss']
 })
