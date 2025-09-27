@@ -32,8 +32,10 @@ export class ExamenesPage {
     this.personasService.listar().subscribe({
       next: (data) => {
         this.personas = data;
+        console.log('Personas cargadas:', this.personas);
         if (this.personas.length > 0) {
           this.idPersona = this.personas[0].idPersona;
+          console.log('idPersona inicial:', this.idPersona);
         }
         this.cargarExamenes();
       },
