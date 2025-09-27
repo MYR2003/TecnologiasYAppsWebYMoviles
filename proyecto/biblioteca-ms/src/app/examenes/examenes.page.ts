@@ -18,7 +18,7 @@ export class ExamenesPage {
   error = '';
   empty = false;
   selectedFile: File | null = null;
-  idPersona = 1; // Simulación, luego usar auth
+  idpersona = 1; // Simulación, luego usar auth
   personas: Persona[] = [];
 
   constructor(private examenesService: ExamenesService, private personasService: PersonasService) {}
@@ -34,8 +34,8 @@ export class ExamenesPage {
         this.personas = data;
         console.log('Personas cargadas:', this.personas);
         if (this.personas.length > 0) {
-          this.idPersona = this.personas[0].idPersona;
-          console.log('idPersona inicial:', this.idPersona);
+    this.idpersona = this.personas[0].idpersona;
+    console.log('idPersona inicial:', this.idpersona);
         }
         this.cargarExamenes();
       },
@@ -48,7 +48,7 @@ export class ExamenesPage {
   cargarExamenes() {
     this.loading = true;
     this.error = '';
-    this.examenesService.getExamenesPorPersona(this.idPersona).subscribe({
+  this.examenesService.getExamenesPorPersona(this.idpersona).subscribe({
       next: (data) => {
         this.examenes = data;
         this.empty = data.length === 0;
@@ -62,17 +62,17 @@ export class ExamenesPage {
   }
 
   onFileChange(event: any) {
-    const file = event.target.files[0];
-    this.selectedFile = file;
+  const file = event.target.files[0];
+  this.selectedFile = file;
   }
 
   subirImagen() {
   if (!this.selectedFile) return;
-  this.idPersona = Number(this.idPersona);
-  console.log('idPersona al subir:', this.idPersona);
+  this.idpersona = Number(this.idpersona);
+  console.log('idPersona al subir:', this.idpersona);
   this.loading = true;
   this.error = '';
-  this.examenesService.subirImagen(this.selectedFile, this.idPersona).subscribe({
+  this.examenesService.subirImagen(this.selectedFile, this.idpersona).subscribe({
       next: (examen) => {
         this.examenes.unshift(examen);
         this.selectedFile = null;
@@ -90,7 +90,7 @@ export class ExamenesPage {
     this.error = '';
     this.examenesService.eliminarExamen(idExamen).subscribe({
       next: () => {
-        this.examenes = this.examenes.filter(e => e.idExamen !== idExamen);
+      this.examenes = this.examenes.filter(e => e.idExamen !== idExamen);
         this.empty = this.examenes.length === 0;
         this.loading = false;
       },
