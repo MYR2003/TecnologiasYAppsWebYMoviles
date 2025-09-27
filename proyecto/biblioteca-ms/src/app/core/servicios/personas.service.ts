@@ -20,7 +20,7 @@ export interface Persona {
 @Injectable({ providedIn: 'root' })
 export class PersonasService {
   private http = inject(HttpClient);
-  private base = environment.servicios.personas; // http://localhost:3001
+  private base = environment.servicios.personas; // http://52.87.237.243:3001
 
   listar(): Observable<Persona[]> {
     return this.http.get<Persona[]>(`${this.base}/personas`);
