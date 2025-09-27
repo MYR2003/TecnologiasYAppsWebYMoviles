@@ -60,10 +60,11 @@ export class ExamenesPage {
   }
 
   subirImagen() {
-    if (!this.selectedFile) return;
-    this.loading = true;
-    this.error = '';
-    this.examenesService.subirImagen(this.selectedFile, this.idPersona).subscribe({
+  if (!this.selectedFile) return;
+  console.log('idPersona al subir:', this.idPersona);
+  this.loading = true;
+  this.error = '';
+  this.examenesService.subirImagen(this.selectedFile, this.idPersona).subscribe({
       next: (examen) => {
         this.examenes.unshift(examen);
         this.selectedFile = null;
