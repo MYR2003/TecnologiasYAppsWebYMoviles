@@ -12,8 +12,8 @@ export interface Examen {
 
 @Injectable({ providedIn: 'root' })
 export class ExamenesService {
-  // Cambiar a backend local
-  private apiUrl = 'http://localhost:3000/api/examenes';
+  // Cambiar a backend en EC2
+  private apiUrl = 'http://52.87.237.243:3000/api/examenes';
 
   constructor(private http: HttpClient) {}
 
