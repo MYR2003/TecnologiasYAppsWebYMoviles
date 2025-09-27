@@ -24,6 +24,9 @@ app.get('/personas', async (req, res) => {
     res.json(result.rows);
   } catch (err) {
     console.error('Error al consultar personas:', err);
+    if (err && err.stack) {
+      console.error('Stack trace:', err.stack);
+    }
     res.status(500).json({ error: 'Error al consultar personas en la base de datos' });
   }
 });
