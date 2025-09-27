@@ -61,6 +61,7 @@ export class ExamenesPage {
 
   subirImagen() {
   if (!this.selectedFile) return;
+  this.idPersona = Number(this.idPersona);
   console.log('idPersona al subir:', this.idPersona);
   this.loading = true;
   this.error = '';
