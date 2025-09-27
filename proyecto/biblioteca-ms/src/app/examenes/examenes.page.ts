@@ -23,6 +23,11 @@ export class ExamenesPage {
 
   constructor(private examenesService: ExamenesService, private personasService: PersonasService) {}
 
+  onPersonaChange(event: any) {
+    this.idPersona = Number(event.detail.value);
+    this.cargarExamenes();
+  }
+
   ngOnInit() {
     this.personasService.listar().subscribe({
       next: (data) => {

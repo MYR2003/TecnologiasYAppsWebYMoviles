@@ -7,7 +7,7 @@
 <ion-content>
   <ion-item>
     <ion-label>Persona:</ion-label>
-    <ion-select [(ngModel)]="idPersona" (ionChange)="cargarExamenes()">
+  <ion-select [(ngModel)]="idPersona" (ionChange)="onPersonaChange($event)">
       <ion-select-option *ngFor="let persona of personas" [value]="persona.idPersona">
         {{ persona.nombre }} {{ persona.apellido }} ({{ persona.rut }})
       </ion-select-option>
