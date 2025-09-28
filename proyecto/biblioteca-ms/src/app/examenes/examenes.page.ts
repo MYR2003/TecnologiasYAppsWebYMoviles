@@ -89,9 +89,10 @@ export class ExamenesPage {
   }
 
   eliminarExamen(idExamen: number) {
-    this.loading = true;
-    this.error = '';
-    this.examenesService.eliminarExamen(idExamen).subscribe({
+  console.log('Intentando eliminar examen con id:', idExamen);
+  this.loading = true;
+  this.error = '';
+  this.examenesService.eliminarExamen(idExamen).subscribe({
       next: () => {
       this.examenes = this.examenes.filter(e => e.idExamen !== idExamen);
         this.empty = this.examenes.length === 0;
