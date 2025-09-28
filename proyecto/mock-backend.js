@@ -134,10 +134,19 @@ app.get('/api/examenes/:id', (req, res) => {
   res.json(examen);
 });
 
-// Eliminar examen
-app.delete('/api/examenes/:id', (req, res) => {
-  examenes = examenes.filter(e => e.idExamen !== Number(req.params.id));
-  res.status(204).send();
+// Eliminar examen de la base de datos
+app.delete('/api/examenes/:id', async (req, res) => {
+  const idExamen = Number(req.params.id);
+  try {
+    await pool.query('DELETE FROM examen WHERE idExamen = $1', [idExamen]);
+    res.status(204).send();
+  } catch (err) {
+    console.error('Error al eliminar examen:', err);
+    if (err && err.stack) {
+      console.error('Stack trace:', err.stack);
+    }
+    res.status(500).json({ error: 'Error al eliminar examen en la base de datos' });
+  }
 });
 
 app.listen(port, () => {
