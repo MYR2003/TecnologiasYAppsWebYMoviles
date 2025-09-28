@@ -128,11 +128,6 @@ app.get('/api/examenes', async (req, res) => {
 });
 
 // Obtener examen por id
-app.get('/api/examenes/:id', (req, res) => {
-  const examen = examenes.find(e => e.idExamen === Number(req.params.id));
-  if (!examen) return res.status(404).json({ error: 'No encontrado' });
-  res.json(examen);
-});
 
 // Eliminar examen de la base de datos
 app.delete('/api/examenes/:id', async (req, res) => {
