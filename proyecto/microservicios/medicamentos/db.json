@@ -1,9 +1,0 @@
-{
-  "medicamentos": [
-    {
-      "idMedicamento": 1,
-      "medicamento": "Paracetamol",
-      "presentacion": "Tableta"
-    }
-  ]
-}

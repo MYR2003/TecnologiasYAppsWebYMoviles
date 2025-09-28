@@ -18,7 +18,7 @@ export class Tab3Page {
   consultas: Consulta[] = [];
   consultaEdit: Consulta | null = null;
 
-  ngOnInit() {
+  async ngOnInit() {
     this.svc.listar().subscribe(ls => this.consultas = ls);
   }
 
