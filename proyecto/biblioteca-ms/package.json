@@ -27,7 +27,7 @@
     "@capacitor/keyboard": "7.0.3",
     "@capacitor/status-bar": "7.0.3",
     "@ionic/angular": "^8.0.0",
-    "@types/pg": "^8.15.5",
+    "aws-sdk": "^2.1692.0",
     "ionicons": "^7.0.0",
     "pg": "^8.16.3",
     "rxjs": "~7.8.0",
