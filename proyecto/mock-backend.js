@@ -84,16 +84,16 @@ app.post('/api/examenes/subir', upload.single('file'), async (req, res) => {
       'INSERT INTO examen (idPersona, fecha, archivo, datosExtraidos) VALUES ($1, $2, $3, $4) RETURNING idExamen',
       [idPersonaNum, new Date().toISOString().slice(0, 10), archivo, datosExtraidos]
     );
-    const idExamen = result.rows[0].idexamen;
-    const examen = {
-      idExamen,
-      idPersona: idPersonaNum,
-      fecha: new Date().toISOString().slice(0, 10),
-      imagen,
-      datosExtraidos,
-      archivo
-    };
-    res.json(examen);
+      const idExamen = result.rows[0].idexamen;
+      const examen = {
+        idExamen: idExamen,
+        idPersona: idPersonaNum,
+        fecha: new Date().toISOString().slice(0, 10),
+        imagen,
+        datosExtraidos,
+        archivo
+      };
+      res.json(examen);
   } catch (err) {
     console.error('Error al insertar en la base de datos:', err);
     if (err && err.stack) {
@@ -109,7 +109,15 @@ app.get('/api/examenes', async (req, res) => {
     const result = await pool.query('SELECT * FROM examen');
     // Si quieres incluir la imagen, deberás almacenarla en la BD o en un storage externo
     // Aquí solo se devuelven los datos almacenados en la tabla examen
-    res.json(result.rows);
+      // Mapear a camelCase para el frontend
+      const examenes = result.rows.map(e => ({
+        idExamen: e.idexamen,
+        idPersona: e.idpersona,
+        fecha: e.fecha,
+        archivo: e.archivo,
+        datosExtraidos: e.datosextraidos
+      }));
+      res.json(examenes);
   } catch (err) {
     console.error('Error al consultar exámenes:', err);
     if (err && err.stack) {
