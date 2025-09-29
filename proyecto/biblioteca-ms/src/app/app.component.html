@@ -40,5 +40,17 @@
       </ion-toolbar>
     </ion-header>
     <ion-router-outlet></ion-router-outlet>
+    <ion-footer>
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="examenes" routerLink="/">
+          <ion-icon name="document"></ion-icon>
+          <ion-label>Exámenes</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="registrar-persona" routerLink="/registrar-persona">
+          <ion-icon name="person-add"></ion-icon>
+          <ion-label>Registrar Persona</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-footer>
   </div>
 </ion-app>
