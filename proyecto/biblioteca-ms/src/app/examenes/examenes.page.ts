@@ -27,6 +27,7 @@ export class ExamenesPage {
 
 
   ngOnInit() {
+    this.selectedFile = null;
     this.cargarExamenes();
   }
 
