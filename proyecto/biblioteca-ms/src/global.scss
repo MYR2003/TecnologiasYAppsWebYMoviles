@@ -10,6 +10,7 @@ ion-content .scroll-content {
 	background: var(--ion-background-color) !important;
 }
 
+
 body:not(.dark),
 ion-app:not(.dark),
 ion-content:not(.dark),
@@ -17,6 +18,15 @@ ion-content:not(.dark)::part(scroll),
 ion-content:not(.dark) .inner-scroll,
 ion-content:not(.dark) .scroll-content {
 	background: #f8fafc !important;
+}
+
+body.dark,
+ion-app.dark,
+ion-content.dark,
+ion-content.dark::part(scroll),
+ion-content.dark .inner-scroll,
+ion-content.dark .scroll-content {
+	background: #18181b !important;
 }
 
 
