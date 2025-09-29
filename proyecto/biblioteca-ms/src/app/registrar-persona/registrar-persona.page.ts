@@ -1,6 +1,3 @@
-  salir() {
-    this.router.navigate(['/']);
-  }
 import { Component } from '@angular/core';
 import { PersonasService } from '../core/servicios/personas.service';
 import { Router } from '@angular/router';
@@ -28,6 +25,10 @@ export class RegistrarPersonaPage {
   success = false;
 
   constructor(private personasService: PersonasService, private router: Router) {}
+
+  salir() {
+    this.router.navigate(['/']);
+  }
 
   ngOnInit() {
     // Recibe datos extraídos desde navigation state
