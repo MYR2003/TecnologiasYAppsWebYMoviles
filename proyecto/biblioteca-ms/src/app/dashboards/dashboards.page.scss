@@ -1,31 +1,29 @@
 
-// Modo claro: tarjetas blancas, texto oscuro, bordes y sombra
-:root &,
-body:not(.dark) & {
-  ion-card {
-    background: #fff !important;
-    color: #222 !important;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 2px 12px 0 rgba(37,99,235,0.06), 0 1.5px 4px 0 rgba(0,0,0,0.04);
-  }
-  ion-card-header, ion-card-content {
-    background: transparent;
-    color: #222 !important;
-  }
+
+/* Modo claro: tarjetas blancas, texto oscuro, bordes y sombra */
+body:not(.dark) ion-card {
+  background: #fff !important;
+  color: #222 !important;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 12px 0 rgba(37,99,235,0.06), 0 1.5px 4px 0 rgba(0,0,0,0.04);
+}
+body:not(.dark) ion-card-header,
+body:not(.dark) ion-card-content {
+  background: transparent;
+  color: #222 !important;
 }
 
-// Modo oscuro: tarjetas gris oscuro, texto claro
-body.dark & {
-  ion-card {
-    background: #23272f !important;
-    color: #f1f5f9 !important;
-    border: 1px solid #333642;
-    box-shadow: 0 2px 12px 0 rgba(37,99,235,0.04), 0 1.5px 4px 0 rgba(0,0,0,0.08);
-  }
-  ion-card-header, ion-card-content {
-    background: transparent;
-    color: #f1f5f9 !important;
-  }
+/* Modo oscuro: tarjetas gris oscuro, texto claro */
+body.dark ion-card {
+  background: #23272f !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #333642;
+  box-shadow: 0 2px 12px 0 rgba(37,99,235,0.04), 0 1.5px 4px 0 rgba(0,0,0,0.08);
+}
+body.dark ion-card-header,
+body.dark ion-card-content {
+  background: transparent;
+  color: #f1f5f9 !important;
 }
 
 ion-card {
