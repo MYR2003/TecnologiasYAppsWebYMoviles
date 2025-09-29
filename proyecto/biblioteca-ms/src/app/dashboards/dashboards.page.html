@@ -8,21 +8,23 @@
 </ion-header>
 
 <ion-content class="dashboards-page">
-  <ion-card>
-    <ion-card-header>
+
+  <ion-card class="dashboards-card">
+    <ion-card-header class="dashboards-card-header">
       <ion-card-title>Métricas históricas</ion-card-title>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content class="dashboards-card-content">
       <div><b>Total exámenes:</b> {{ totalExamenes }}</div>
       <div><b>Total personas:</b> {{ totalPersonas }}</div>
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
-    <ion-card-header>
+
+  <ion-card class="dashboards-card">
+    <ion-card-header class="dashboards-card-header">
       <ion-card-title>Exámenes por día (semana)</ion-card-title>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content class="dashboards-card-content">
       <div class="bar-chart">
         <div *ngFor="let val of exPorDia; let i = index" class="bar-group">
           <div class="bar" [ngStyle]="{height: (val*15) + 'px'}"></div>
