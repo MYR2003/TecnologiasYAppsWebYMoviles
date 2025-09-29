@@ -1,3 +1,10 @@
+ion-text[color="danger"],
+ion-text[color="primary"],
+ion-text[color="secondary"],
+ion-text,
+.no-examenes-text {
+	color: var(--ion-text-color) !important;
+}
 ion-list, .card, .tarjeta, .ion-card {
 	background: var(--ion-card-background) !important;
 }
