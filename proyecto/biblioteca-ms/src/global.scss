@@ -1,6 +1,13 @@
+
 body, ion-app, ion-content {
 	background: var(--ion-background-color) !important;
 	color: var(--ion-text-color) !important;
+}
+
+ion-content::part(scroll),
+ion-content .inner-scroll,
+ion-content .scroll-content {
+	background: var(--ion-background-color) !important;
 }
 
 
