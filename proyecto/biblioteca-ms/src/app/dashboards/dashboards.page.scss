@@ -15,6 +15,7 @@
   margin-bottom: 2px;
 }
 .metrica-valor {
+  height: 100%; /* allow percent-height children to compute */
   font-size: 2.2rem;
   font-weight: bold;
   display: flex;
@@ -22,6 +23,8 @@
   gap: 8px;
 }
 .tendencia {
+  height: 100%;
+  justify-content: flex-end; /* push bar and value to bottom */
   font-size: 1.1rem;
   font-weight: 500;
   display: flex;
@@ -72,11 +75,14 @@
   user-select: none;
 }
 .bar {
-  background: #2563eb;
+  background: #2563eb !important;
   width: 24px;
   border-radius: 6px 6px 0 0;
   transition: height 0.3s;
   cursor: pointer;
+  min-height: 8px; /* ensure small bars are visible */
+  align-self: flex-end; /* stick to bottom */
+  box-shadow: 0 1px 0 rgba(0,0,0,0.08) inset;
 }
 .bar-label {
   font-size: 12px;
