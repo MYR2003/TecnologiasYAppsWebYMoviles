@@ -22,7 +22,12 @@
             <span class="tendencia" [ngClass]="{'up': tendenciaExamenes > 0, 'down': tendenciaExamenes < 0}">
               <ion-icon *ngIf="tendenciaExamenes > 0" name="arrow-up-outline"></ion-icon>
               <ion-icon *ngIf="tendenciaExamenes < 0" name="arrow-down-outline"></ion-icon>
-              <span *ngIf="tendenciaExamenes !== 0">{{ tendenciaExamenes > 0 ? '+' : '' }}{{ tendenciaExamenes }}%</span>
+              <span *ngIf="tendenciaExamenes !== 0">
+                <span [style.color]="tendenciaExamenes > 0 ? '#22c55e' : '#ef4444'">
+                  {{ tendenciaExamenes > 0 ? '+' : '' }}{{ tendenciaExamenes }}%
+                </span>
+                <span class="tendencia-text"> respecto a la semana anterior</span>
+              </span>
             </span>
           </div>
           <div class="sparkline-container">
@@ -42,7 +47,12 @@
             <span class="tendencia" [ngClass]="{'up': tendenciaPersonas > 0, 'down': tendenciaPersonas < 0}">
               <ion-icon *ngIf="tendenciaPersonas > 0" name="arrow-up-outline"></ion-icon>
               <ion-icon *ngIf="tendenciaPersonas < 0" name="arrow-down-outline"></ion-icon>
-              <span *ngIf="tendenciaPersonas !== 0">{{ tendenciaPersonas > 0 ? '+' : '' }}{{ tendenciaPersonas }}%</span>
+              <span *ngIf="tendenciaPersonas !== 0">
+                <span [style.color]="tendenciaPersonas > 0 ? '#22c55e' : '#ef4444'">
+                  {{ tendenciaPersonas > 0 ? '+' : '' }}{{ tendenciaPersonas }}%
+                </span>
+                <span class="tendencia-text"> respecto a la semana anterior</span>
+              </span>
             </span>
           </div>
           <div class="sparkline-placeholder"> <!-- Aquí iría el sparkline --> </div>
