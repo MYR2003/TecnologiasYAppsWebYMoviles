@@ -1,6 +1,5 @@
 
 
-
 /* Modo claro: tarjetas blancas, texto oscuro, bordes y sombra */
 body:not(.dark) .dashboards-page ion-card,
 body:not(.dark) ion-card.dashboards-card {
@@ -28,7 +27,8 @@ body.dark ion-card-content {
   color: #f1f5f9 !important;
 }
 
-ion-card {
+
+.dashboards-page ion-card {
   margin-bottom: 32px;
   border-radius: var(--ion-border-radius, 16px);
 }
