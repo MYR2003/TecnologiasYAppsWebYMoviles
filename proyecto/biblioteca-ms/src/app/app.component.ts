@@ -1,42 +1,26 @@
 
-
 import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet, IonHeader, IonToolbar, IonTitle, IonButtons, IonIcon, IonMenu, IonMenuButton, IonContent, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
-import { isPlatform } from '@ionic/angular';
+import { IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonToggle } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [
-    IonApp,
-    IonRouterOutlet,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonButtons,
-    IonIcon,
-    IonMenu,
-    IonMenuButton,
-    IonContent,
-    IonList,
-    IonItem,
-    IonLabel
-  ],
+  imports: [IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonToggle],
 })
 export class AppComponent {
-  isDarkMode = false;
+  isDark = false;
 
   constructor() {
     // Detectar modo inicial
-    this.isDarkMode = document.body.classList.contains('dark');
+    this.isDark = document.body.classList.contains('dark');
   }
 
-  toggleDarkMode() {
-    this.isDarkMode = !this.isDarkMode;
-    document.body.classList.toggle('dark', this.isDarkMode);
-  }
-
-  abrirAyuda() {
-    alert('Aquí irá la ayuda del sistema. Puedes personalizar este mensaje o mostrar un modal más avanzado.');
+  toggleDarkMode(ev: any) {
+    this.isDark = ev.detail.checked;
+    if (this.isDark) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
   }
 }
