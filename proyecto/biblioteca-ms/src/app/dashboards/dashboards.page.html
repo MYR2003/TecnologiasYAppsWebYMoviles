@@ -14,20 +14,53 @@
       <ion-card-title>Métricas históricas</ion-card-title>
     </ion-card-header>
     <ion-card-content class="dashboards-card-content">
-      <div><b>Total exámenes:</b> {{ totalExamenes }}</div>
-      <div><b>Total personas:</b> {{ totalPersonas }}</div>
+      <div class="metricas-flex">
+        <div class="metrica-box">
+          <div class="metrica-label">Total exámenes</div>
+          <div class="metrica-valor">
+            {{ totalExamenes }}
+            <span class="tendencia" [ngClass]="{'up': tendenciaExamenes > 0, 'down': tendenciaExamenes < 0}">
+              <ion-icon *ngIf="tendenciaExamenes > 0" name="arrow-up-outline"></ion-icon>
+              <ion-icon *ngIf="tendenciaExamenes < 0" name="arrow-down-outline"></ion-icon>
+              <span *ngIf="tendenciaExamenes !== 0">{{ tendenciaExamenes > 0 ? '+' : '' }}{{ tendenciaExamenes }}%</span>
+            </span>
+          </div>
+          <div class="sparkline-placeholder"> <!-- Aquí iría el sparkline --> </div>
+        </div>
+        <div class="metrica-box">
+          <div class="metrica-label">Total personas</div>
+          <div class="metrica-valor">
+            {{ totalPersonas }}
+            <span class="tendencia" [ngClass]="{'up': tendenciaPersonas > 0, 'down': tendenciaPersonas < 0}">
+              <ion-icon *ngIf="tendenciaPersonas > 0" name="arrow-up-outline"></ion-icon>
+              <ion-icon *ngIf="tendenciaPersonas < 0" name="arrow-down-outline"></ion-icon>
+              <span *ngIf="tendenciaPersonas !== 0">{{ tendenciaPersonas > 0 ? '+' : '' }}{{ tendenciaPersonas }}%</span>
+            </span>
+          </div>
+          <div class="sparkline-placeholder"> <!-- Aquí iría el sparkline --> </div>
+        </div>
+      </div>
     </ion-card-content>
   </ion-card>
 
 
   <ion-card class="dashboards-card">
     <ion-card-header class="dashboards-card-header">
-      <ion-card-title>Exámenes por día (semana)</ion-card-title>
+      <ion-card-title>Exámenes por día
+        <ion-select interface="popover" [(ngModel)]="periodo" class="periodo-select">
+          <ion-select-option value="semana">Semana</ion-select-option>
+          <ion-select-option value="mes">Mes</ion-select-option>
+          <ion-select-option value="anio">Año</ion-select-option>
+        </ion-select>
+      </ion-card-title>
     </ion-card-header>
     <ion-card-content class="dashboards-card-content">
       <div class="bar-chart">
         <div *ngFor="let val of exPorDia; let i = index" class="bar-group">
-          <div class="bar" [ngStyle]="{height: (val*15) + 'px'}"></div>
+          <div class="bar-tooltip">
+            <div class="bar-valor">{{ val }}</div>
+            <div class="bar" [ngStyle]="{height: (val*15) + 'px'}" [attr.title]="labels[i] + ': ' + val"></div>
+          </div>
           <span class="bar-label">{{ labels[i] }}</span>
         </div>
       </div>
