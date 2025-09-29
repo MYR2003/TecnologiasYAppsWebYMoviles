@@ -16,7 +16,7 @@
 
   <ion-spinner *ngIf="loading"></ion-spinner>
   <ion-text color="danger" *ngIf="error">{{ error }}</ion-text>
-  <ion-text class="no-examenes-text" *ngIf="empty && !loading && !selectedFile">No hay exámenes cargados.</ion-text>
+  <ion-text class="no-examenes-text" *ngIf="examenes.length === 0 && !loading && !selectedFile">No hay exámenes cargados.</ion-text>
 
   <ion-list *ngIf="examenes.length > 0">
     <ion-item *ngFor="let examen of examenes">
