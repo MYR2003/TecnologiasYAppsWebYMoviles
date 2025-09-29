@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -21,7 +22,7 @@ export class DashboardsPage {
 
   exPorDiaSemana = [5, 7, 3, 6, 5];
   exPorDiaMes = [2, 4, 3, 5, 6, 7, 8, 5, 4, 3, 2, 1, 0, 2, 3, 4, 5, 6, 7, 8, 5, 4, 3, 2, 1, 0, 2, 3, 4, 5];
-  exPorDiaAnio = [20, 30, 25, 40, 35, 50, 45, 60, 55, 70, 65, 80];
+  exPorDiaAnio = [20, 35, 18, 40, 22, 55, 30, 60, 28, 45, 33, 50];
   labelsSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie'];
   labelsMes = Array.from({length: 30}, (_, i) => (i+1).toString());
   labelsAnio = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
