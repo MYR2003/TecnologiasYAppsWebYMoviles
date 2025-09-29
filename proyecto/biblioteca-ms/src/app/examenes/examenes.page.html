@@ -5,10 +5,9 @@
 </ion-header>
 
 <ion-content>
-  <!-- Selector de personas eliminado -->
   <ion-item>
-    <label for="fileInput">Selecciona imagen (.JPG) o PDF:</label>
-    <input id="fileInput" type="file" accept="image/jpeg,application/pdf" (change)="onFileChange($event)" title="Selecciona imagen JPG o PDF" />
+    <label for="fileInput">Selecciona imagen o PDF:</label>
+    <input id="fileInput" type="file" accept="image/jpeg,application/pdf" (change)="onFileChange($event)" title="Selecciona imagen o PDF" />
     <ion-button (click)="subirImagen()" [disabled]="!selectedFile || loading">Subir archivo</ion-button>
   </ion-item>
 

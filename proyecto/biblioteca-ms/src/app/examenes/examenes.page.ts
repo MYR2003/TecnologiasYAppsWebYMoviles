@@ -19,33 +19,14 @@ export class ExamenesPage {
   empty = false;
   selectedFile: File | null = null;
     idPersona = 1; // Simulación, luego usar auth
-  personas: Persona[] = [];
+  // personas: Persona[] = [];
 
-  constructor(private examenesService: ExamenesService, private personasService: PersonasService) {}
+  constructor(private examenesService: ExamenesService) {}
 
-  onPersonaChange(event: any) {
-    this.idPersona = Number(event.detail.value);
-    this.cargarExamenes();
-  }
+
 
   ngOnInit() {
-    this.personasService.listar().subscribe({
-      next: (data) => {
-        this.personas = data;
-        console.log('Personas cargadas:', this.personas);
-        if (this.personas.length > 0) {
-          console.log('Primer persona:', this.personas[0]);
-        }
-        if (this.personas.length > 0) {
-            this.idPersona = this.personas[0].idPersona;
-  console.log('idPersona inicial:', this.idPersona);
-        }
-        this.cargarExamenes();
-      },
-      error: () => {
-        this.error = 'Error al cargar personas';
-      }
-    });
+    this.cargarExamenes();
   }
 
   cargarExamenes() {
