@@ -1,3 +1,20 @@
+ion-list, .card, .tarjeta, .ion-card {
+	background: var(--ion-card-background) !important;
+}
+
+body:not(.dark) ion-list,
+body:not(.dark) .card,
+body:not(.dark) .tarjeta,
+body:not(.dark) .ion-card {
+	background: #f8fafc !important;
+}
+
+body.dark ion-list,
+body.dark .card,
+body.dark .tarjeta,
+body.dark .ion-card {
+	background: #23272f !important;
+}
 
 body, ion-app, ion-content {
 	background: var(--ion-background-color) !important;
