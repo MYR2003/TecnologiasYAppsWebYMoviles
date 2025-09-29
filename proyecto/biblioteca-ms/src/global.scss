@@ -94,13 +94,9 @@ ion-title {
 
 ion-toolbar {
 	border-radius: 0 0 16px 16px;
-	background: #fff;
+	background: var(--ion-card-background) !important;
 	color: var(--ion-text-color);
-}
-@media (prefers-color-scheme: dark) {
-	ion-toolbar {
-		background: #23272f;
-	}
+	transition: background 0.2s;
 }
 /*
  * App Global CSS
