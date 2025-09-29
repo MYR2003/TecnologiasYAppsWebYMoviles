@@ -28,16 +28,15 @@
 	--ion-border-radius: 16px;
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--ion-background-color: #18181b;
-		--ion-background-color-rgb: 24,24,27;
-		--ion-text-color: #f1f5f9;
-		--ion-text-color-rgb: 241,245,249;
-		--ion-color-secondary: #23272f;
-		--ion-color-secondary-contrast: #f1f5f9;
-		--ion-border-radius: 16px;
-	}
+
+body.dark, .dark {
+	--ion-background-color: #18181b;
+	--ion-background-color-rgb: 24,24,27;
+	--ion-text-color: #f1f5f9;
+	--ion-text-color-rgb: 241,245,249;
+	--ion-color-secondary: #23272f;
+	--ion-color-secondary-contrast: #f1f5f9;
+	--ion-border-radius: 16px;
 }
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
