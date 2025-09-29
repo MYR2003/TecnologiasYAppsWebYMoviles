@@ -10,4 +10,8 @@ export const routes: Routes = [
     path: 'registrar-persona',
     loadChildren: () => import('./registrar-persona/registrar-persona.routes').then(m => m.routes),
   },
+  {
+    path: 'dashboards',
+    loadChildren: () => import('./dashboards/dashboards.routes').then(m => m.routes),
+  },
 ];

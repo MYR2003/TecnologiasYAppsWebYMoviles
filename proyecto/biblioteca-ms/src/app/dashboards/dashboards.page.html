@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Dashboards</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Métricas históricas</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div><b>Total exámenes:</b> {{ totalExamenes }}</div>
+      <div><b>Total personas:</b> {{ totalPersonas }}</div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Exámenes por día (semana)</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="bar-chart">
+        <div *ngFor="let val of exPorDia; let i = index" class="bar-group">
+          <div class="bar" [ngStyle]="{height: (val*15) + 'px'}"></div>
+          <span class="bar-label">{{ labels[i] }}</span>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
