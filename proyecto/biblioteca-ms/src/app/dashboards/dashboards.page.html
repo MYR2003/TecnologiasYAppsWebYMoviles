@@ -19,10 +19,10 @@
           <div class="metrica-label">Total exámenes</div>
           <div class="metrica-valor">
             {{ totalExamenes }}
-            <span class="tendencia" [ngClass]="{'up': tendenciaExamenes > 0, 'down': tendenciaExamenes < 0, 'tendencia-green': tendenciaExamenes > 0, 'tendencia-red': tendenciaExamenes < 0}">
+            <span class="tendencia" [ngClass]="{'up': tendenciaExamenes > 0, 'down': tendenciaExamenes < 0}">
               <ion-icon *ngIf="tendenciaExamenes > 0" name="arrow-up-outline"></ion-icon>
               <ion-icon *ngIf="tendenciaExamenes < 0" name="arrow-down-outline"></ion-icon>
-              <span *ngIf="tendenciaExamenes !== 0">
+              <span *ngIf="tendenciaExamenes !== 0" [ngClass]="tendenciaExamenes > 0 ? 'tendencia-green' : (tendenciaExamenes < 0 ? 'tendencia-red' : '')">
                 {{ tendenciaExamenes > 0 ? '+' : '' }}{{ tendenciaExamenes }}% respecto a la semana anterior
               </span>
             </span>
@@ -41,10 +41,10 @@
           <div class="metrica-label">Total personas</div>
           <div class="metrica-valor">
             {{ totalPersonas }}
-            <span class="tendencia" [ngClass]="{'up': tendenciaPersonas > 0, 'down': tendenciaPersonas < 0, 'tendencia-green': tendenciaPersonas > 0, 'tendencia-red': tendenciaPersonas < 0}">
+            <span class="tendencia" [ngClass]="{'up': tendenciaPersonas > 0, 'down': tendenciaPersonas < 0}">
               <ion-icon *ngIf="tendenciaPersonas > 0" name="arrow-up-outline"></ion-icon>
               <ion-icon *ngIf="tendenciaPersonas < 0" name="arrow-down-outline"></ion-icon>
-              <span *ngIf="tendenciaPersonas !== 0">
+              <span *ngIf="tendenciaPersonas !== 0" [ngClass]="tendenciaPersonas > 0 ? 'tendencia-green' : (tendenciaPersonas < 0 ? 'tendencia-red' : '')">
                 {{ tendenciaPersonas > 0 ? '+' : '' }}{{ tendenciaPersonas }}% respecto a la semana anterior
               </span>
             </span>
