@@ -1,5 +1,3 @@
-
-
 import { Component } from '@angular/core';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -40,4 +38,16 @@ export class DashboardsPage {
     if (this.periodo === 'anio') return this.labelsAnio;
     return [];
   }
+      public getSparklinePoints(data: number[], width: number, height: number): string {
+        if (!data || data.length < 2) return '';
+        const max = Math.max(...data);
+        const min = Math.min(...data);
+        const len = data.length;
+        const step = width / (len - 1);
+        return data.map((v: number, i: number) => {
+          const y = height - ((v - min) / (max - min || 1)) * (height - 4) - 2;
+          const x = i * step;
+          return `${x},${y}`;
+        }).join(' ');
+      }
 }
