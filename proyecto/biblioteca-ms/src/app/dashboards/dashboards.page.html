@@ -8,74 +8,94 @@
 </ion-header>
 
 <ion-content class="dashboards-page">
+  <!-- Estado de carga -->
+  <ion-loading *ngIf="loading" message="Cargando métricas..." [showBackdrop]="true" [duration]="0"></ion-loading>
 
-  <ion-card class="dashboards-card">
-    <ion-card-header class="dashboards-card-header">
-      <ion-card-title>Métricas históricas</ion-card-title>
+  <!-- Estado de error -->
+  <ion-card *ngIf="!loading && error" color="danger">
+    <ion-card-header>
+      <ion-card-title>Error</ion-card-title>
     </ion-card-header>
-    <ion-card-content class="dashboards-card-content">
-      <div class="metricas-flex">
-        <div class="metrica-box">
-          <div class="metrica-label">Total exámenes</div>
-          <div class="metrica-valor">
-            {{ totalExamenes }}
-            <span class="tendencia" [ngClass]="{'up': tendenciaExamenes > 0, 'down': tendenciaExamenes < 0}">
-              <ion-icon *ngIf="tendenciaExamenes > 0" name="arrow-up-outline"></ion-icon>
-              <ion-icon *ngIf="tendenciaExamenes < 0" name="arrow-down-outline"></ion-icon>
-              <span *ngIf="tendenciaExamenes !== 0" [ngClass]="tendenciaExamenes > 0 ? 'tendencia-green' : (tendenciaExamenes < 0 ? 'tendencia-red' : '')">
-                {{ tendenciaExamenes > 0 ? '+' : '' }}{{ tendenciaExamenes }}% respecto a la semana anterior
-              </span>
-            </span>
-          </div>
-          <div class="sparkline-container">
-            <svg *ngIf="exPorDia.length > 1" [attr.width]="120" [attr.height]="24" class="sparkline">
-              <polyline
-                [attr.points]="getSparklinePoints(exPorDia, 120, 24)"
-                fill="none"
-                stroke="#2563eb"
-                stroke-width="2"/>
-            </svg>
-          </div>
-        </div>
-        <div class="metrica-box">
-          <div class="metrica-label">Total personas</div>
-          <div class="metrica-valor">
-            {{ totalPersonas }}
-            <span class="tendencia" [ngClass]="{'up': tendenciaPersonas > 0, 'down': tendenciaPersonas < 0}">
-              <ion-icon *ngIf="tendenciaPersonas > 0" name="arrow-up-outline"></ion-icon>
-              <ion-icon *ngIf="tendenciaPersonas < 0" name="arrow-down-outline"></ion-icon>
-              <span *ngIf="tendenciaPersonas !== 0" [ngClass]="tendenciaPersonas > 0 ? 'tendencia-green' : (tendenciaPersonas < 0 ? 'tendencia-red' : '')">
-                {{ tendenciaPersonas > 0 ? '+' : '' }}{{ tendenciaPersonas }}% respecto a la semana anterior
-              </span>
-            </span>
-          </div>
-          <div class="sparkline-placeholder"> <!-- Aquí iría el sparkline --> </div>
-        </div>
-      </div>
-    </ion-card-content>
+    <ion-card-content>{{ error }}</ion-card-content>
   </ion-card>
 
-
-  <ion-card class="dashboards-card">
-    <ion-card-header class="dashboards-card-header">
-      <ion-card-title>Exámenes {{ periodLabel }}
-        <ion-select interface="popover" [(ngModel)]="periodo" class="periodo-select">
-          <ion-select-option value="semana">Semana</ion-select-option>
-          <ion-select-option value="mes">Mes</ion-select-option>
-          <ion-select-option value="anio">Año</ion-select-option>
-        </ion-select>
-      </ion-card-title>
+  <!-- Estado vacío -->
+  <ion-card *ngIf="!loading && !error && empty" color="warning">
+    <ion-card-header>
+      <ion-card-title>Sin datos</ion-card-title>
     </ion-card-header>
-    <ion-card-content class="dashboards-card-content">
-      <div class="bar-chart">
-        <div *ngFor="let val of exPorDia; let i = index" class="bar-group">
-          <div class="bar-tooltip">
-            <div class="bar-valor">{{ val }}</div>
-            <div class="bar" [ngStyle]="{height: ((val / (maxValue || 1)) * 100) + '%'}" [attr.title]="labels[i] + ': ' + val"></div>
-          </div>
-          <span class="bar-label">{{ labels[i] }}</span>
-        </div>
-      </div>
-    </ion-card-content>
+    <ion-card-content>No hay métricas disponibles.</ion-card-content>
   </ion-card>
+
+  <!-- Estado normal -->
+  <ng-container *ngIf="!loading && !error && !empty">
+    <ion-card class="dashboards-card">
+      <ion-card-header class="dashboards-card-header">
+        <ion-card-title>Métricas históricas</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="dashboards-card-content">
+        <div class="metricas-flex">
+          <div class="metrica-box">
+            <div class="metrica-label">Total exámenes</div>
+            <div class="metrica-valor">
+              {{ totalExamenes }}
+              <span class="tendencia" [ngClass]="{'up': tendenciaExamenes > 0, 'down': tendenciaExamenes < 0}">
+                <ion-icon *ngIf="tendenciaExamenes > 0" name="arrow-up-outline"></ion-icon>
+                <ion-icon *ngIf="tendenciaExamenes < 0" name="arrow-down-outline"></ion-icon>
+                <span *ngIf="tendenciaExamenes !== 0" [ngClass]="tendenciaExamenes > 0 ? 'tendencia-green' : (tendenciaExamenes < 0 ? 'tendencia-red' : '')">
+                  {{ tendenciaExamenes > 0 ? '+' : '' }}{{ tendenciaExamenes }}% respecto a la semana anterior
+                </span>
+              </span>
+            </div>
+            <div class="sparkline-container">
+              <svg *ngIf="exPorDia.length > 1" [attr.width]="120" [attr.height]="24" class="sparkline">
+                <polyline
+                  [attr.points]="getSparklinePoints(exPorDia, 120, 24)"
+                  fill="none"
+                  stroke="#2563eb"
+                  stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+          <div class="metrica-box">
+            <div class="metrica-label">Total personas</div>
+            <div class="metrica-valor">
+              {{ totalPersonas }}
+              <span class="tendencia" [ngClass]="{'up': tendenciaPersonas > 0, 'down': tendenciaPersonas < 0}">
+                <ion-icon *ngIf="tendenciaPersonas > 0" name="arrow-up-outline"></ion-icon>
+                <ion-icon *ngIf="tendenciaPersonas < 0" name="arrow-down-outline"></ion-icon>
+                <span *ngIf="tendenciaPersonas !== 0" [ngClass]="tendenciaPersonas > 0 ? 'tendencia-green' : (tendenciaPersonas < 0 ? 'tendencia-red' : '')">
+                  {{ tendenciaPersonas > 0 ? '+' : '' }}{{ tendenciaPersonas }}% respecto a la semana anterior
+                </span>
+              </span>
+            </div>
+            <div class="sparkline-placeholder"> <!-- Aquí iría el sparkline --> </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="dashboards-card">
+      <ion-card-header class="dashboards-card-header">
+        <ion-card-title>Exámenes {{ periodLabel }}
+          <ion-select interface="popover" [(ngModel)]="periodo" class="periodo-select">
+            <ion-select-option value="semana">Semana</ion-select-option>
+            <ion-select-option value="mes">Mes</ion-select-option>
+            <ion-select-option value="anio">Año</ion-select-option>
+          </ion-select>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="dashboards-card-content">
+        <div class="bar-chart">
+          <div *ngFor="let val of exPorDia; let i = index" class="bar-group">
+            <div class="bar-tooltip">
+              <div class="bar-valor">{{ val }}</div>
+              <div class="bar" [ngStyle]="{height: ((val / (maxValue || 1)) * 100) + '%'}" [attr.title]="labels[i] + ': ' + val"></div>
+            </div>
+            <span class="bar-label">{{ labels[i] }}</span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 </ion-content>
