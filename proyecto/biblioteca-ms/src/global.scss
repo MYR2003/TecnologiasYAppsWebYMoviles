@@ -10,6 +10,15 @@ ion-content .scroll-content {
 	background: var(--ion-background-color) !important;
 }
 
+body:not(.dark),
+ion-app:not(.dark),
+ion-content:not(.dark),
+ion-content:not(.dark)::part(scroll),
+ion-content:not(.dark) .inner-scroll,
+ion-content:not(.dark) .scroll-content {
+	background: #f8fafc !important;
+}
+
 
 ion-card, .card, .tarjeta, .ion-card {
 	background: var(--ion-card-background);
