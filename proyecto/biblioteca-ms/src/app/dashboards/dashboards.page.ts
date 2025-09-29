@@ -38,6 +38,20 @@ export class DashboardsPage {
     if (this.periodo === 'anio') return this.labelsAnio;
     return [];
   }
+
+  // Máximo del conjunto actual para escalar las barras
+  get maxValue(): number {
+    const data = this.exPorDia;
+    if (!data || data.length === 0) return 1;
+    return Math.max(...data);
+  }
+
+  // Etiqueta legible del periodo para el título
+  get periodLabel(): string {
+    if (this.periodo === 'semana') return 'por día (semana)';
+    if (this.periodo === 'mes') return 'por día (mes)';
+    return 'por mes (año)';
+  }
       public getSparklinePoints(data: number[], width: number, height: number): string {
         if (!data || data.length < 2) return '';
         const max = Math.max(...data);

@@ -54,7 +54,7 @@
 
   <ion-card class="dashboards-card">
     <ion-card-header class="dashboards-card-header">
-      <ion-card-title>Exámenes por día
+      <ion-card-title>Exámenes {{ periodLabel }}
         <ion-select interface="popover" [(ngModel)]="periodo" class="periodo-select">
           <ion-select-option value="semana">Semana</ion-select-option>
           <ion-select-option value="mes">Mes</ion-select-option>
@@ -67,7 +67,7 @@
         <div *ngFor="let val of exPorDia; let i = index" class="bar-group">
           <div class="bar-tooltip">
             <div class="bar-valor">{{ val }}</div>
-            <div class="bar" [ngStyle]="{height: (val*15) + 'px'}" [attr.title]="labels[i] + ': ' + val"></div>
+            <div class="bar" [ngStyle]="{height: ((val / (maxValue || 1)) * 100) + '%'}" [attr.title]="labels[i] + ': ' + val"></div>
           </div>
           <span class="bar-label">{{ labels[i] }}</span>
         </div>
