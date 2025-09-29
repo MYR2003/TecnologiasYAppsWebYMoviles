@@ -19,14 +19,11 @@
           <div class="metrica-label">Total exámenes</div>
           <div class="metrica-valor">
             {{ totalExamenes }}
-            <span class="tendencia" [ngClass]="{'up': tendenciaExamenes > 0, 'down': tendenciaExamenes < 0}">
+            <span class="tendencia" [ngClass]="{'up': tendenciaExamenes > 0, 'down': tendenciaExamenes < 0}" [style.color]="tendenciaExamenes > 0 ? '#22c55e' : (tendenciaExamenes < 0 ? '#ef4444' : '')">
               <ion-icon *ngIf="tendenciaExamenes > 0" name="arrow-up-outline"></ion-icon>
               <ion-icon *ngIf="tendenciaExamenes < 0" name="arrow-down-outline"></ion-icon>
               <span *ngIf="tendenciaExamenes !== 0">
-                <span [style.color]="tendenciaExamenes > 0 ? '#22c55e' : '#ef4444'">
-                  {{ tendenciaExamenes > 0 ? '+' : '' }}{{ tendenciaExamenes }}%
-                </span>
-                <span class="tendencia-text"> respecto a la semana anterior</span>
+                {{ tendenciaExamenes > 0 ? '+' : '' }}{{ tendenciaExamenes }}% respecto a la semana anterior
               </span>
             </span>
           </div>
@@ -44,14 +41,11 @@
           <div class="metrica-label">Total personas</div>
           <div class="metrica-valor">
             {{ totalPersonas }}
-            <span class="tendencia" [ngClass]="{'up': tendenciaPersonas > 0, 'down': tendenciaPersonas < 0}">
+            <span class="tendencia" [ngClass]="{'up': tendenciaPersonas > 0, 'down': tendenciaPersonas < 0}" [style.color]="tendenciaPersonas > 0 ? '#22c55e' : (tendenciaPersonas < 0 ? '#ef4444' : '')">
               <ion-icon *ngIf="tendenciaPersonas > 0" name="arrow-up-outline"></ion-icon>
               <ion-icon *ngIf="tendenciaPersonas < 0" name="arrow-down-outline"></ion-icon>
               <span *ngIf="tendenciaPersonas !== 0">
-                <span [style.color]="tendenciaPersonas > 0 ? '#22c55e' : '#ef4444'">
-                  {{ tendenciaPersonas > 0 ? '+' : '' }}{{ tendenciaPersonas }}%
-                </span>
-                <span class="tendencia-text"> respecto a la semana anterior</span>
+                {{ tendenciaPersonas > 0 ? '+' : '' }}{{ tendenciaPersonas }}% respecto a la semana anterior
               </span>
             </span>
           </div>
