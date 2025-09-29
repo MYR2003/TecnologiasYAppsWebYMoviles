@@ -1,3 +1,6 @@
+  salir() {
+    this.router.navigate(['/']);
+  }
 import { Component } from '@angular/core';
 import { PersonasService } from '../core/servicios/personas.service';
 import { Router } from '@angular/router';
