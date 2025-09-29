@@ -53,16 +53,8 @@ export class AppComponent {
   }
 
   async navigateTo(path: string) {
-    const menu = document.querySelector('ion-menu');
-    if (menu && (menu as any).close) {
-      await (menu as any).close();
-    }
-    // Forzar recarga si ya estamos en la ruta
-    if (this.router.url === path || (path === '/' && this.router.url === '')) {
-      await this.router.navigateByUrl('/', { skipLocationChange: true });
-      await this.router.navigate([path], { replaceUrl: true });
-    } else {
-      await this.router.navigate([path]);
-    }
+    // Navegación restaurada a routerLink directo en el template
+    // Eliminar la función navigateTo ya que no se necesita
+  
   }
 }
