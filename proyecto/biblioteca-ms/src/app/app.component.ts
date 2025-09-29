@@ -1,10 +1,7 @@
 
-import { Router } from '@angular/router';
-
-
 
 import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonMenu, IonMenuButton, IonContent, IonList, IonItem, IonLabel, IonFooter } from '@ionic/angular/standalone';
+import { IonApp, IonRouterOutlet, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonMenu, IonMenuButton, IonContent, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { isPlatform } from '@ionic/angular';
 
 @Component({
@@ -24,21 +21,13 @@ import { isPlatform } from '@ionic/angular';
     IonContent,
     IonList,
     IonItem,
-    IonLabel,
-    IonFooter
+    IonLabel
   ],
 })
 export class AppComponent {
   isDarkMode = false;
 
-  closeMenu() {
-    const menu = document.querySelector('ion-menu');
-    if (menu && (menu as any).close) {
-      (menu as any).close();
-    }
-  }
-
-  constructor(private router: Router) {
+  constructor() {
     // Detectar modo inicial
     this.isDarkMode = document.body.classList.contains('dark');
   }
@@ -48,13 +37,7 @@ export class AppComponent {
     document.body.classList.toggle('dark', this.isDarkMode);
   }
 
-  refrescar() {
-    window.location.reload();
-  }
-
-  async navigateTo(path: string) {
-    // Navegación restaurada a routerLink directo en el template
-    // Eliminar la función navigateTo ya que no se necesita
-  
+  abrirAyuda() {
+    alert('Aquí irá la ayuda del sistema. Puedes personalizar este mensaje o mostrar un modal más avanzado.');
   }
 }
