@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./examenes/examenes.page').then(m => m.ExamenesPage),
+    loadChildren: () => import('./examenes/examenes.routes').then(m => m.routes),
     pathMatch: 'full',
   },
   {
