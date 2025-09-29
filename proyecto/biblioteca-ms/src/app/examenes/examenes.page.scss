@@ -1,17 +1,7 @@
-ion-content {
-  ion-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  ion-list {
-    margin-top: 16px;
-  }
-  .examen-img {
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    max-width: 80px;
-    max-height: 80px;
-    margin-left: 10px;
-  }
+.examen-img {
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  max-width: 80px;
+  max-height: 80px;
+  margin-left: 10px;
 }

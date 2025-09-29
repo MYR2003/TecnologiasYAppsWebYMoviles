@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="guardarPersona()">
+  <form class="form-persona" (ngSubmit)="guardarPersona()">
     <ion-item>
       <ion-label position="floating">Nombre</ion-label>
       <ion-input [(ngModel)]="persona.nombre" name="nombre"></ion-input>
