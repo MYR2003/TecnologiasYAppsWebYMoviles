@@ -1,4 +1,5 @@
 // Colores base inspirados en la imagen
+
 :root {
 	--ion-color-primary: #2563eb;
 	--ion-color-primary-rgb: 37,99,235;
@@ -26,6 +27,26 @@
 	--ion-text-color: #222;
 	--ion-text-color-rgb: 34,34,34;
 	--ion-border-radius: 16px;
+
+	--ion-card-background: #fff;
+	--ion-card-text: #222;
+	--ion-item-background: #f1f5f9;
+	--ion-item-text: #222;
+}
+
+body.dark, .dark {
+	--ion-background-color: #18181b;
+	--ion-background-color-rgb: 24,24,27;
+	--ion-text-color: #f1f5f9;
+	--ion-text-color-rgb: 241,245,249;
+	--ion-color-secondary: #23272f;
+	--ion-color-secondary-contrast: #f1f5f9;
+	--ion-border-radius: 16px;
+
+	--ion-card-background: #23272f;
+	--ion-card-text: #f1f5f9;
+	--ion-item-background: #23272f;
+	--ion-item-text: #f1f5f9;
 }
 
 

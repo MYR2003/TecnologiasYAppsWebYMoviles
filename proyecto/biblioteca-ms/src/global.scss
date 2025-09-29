@@ -3,8 +3,10 @@ body, ion-app, ion-content {
 	color: var(--ion-text-color) !important;
 }
 
+
 ion-card, .card, .tarjeta, .ion-card {
-	background: #fff;
+	background: var(--ion-card-background);
+	color: var(--ion-card-text);
 	border-radius: var(--ion-border-radius);
 	box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
 	margin-bottom: 16px;
@@ -12,11 +14,19 @@ ion-card, .card, .tarjeta, .ion-card {
 	border: 1px solid #e5e7eb;
 }
 
-@media (prefers-color-scheme: dark) {
-	ion-card, .card, .tarjeta, .ion-card {
-		background: #23272f;
-		border: 1px solid #2d3748;
-	}
+ion-item {
+	border-radius: 8px;
+	margin-bottom: 12px;
+	background: var(--ion-item-background);
+	--background: var(--ion-item-background);
+	color: var(--ion-item-text);
+	--color: var(--ion-item-text);
+	box-shadow: none;
+}
+
+ion-label, .label {
+	font-weight: 500;
+	color: var(--ion-item-text);
 }
 
 .alerta {
