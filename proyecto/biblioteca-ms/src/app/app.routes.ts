@@ -6,4 +6,8 @@ export const routes: Routes = [
     loadComponent: () => import('./examenes/examenes.page').then(m => m.ExamenesPage),
     pathMatch: 'full',
   },
+  {
+    path: 'registrar-persona',
+    loadChildren: () => import('./registrar-persona/registrar-persona.routes').then(m => m.routes),
+  },
 ];

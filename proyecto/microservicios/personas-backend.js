@@ -39,7 +39,28 @@ app.get('/personas', async (req, res) => {
   }
 });
 
-// Puedes agregar aquí más endpoints (crear, actualizar, eliminar personas)
+
+// Crear una persona
+app.post('/personas', async (req, res) => {
+  const { nombre, apellido, rut, fechaNacimiento } = req.body;
+  try {
+    const result = await pool.query(
+      'INSERT INTO persona (nombre, apellido, rut, fechanacimiento) VALUES ($1, $2, $3, $4) RETURNING *',
+      [nombre, apellido, rut, fechaNacimiento]
+    );
+    const p = result.rows[0];
+    res.status(201).json({
+      idPersona: p.idpersona,
+      nombre: p.nombre,
+      apellido: p.apellido,
+      rut: p.rut,
+      fechaNacimiento: p.fechanacimiento
+    });
+  } catch (err) {
+    console.error('Error al crear persona:', err);
+    res.status(500).json({ error: 'Error al crear persona en la base de datos' });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Microservicio de personas escuchando en http://localhost:${port}`);

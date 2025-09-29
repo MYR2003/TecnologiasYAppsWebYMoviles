@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ExamenesService, Examen } from '../core/servicios/examenes.service';
@@ -21,7 +22,7 @@ export class ExamenesPage {
     idPersona = 1; // Simulación, luego usar auth
   // personas: Persona[] = [];
 
-  constructor(private examenesService: ExamenesService) {}
+  constructor(private examenesService: ExamenesService, private router: Router) {}
 
 
 
@@ -51,16 +52,24 @@ export class ExamenesPage {
   }
 
   subirImagen() {
-  if (!this.selectedFile) return;
-      this.idPersona = Number(this.idPersona);
-      console.log('idPersona al subir:', this.idPersona);
-  this.loading = true;
-  this.error = '';
-      this.examenesService.subirImagen(this.selectedFile, this.idPersona).subscribe({
+    if (!this.selectedFile) return;
+    this.idPersona = Number(this.idPersona);
+    console.log('idPersona al subir:', this.idPersona);
+    this.loading = true;
+    this.error = '';
+    this.examenesService.subirImagen(this.selectedFile, this.idPersona).subscribe({
       next: (examen) => {
         this.examenes.unshift(examen);
         this.selectedFile = null;
         this.loading = false;
+        // Navegación automática a la tab Registrar Persona, pasando datos extraídos
+        let datosExtraidos = {};
+        try {
+          datosExtraidos = examen.datosExtraidos ? JSON.parse(examen.datosExtraidos) : {};
+        } catch (e) {
+          datosExtraidos = {};
+        }
+        this.router.navigate(['/registrar-persona'], { state: { datosExtraidos } });
       },
       error: () => {
         this.error = 'Error al subir la imagen';
