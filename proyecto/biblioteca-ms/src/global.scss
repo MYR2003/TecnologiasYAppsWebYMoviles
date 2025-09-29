@@ -1,3 +1,12 @@
+/* Dashboards: color de textos en tarjetas */
+body:not(.dark) ion-card.dashboards-card,
+body:not(.dark) ion-card.dashboards-card * {
+	color: #222 !important;
+}
+body.dark ion-card.dashboards-card,
+body.dark ion-card.dashboards-card * {
+	color: #f1f5f9 !important;
+}
 /* Dashboards: tarjetas modo claro/oscuro forzadas */
 body:not(.dark) ion-card.dashboards-card {
 	background: #fff !important;
