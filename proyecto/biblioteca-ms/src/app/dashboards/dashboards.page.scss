@@ -1,5 +1,16 @@
+
 ion-card {
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+  background: var(--ion-card-background, #fff);
+  color: var(--ion-card-text, #222);
+  border-radius: var(--ion-border-radius, 16px);
+  box-shadow: 0 2px 12px 0 rgba(37,99,235,0.06), 0 1.5px 4px 0 rgba(0,0,0,0.04);
+  border: 1px solid #e5e7eb;
+}
+
+ion-card-header, ion-card-content {
+  background: transparent;
+  color: inherit;
 }
 
 .bar-chart {
