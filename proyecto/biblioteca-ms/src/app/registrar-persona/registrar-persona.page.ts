@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PersonasService } from '../core/servicios/personas.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { IonicModule, IonIcon } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 
 @Component({
