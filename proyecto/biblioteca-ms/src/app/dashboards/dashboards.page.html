@@ -19,7 +19,7 @@
           <div class="metrica-label">Total exámenes</div>
           <div class="metrica-valor">
             {{ totalExamenes }}
-            <span class="tendencia" [ngClass]="{'up': tendenciaExamenes > 0, 'down': tendenciaExamenes < 0}" [style.color]="tendenciaExamenes > 0 ? '#22c55e' : (tendenciaExamenes < 0 ? '#ef4444' : '')">
+            <span class="tendencia" [ngClass]="{'up': tendenciaExamenes > 0, 'down': tendenciaExamenes < 0, 'tendencia-green': tendenciaExamenes > 0, 'tendencia-red': tendenciaExamenes < 0}">
               <ion-icon *ngIf="tendenciaExamenes > 0" name="arrow-up-outline"></ion-icon>
               <ion-icon *ngIf="tendenciaExamenes < 0" name="arrow-down-outline"></ion-icon>
               <span *ngIf="tendenciaExamenes !== 0">
@@ -41,7 +41,7 @@
           <div class="metrica-label">Total personas</div>
           <div class="metrica-valor">
             {{ totalPersonas }}
-            <span class="tendencia" [ngClass]="{'up': tendenciaPersonas > 0, 'down': tendenciaPersonas < 0}" [style.color]="tendenciaPersonas > 0 ? '#22c55e' : (tendenciaPersonas < 0 ? '#ef4444' : '')">
+            <span class="tendencia" [ngClass]="{'up': tendenciaPersonas > 0, 'down': tendenciaPersonas < 0, 'tendencia-green': tendenciaPersonas > 0, 'tendencia-red': tendenciaPersonas < 0}">
               <ion-icon *ngIf="tendenciaPersonas > 0" name="arrow-up-outline"></ion-icon>
               <ion-icon *ngIf="tendenciaPersonas < 0" name="arrow-down-outline"></ion-icon>
               <span *ngIf="tendenciaPersonas !== 0">
