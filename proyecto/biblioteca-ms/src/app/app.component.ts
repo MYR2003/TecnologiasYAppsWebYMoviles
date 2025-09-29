@@ -2,7 +2,7 @@
 
 
 import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonMenu, IonMenuButton, IonContent, IonList, IonItem, IonLabel, IonFooter, IonTabBar, IonTabButton } from '@ionic/angular/standalone';
+import { IonApp, IonRouterOutlet, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonMenu, IonMenuButton, IonContent, IonList, IonItem, IonLabel, IonFooter } from '@ionic/angular/standalone';
 import { isPlatform } from '@ionic/angular';
 
 @Component({
@@ -23,9 +23,7 @@ import { isPlatform } from '@ionic/angular';
     IonList,
     IonItem,
     IonLabel,
-    IonFooter,
-    IonTabBar,
-    IonTabButton
+    IonFooter
   ],
 })
 export class AppComponent {
