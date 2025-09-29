@@ -1,15 +1,14 @@
 
 
 /* Modo claro: tarjetas blancas, texto oscuro, bordes y sombra */
-body:not(.dark) .dashboards-page ion-card,
-body:not(.dark) ion-card.dashboards-card {
+body:not(.dark) ion-card {
   background: #fff !important;
   color: #222 !important;
   border: 1px solid #e5e7eb !important;
   box-shadow: 0 2px 12px 0 rgba(37,99,235,0.06), 0 1.5px 4px 0 rgba(0,0,0,0.04) !important;
 }
-body:not(.dark) .dashboards-page ion-card-header,
-body:not(.dark) .dashboards-page ion-card-content {
+body:not(.dark) ion-card-header,
+body:not(.dark) ion-card-content {
   background: transparent !important;
   color: #222 !important;
 }
