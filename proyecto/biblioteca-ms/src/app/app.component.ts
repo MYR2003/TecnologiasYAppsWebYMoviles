@@ -1,6 +1,8 @@
 
+
+
 import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon } from '@ionic/angular/standalone';
+import { IonApp, IonRouterOutlet, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonMenu, IonMenuButton, IonContent, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { isPlatform } from '@ionic/angular';
 
 @Component({
@@ -14,7 +16,13 @@ import { isPlatform } from '@ionic/angular';
     IonTitle,
     IonButtons,
     IonButton,
-    IonIcon
+    IonIcon,
+    IonMenu,
+    IonMenuButton,
+    IonContent,
+    IonList,
+    IonItem,
+    IonLabel
   ],
 })
 export class AppComponent {
@@ -28,5 +36,9 @@ export class AppComponent {
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
     document.body.classList.toggle('dark', this.isDarkMode);
+  }
+
+  refrescar() {
+    window.location.reload();
   }
 }
