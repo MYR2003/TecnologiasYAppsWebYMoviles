@@ -7,7 +7,7 @@
     </ion-header>
     <ion-content>
       <ion-list>
-        <ion-item button (click)="navigateTo('/')">
+        <ion-item button routerLink="/" routerDirection="root" (click)="closeMenu()">
           <ion-icon slot="start" name="document"></ion-icon>
           <ion-label>Exámenes</ion-label>
         </ion-item>

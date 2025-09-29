@@ -1,3 +1,4 @@
+
 import { Router } from '@angular/router';
 
 
@@ -29,6 +30,13 @@ import { isPlatform } from '@ionic/angular';
 })
 export class AppComponent {
   isDarkMode = false;
+
+  closeMenu() {
+    const menu = document.querySelector('ion-menu');
+    if (menu && (menu as any).close) {
+      (menu as any).close();
+    }
+  }
 
   constructor(private router: Router) {
     // Detectar modo inicial
