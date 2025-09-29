@@ -1,9 +1,9 @@
-ion-text[color="danger"],
-ion-text[color="primary"],
-ion-text[color="secondary"],
-ion-text,
 .no-examenes-text {
 	color: var(--ion-text-color) !important;
+	font-weight: 500;
+	font-size: 1.1rem;
+	margin: 16px 0 0 8px;
+	display: block;
 }
 ion-list, .card, .tarjeta, .ion-card {
 	background: var(--ion-card-background) !important;
