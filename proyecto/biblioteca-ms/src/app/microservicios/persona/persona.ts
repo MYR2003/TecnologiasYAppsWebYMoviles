@@ -11,4 +11,5 @@ export class Persona {
   async getPersona(): Promise<any[]> {
     return await firstValueFrom(this.http.get<any[]>('http://localhost:3016'))
   }
+
 }
