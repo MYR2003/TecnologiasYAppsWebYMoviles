@@ -41,6 +41,8 @@ body.dark .visible-dark {
 body.dark .files {
   background: #2d2d2d;
   border: none;
+  --border-width: 0px;
+  --inner-border-width: 0px;
 }
 
 .files label {
