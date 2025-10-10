@@ -48,8 +48,11 @@ body.dark .visible-dark {
 
 /* Selector específico para modo oscuro con mayor especificidad */
 body.dark ion-content .titulo,
-body.dark .titulo {
+body.dark .titulo,
+body.dark ion-text.titulo {
   color: #ffffff !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 body.dark .titulo.visible-dark {
