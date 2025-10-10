@@ -55,20 +55,29 @@ body.dark .files label {
 }
 
 body.dark .files input[type="file"] {
-  background: transparent !important;
+  background: transparent;
   border: none;
   color: #ffffff !important;
 }
 
-/* Forzar que todos los elementos dentro de .files sean visibles */
-body:not(.dark) .files,
-body:not(.dark) .files * {
-  color: #000000 !important;
-}
-
-body.dark .files,
+/* Forzar colores específicos para todos los elementos de .files en modo oscuro */
 body.dark .files * {
   color: #ffffff !important;
+}
+
+body.dark .files label,
+body.dark .files input {
+  color: #ffffff !important;
+}
+
+/* Asegurar que en modo claro también se vean */
+body:not(.dark) .files * {
+  color: #333333 !important;
+}
+
+body:not(.dark) .files label,
+body:not(.dark) .files input {
+  color: #333333 !important;
 }
 
 .files input[type="file"] {

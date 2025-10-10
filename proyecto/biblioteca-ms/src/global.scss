@@ -20,7 +20,10 @@ body.dark .titulo {
 body.dark ion-text,
 body.dark .perfil,
 body.dark label,
-body.dark .files label {
+body.dark .files label,
+body.dark .files,
+body.dark div.files label,
+body.dark div.files input[type="file"] {
 	color: #ffffff !important;
 }
 
@@ -28,28 +31,20 @@ body.dark .files label {
 body:not(.dark) ion-text,
 body:not(.dark) .perfil,
 body:not(.dark) label,
-body:not(.dark) .files label {
+body:not(.dark) .files label,
+body:not(.dark) .files,
+body:not(.dark) div.files label,
+body:not(.dark) div.files input[type="file"] {
 	color: #333333 !important;
 }
 
 /* Input de archivo - texto visible en ambos modos */
 body:not(.dark) input[type="file"] {
-	color: #000000 !important;
-	background: transparent !important;
+	color: #333333 !important;
 }
 
 body.dark input[type="file"],
 body.dark .files input[type="file"] {
-	color: #ffffff !important;
-	background: transparent !important;
-}
-
-/* Forzar colores específicos para elementos de archivo */
-body:not(.dark) .files * {
-	color: #000000 !important;
-}
-
-body.dark .files * {
 	color: #ffffff !important;
 }
 
