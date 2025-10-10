@@ -34,11 +34,22 @@ body:not(.dark) .files label {
 
 /* Input de archivo - texto visible en ambos modos */
 body:not(.dark) input[type="file"] {
-	color: #333333 !important;
+	color: #000000 !important;
+	background: transparent !important;
 }
 
 body.dark input[type="file"],
 body.dark .files input[type="file"] {
+	color: #ffffff !important;
+	background: transparent !important;
+}
+
+/* Forzar colores específicos para elementos de archivo */
+body:not(.dark) .files * {
+	color: #000000 !important;
+}
+
+body.dark .files * {
 	color: #ffffff !important;
 }
 

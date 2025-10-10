@@ -55,8 +55,19 @@ body.dark .files label {
 }
 
 body.dark .files input[type="file"] {
-  background: transparent;
+  background: transparent !important;
   border: none;
+  color: #ffffff !important;
+}
+
+/* Forzar que todos los elementos dentro de .files sean visibles */
+body:not(.dark) .files,
+body:not(.dark) .files * {
+  color: #000000 !important;
+}
+
+body.dark .files,
+body.dark .files * {
   color: #ffffff !important;
 }
 
