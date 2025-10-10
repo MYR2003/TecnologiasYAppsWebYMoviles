@@ -238,3 +238,24 @@ ion-toolbar {
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/* REGLAS DE TEXTO ESPECÍFICAS - AL FINAL PARA MAYOR PRIORIDAD */
+/* Forzar visibilidad de textos en modo oscuro */
+body.dark .files,
+body.dark .files *,
+body.dark .files label,
+body.dark .files input,
+body.dark .files input[type="file"] {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Forzar visibilidad de textos en modo claro */
+body:not(.dark) .files,
+body:not(.dark) .files *,
+body:not(.dark) .files label,
+body:not(.dark) .files input,
+body:not(.dark) .files input[type="file"] {
+  color: #000000 !important;
+  opacity: 1 !important;
+}
