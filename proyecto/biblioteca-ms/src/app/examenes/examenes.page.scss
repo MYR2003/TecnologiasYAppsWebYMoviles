@@ -31,7 +31,7 @@ body.dark .visible-dark {
   margin: 20px auto;
   padding: 20px;
   border-radius: 12px;
-  border: 2px solid #d1d5db;
+  border: 1px solid #d1d5db;
   background: #f8f9fa;
   max-width: 600px;
   gap: 15px;
@@ -59,8 +59,8 @@ body.dark .files label {
   min-width: 200px;
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid #ddd;
-  background: #fff;
+  border: none;
+  background: transparent;
   font-size: 14px;
   font-family: inherit;
   cursor: pointer;
@@ -82,8 +82,8 @@ body.dark .files label {
 }
 
 body.dark .files input[type="file"] {
-  background: #424242;
-  border-color: #666;
+  background: transparent;
+  border: none;
   color: #fff !important;
 }
 
