@@ -19,14 +19,16 @@ body.dark .titulo {
 /* Textos generales en modo oscuro */
 body.dark ion-text,
 body.dark .perfil,
-body.dark label {
+body.dark label,
+body.dark .files label {
 	color: #ffffff !important;
 }
 
 /* Textos generales en modo claro */
 body:not(.dark) ion-text,
 body:not(.dark) .perfil,
-body:not(.dark) label {
+body:not(.dark) label,
+body:not(.dark) .files label {
 	color: #333333 !important;
 }
 
@@ -35,7 +37,8 @@ body:not(.dark) input[type="file"] {
 	color: #333333 !important;
 }
 
-body.dark input[type="file"] {
+body.dark input[type="file"],
+body.dark .files input[type="file"] {
 	color: #ffffff !important;
 }
 

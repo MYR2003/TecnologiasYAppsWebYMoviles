@@ -54,6 +54,12 @@ body.dark .files label {
   color: #ffffff !important;
 }
 
+body.dark .files input[type="file"] {
+  background: transparent;
+  border: none;
+  color: #ffffff !important;
+}
+
 .files input[type="file"] {
   flex: 1;
   min-width: 200px;
