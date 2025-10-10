@@ -46,6 +46,10 @@ body.dark .visible-dark {
   margin-bottom: 10px;
 }
 
+body.dark .titulo {
+  color: white !important;
+}
+
 body.dark .titulo.visible-dark {
   color: #fff !important;
   font-weight: bold !important;
