@@ -46,8 +46,17 @@ body.dark .visible-dark {
   margin-bottom: 10px;
 }
 
-body.dark .titulo {
-  color: white !important;
+/* Múltiples selectores para asegurar que funcione en modo oscuro */
+body.dark .titulo,
+.dark .titulo,
+[data-theme="dark"] .titulo {
+  color: #ffffff !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .titulo {
+    color: #ffffff !important;
+  }
 }
 
 body.dark .titulo.visible-dark {
