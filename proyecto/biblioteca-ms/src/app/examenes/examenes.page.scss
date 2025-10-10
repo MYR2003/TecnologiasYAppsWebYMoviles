@@ -186,11 +186,9 @@ body.dark .perfil {
 
 /* REGLAS FINALES ESPECÍFICAS PARA TEXTO EN .files */
 /* Modo oscuro - MÁXIMA PRIORIDAD */
-body.dark .files,
 body.dark .files label,
 body.dark .files input,
 body.dark .files input[type="file"],
-body.dark div.files,
 body.dark div.files label,
 body.dark div.files input,
 body.dark div.files input[type="file"] {
@@ -200,15 +198,19 @@ body.dark div.files input[type="file"] {
 }
 
 /* Modo claro - MÁXIMA PRIORIDAD */
-body:not(.dark) .files,
 body:not(.dark) .files label,
 body:not(.dark) .files input,
 body:not(.dark) .files input[type="file"],
-body:not(.dark) div.files,
 body:not(.dark) div.files label,
 body:not(.dark) div.files input,
 body:not(.dark) div.files input[type="file"] {
   color: #000000 !important;
   opacity: 1 !important;
   -webkit-text-fill-color: #000000 !important;
+}
+
+/* Asegurar que los botones mantengan su color blanco */
+body.dark .files ion-button,
+body:not(.dark) .files ion-button {
+  color: white !important;
 }

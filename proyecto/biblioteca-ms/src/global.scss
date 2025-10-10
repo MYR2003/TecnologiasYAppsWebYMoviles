@@ -241,8 +241,6 @@ ion-toolbar {
 
 /* REGLAS DE TEXTO ESPECÍFICAS - AL FINAL PARA MAYOR PRIORIDAD */
 /* Forzar visibilidad de textos en modo oscuro */
-body.dark .files,
-body.dark .files *,
 body.dark .files label,
 body.dark .files input,
 body.dark .files input[type="file"] {
@@ -251,11 +249,15 @@ body.dark .files input[type="file"] {
 }
 
 /* Forzar visibilidad de textos en modo claro */
-body:not(.dark) .files,
-body:not(.dark) .files *,
 body:not(.dark) .files label,
 body:not(.dark) .files input,
 body:not(.dark) .files input[type="file"] {
   color: #000000 !important;
   opacity: 1 !important;
+}
+
+/* Asegurar que los botones mantengan su color original */
+body.dark .files ion-button,
+body:not(.dark) .files ion-button {
+  color: white !important;
 }
