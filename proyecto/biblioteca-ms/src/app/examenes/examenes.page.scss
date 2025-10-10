@@ -35,27 +35,12 @@ body.dark .visible-dark {
   max-width: 600px;
   gap: 15px;
   flex-wrap: wrap;
-  --border-width: 1px;
-  --border-style: solid;
-  --border-color: #d1d5db;
+  border: 1px solid #d1d5db;
 }
 
 body.dark .files {
-  background: #2d2d2d !important;
-  border: none !important;
-  --border-width: 0px !important;
-  --inner-border-width: 0px !important;
-  --border-color: transparent !important;
-  --inner-border-color: transparent !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-body.dark ion-item.files {
-  --border-width: 0px !important;
-  --inner-border-width: 0px !important;
-  --border-color: transparent !important;
-  border: none !important;
+  background: #2d2d2d;
+  border: none;
 }
 
 .files label {

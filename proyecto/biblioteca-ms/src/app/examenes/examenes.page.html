@@ -29,10 +29,11 @@
     </ion-row>
   </ion-grid>
 
-  <ion-item class="files">
+  <div class="files">
     <label for="fileInput">Selecciona imagen o PDF:</label>
     <input id="fileInput" type="file" accept="image/jpeg,application/pdf" (change)="onFileChange($event)" title="Selecciona imagen o PDF" />
     <ion-button (click)="subirImagen()" [disabled]="!selectedFile || loading">Subir archivo</ion-button>
+  </div>
   </ion-item>
 
   <ion-spinner *ngIf="loading"></ion-spinner>
