@@ -51,7 +51,7 @@ body.dark .files {
 }
 
 body.dark .files label {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .files input[type="file"] {
@@ -84,7 +84,18 @@ body.dark .files label {
 body.dark .files input[type="file"] {
   background: #424242;
   border-color: #666;
-  color: #fff;
+  color: #fff !important;
+}
+
+/* Mejorar visibilidad del texto "No file chosen" en modo oscuro */
+body.dark .files input[type="file"]::file-selector-button {
+  background: #4a90e2;
+  color: white;
+}
+
+body.dark .files input[type="file"]::-webkit-file-upload-button {
+  background: #4a90e2;
+  color: white;
 }
 
 body.dark .files input[type="file"]::-webkit-file-upload-button {

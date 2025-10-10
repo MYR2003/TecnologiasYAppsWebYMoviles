@@ -15,6 +15,18 @@ body:not(.dark) .titulo {
 body.dark .titulo {
 	color: #ffffff !important;
 }
+
+/* Textos generales en modo oscuro */
+body.dark ion-text,
+body.dark .perfil,
+body.dark label {
+	color: #ffffff !important;
+}
+
+/* Textos de información en modo oscuro */
+body.dark .no-examenes-text {
+	color: #e5e7eb !important;
+}
 /* Dashboards: tarjetas modo claro/oscuro forzadas */
 body:not(.dark) ion-card.dashboards-card {
 	background: #fff !important;
