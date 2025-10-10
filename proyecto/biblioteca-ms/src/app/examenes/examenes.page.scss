@@ -40,10 +40,20 @@ body.dark .visible-dark {
   text-align: center;
   font-size: 70px;
   font-weight: bold;
-  color:black;
+  color: black;
   justify-content: center;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+body.dark .titulo.visible-dark {
+  color: #fff !important;
+  font-weight: bold !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  -webkit-text-fill-color: #fff !important;
 }
 
 .perfil {
