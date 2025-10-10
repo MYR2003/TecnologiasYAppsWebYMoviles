@@ -28,11 +28,44 @@ body.dark .visible-dark {
   align-items: center;
   display: flex;
   justify-content: center;
-  margin-left: 30%;
-  margin-right: 30%;
-  border-color: black;
-  border-width: 3px;
-  border-style: solid;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid #3880ff;
+  background: #f8f9fa;
+  max-width: 600px;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+body.dark .files {
+  background: #2d2d2d;
+  border-color: #5a9fd4;
+}
+
+.files label {
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  white-space: nowrap;
+}
+
+body.dark .files label {
+  color: #ffffff;
+}
+
+.files input[type="file"] {
+  flex: 1;
+  min-width: 200px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+body.dark .files input[type="file"] {
+  background: #424242;
+  border-color: #666;
+  color: #fff;
 }
 
 .titulo {
