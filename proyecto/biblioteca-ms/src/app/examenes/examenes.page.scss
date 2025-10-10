@@ -40,23 +40,17 @@ body.dark .visible-dark {
   text-align: center;
   font-size: 70px;
   font-weight: bold;
-  color: black;
+  color: #000000;
   justify-content: center;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-/* Múltiples selectores para asegurar que funcione en modo oscuro */
+/* Solo aplicar color blanco en modo oscuro específico */
 body.dark .titulo,
 .dark .titulo,
 [data-theme="dark"] .titulo {
   color: #ffffff !important;
-}
-
-@media (prefers-color-scheme: dark) {
-  .titulo {
-    color: #ffffff !important;
-  }
 }
 
 body.dark .titulo.visible-dark {
