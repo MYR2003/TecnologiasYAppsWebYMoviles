@@ -19,7 +19,8 @@ export class ExamenesPage {
   error = '';
   empty = false;
   selectedFile: File | null = null;
-    idPersona = 1; // Simulación, luego usar auth
+  idPersona = 1; // Simulación, luego usar auth
+  nombreUsuario = 'Usuario Actual'; // Dinámico, reemplazar con servicio de auth
   // personas: Persona[] = [];
 
   constructor(private examenesService: ExamenesService, private router: Router) {}
