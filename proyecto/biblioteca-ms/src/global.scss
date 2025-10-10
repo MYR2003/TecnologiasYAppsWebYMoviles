@@ -23,6 +23,22 @@ body.dark label {
 	color: #ffffff !important;
 }
 
+/* Textos generales en modo claro */
+body:not(.dark) ion-text,
+body:not(.dark) .perfil,
+body:not(.dark) label {
+	color: #333333 !important;
+}
+
+/* Input de archivo - texto visible en ambos modos */
+body:not(.dark) input[type="file"] {
+	color: #333333 !important;
+}
+
+body.dark input[type="file"] {
+	color: #ffffff !important;
+}
+
 /* Textos de información en modo oscuro */
 body.dark .no-examenes-text {
 	color: #e5e7eb !important;
