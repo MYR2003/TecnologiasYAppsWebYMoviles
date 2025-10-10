@@ -1,9 +1,14 @@
 // Hace el texto visible en modo oscuro y claro
 .visible-dark {
-  color: #222;
+  color: #222 !important;
+  font-weight: bold;
+  font-size: 5vw;
+  text-align: center;
+  display: block;
 }
 body.dark .visible-dark {
   color: #fff !important;
+  font-weight: bold;
 }
 .examen-img {
   border-radius: 8px;
