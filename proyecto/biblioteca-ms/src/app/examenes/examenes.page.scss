@@ -173,6 +173,21 @@ body:not(.dark) div.files input[type="file"]::file-selector-button {
   color: white !important;
   background: #3880ff !important;
   border: none !important;
+  -webkit-text-fill-color: white !important;
+}
+
+/* Reglas adicionales sin prefijo para máxima compatibilidad */
+.files input[type="file"]::-webkit-file-upload-button,
+.files input[type="file"]::file-selector-button,
+div.files input[type="file"]::-webkit-file-upload-button,
+div.files input[type="file"]::file-selector-button,
+input[type="file"]::-webkit-file-upload-button,
+input[type="file"]::file-selector-button {
+  color: white !important;
+  background: #3880ff !important;
+  border: none !important;
+  -webkit-text-fill-color: white !important;
+  font-weight: 500 !important;
 }
 
 /* Asegurar que los botones mantengan su color blanco */

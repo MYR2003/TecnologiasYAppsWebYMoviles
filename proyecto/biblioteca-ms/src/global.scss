@@ -244,4 +244,16 @@ body:not(.dark) .files input[type="file"]::file-selector-button {
   color: white !important;
   background: #3880ff !important;
   border: none !important;
+  -webkit-text-fill-color: white !important;
+}
+
+/* Reglas adicionales para máxima compatibilidad */
+.files input[type="file"]::-webkit-file-upload-button,
+.files input[type="file"]::file-selector-button,
+div.files input[type="file"]::-webkit-file-upload-button,
+div.files input[type="file"]::file-selector-button {
+  color: white !important;
+  background: #3880ff !important;
+  border: none !important;
+  -webkit-text-fill-color: white !important;
 }
