@@ -1,3 +1,10 @@
+// Hace el texto visible en modo oscuro y claro
+.visible-dark {
+  color: #222;
+}
+body.dark .visible-dark {
+  color: #fff !important;
+}
 .examen-img {
   border-radius: 8px;
   border: 1px solid #e5e7eb;
