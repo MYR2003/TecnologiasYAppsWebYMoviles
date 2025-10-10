@@ -7,6 +7,14 @@ body.dark ion-card.dashboards-card,
 body.dark ion-card.dashboards-card * {
 	color: #f1f5f9 !important;
 }
+
+/* Título principal - forzar colores por tema */
+body:not(.dark) .titulo {
+	color: #000000 !important;
+}
+body.dark .titulo {
+	color: #ffffff !important;
+}
 /* Dashboards: tarjetas modo claro/oscuro forzadas */
 body:not(.dark) ion-card.dashboards-card {
 	background: #fff !important;
