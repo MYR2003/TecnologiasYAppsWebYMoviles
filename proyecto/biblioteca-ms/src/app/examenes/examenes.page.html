@@ -34,7 +34,6 @@
     <input id="fileInput" type="file" accept="image/jpeg,application/pdf" (change)="onFileChange($event)" title="Selecciona imagen o PDF" />
     <ion-button (click)="subirImagen()" [disabled]="!selectedFile || loading">Subir archivo</ion-button>
   </div>
-  </ion-item>
 
   <ion-spinner *ngIf="loading"></ion-spinner>
   <ion-text color="danger" *ngIf="error">{{ error }}</ion-text>
