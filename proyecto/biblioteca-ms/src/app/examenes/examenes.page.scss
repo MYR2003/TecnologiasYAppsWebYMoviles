@@ -39,10 +39,21 @@ body.dark .visible-dark {
 }
 
 body.dark .files {
-  background: #2d2d2d;
-  border: none;
-  --border-width: 0px;
-  --inner-border-width: 0px;
+  background: #2d2d2d !important;
+  border: none !important;
+  --border-width: 0px !important;
+  --inner-border-width: 0px !important;
+  --border-color: transparent !important;
+  --inner-border-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+body.dark ion-item.files {
+  --border-width: 0px !important;
+  --inner-border-width: 0px !important;
+  --border-color: transparent !important;
+  border: none !important;
 }
 
 .files label {
