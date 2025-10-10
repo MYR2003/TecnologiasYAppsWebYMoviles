@@ -16,36 +16,16 @@ body.dark .titulo {
 	color: #ffffff !important;
 }
 
-/* Textos generales en modo oscuro */
+/* Textos generales en modo oscuro - excluyendo .files */
 body.dark ion-text,
-body.dark .perfil,
-body.dark label,
-body.dark .files label,
-body.dark .files,
-body.dark div.files label,
-body.dark div.files input[type="file"] {
+body.dark .perfil {
 	color: #ffffff !important;
 }
 
-/* Textos generales en modo claro */
+/* Textos generales en modo claro - excluyendo .files */
 body:not(.dark) ion-text,
-body:not(.dark) .perfil,
-body:not(.dark) label,
-body:not(.dark) .files label,
-body:not(.dark) .files,
-body:not(.dark) div.files label,
-body:not(.dark) div.files input[type="file"] {
+body:not(.dark) .perfil {
 	color: #333333 !important;
-}
-
-/* Input de archivo - texto visible en ambos modos */
-body:not(.dark) input[type="file"] {
-	color: #333333 !important;
-}
-
-body.dark input[type="file"],
-body.dark .files input[type="file"] {
-	color: #ffffff !important;
 }
 
 /* Textos de información en modo oscuro */
@@ -240,20 +220,14 @@ ion-toolbar {
 @import '@ionic/angular/css/palettes/dark.system.css';
 
 /* REGLAS DE TEXTO ESPECÍFICAS - AL FINAL PARA MAYOR PRIORIDAD */
-/* Forzar visibilidad de textos en modo oscuro */
+/* Los textos del input de archivo deben ser NEGROS en ambos modos */
 body.dark .files label,
-body.dark .files input,
-body.dark .files input[type="file"] {
-  color: #ffffff !important;
-  opacity: 1 !important;
-}
-
-/* Forzar visibilidad de textos en modo claro */
+body.dark .files input[type="file"],
 body:not(.dark) .files label,
-body:not(.dark) .files input,
 body:not(.dark) .files input[type="file"] {
   color: #000000 !important;
   opacity: 1 !important;
+  -webkit-text-fill-color: #000000 !important;
 }
 
 /* Asegurar que los botones mantengan su color original */

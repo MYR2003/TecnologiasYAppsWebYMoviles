@@ -45,39 +45,8 @@ body.dark .files {
 
 .files label {
   font-weight: 600;
-  color: #333;
   margin: 0;
   white-space: nowrap;
-}
-
-body.dark .files label {
-  color: #ffffff !important;
-}
-
-body.dark .files input[type="file"] {
-  background: transparent;
-  border: none;
-  color: #ffffff !important;
-}
-
-/* Forzar colores específicos para todos los elementos de .files en modo oscuro */
-body.dark .files * {
-  color: #ffffff !important;
-}
-
-body.dark .files label,
-body.dark .files input {
-  color: #ffffff !important;
-}
-
-/* Asegurar que en modo claro también se vean */
-body:not(.dark) .files * {
-  color: #333333 !important;
-}
-
-body:not(.dark) .files label,
-body:not(.dark) .files input {
-  color: #333333 !important;
 }
 
 .files input[type="file"] {
@@ -90,7 +59,6 @@ body:not(.dark) .files input {
   font-size: 14px;
   font-family: inherit;
   cursor: pointer;
-  color: #333333;
 }
 
 .files input[type="file"]::-webkit-file-upload-button {
@@ -108,13 +76,7 @@ body:not(.dark) .files input {
   background: #2563eb;
 }
 
-body.dark .files input[type="file"] {
-  background: transparent;
-  border: none;
-  color: #fff !important;
-}
-
-/* Mejorar visibilidad del texto "No file chosen" en modo oscuro */
+/* Mejorar visibilidad del botón del selector de archivo en modo oscuro */
 body.dark .files input[type="file"]::file-selector-button {
   background: #4a90e2;
   color: white;
@@ -185,24 +147,14 @@ body.dark .perfil {
 }
 
 /* REGLAS FINALES ESPECÍFICAS PARA TEXTO EN .files */
-/* Modo oscuro - MÁXIMA PRIORIDAD */
+/* AMBOS MODOS - Los textos del label y input de archivo deben ser NEGROS siempre */
 body.dark .files label,
-body.dark .files input,
 body.dark .files input[type="file"],
 body.dark div.files label,
-body.dark div.files input,
-body.dark div.files input[type="file"] {
-  color: #ffffff !important;
-  opacity: 1 !important;
-  -webkit-text-fill-color: #ffffff !important;
-}
-
-/* Modo claro - MÁXIMA PRIORIDAD */
+body.dark div.files input[type="file"],
 body:not(.dark) .files label,
-body:not(.dark) .files input,
 body:not(.dark) .files input[type="file"],
 body:not(.dark) div.files label,
-body:not(.dark) div.files input,
 body:not(.dark) div.files input[type="file"] {
   color: #000000 !important;
   opacity: 1 !important;
