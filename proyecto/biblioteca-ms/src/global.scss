@@ -235,3 +235,13 @@ body.dark .files ion-button,
 body:not(.dark) .files ion-button {
   color: white !important;
 }
+
+/* Forzar que el botón "Choose File" tenga texto blanco siempre */
+body.dark .files input[type="file"]::-webkit-file-upload-button,
+body:not(.dark) .files input[type="file"]::-webkit-file-upload-button,
+body.dark .files input[type="file"]::file-selector-button,
+body:not(.dark) .files input[type="file"]::file-selector-button {
+  color: white !important;
+  background: #3880ff !important;
+  border: none !important;
+}
