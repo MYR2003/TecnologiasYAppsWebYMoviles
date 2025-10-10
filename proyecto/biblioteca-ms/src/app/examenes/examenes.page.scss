@@ -40,14 +40,20 @@ body.dark .visible-dark {
   text-align: center;
   font-size: 70px;
   font-weight: bold;
-  color: black;
+  color: var(--ion-color-dark, black);
   justify-content: center;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
+@media (prefers-color-scheme: dark) {
+  .titulo {
+    color: var(--ion-color-light, white) !important;
+  }
+}
+
 body.dark .titulo {
-  color: white !important;
+  color: var(--ion-color-light, white) !important;
 }
 
 body.dark .titulo.visible-dark {
