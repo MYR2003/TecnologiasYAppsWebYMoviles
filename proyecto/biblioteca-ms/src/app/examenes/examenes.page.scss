@@ -31,11 +31,13 @@ body.dark .visible-dark {
   margin: 20px auto;
   padding: 20px;
   border-radius: 12px;
-  border: 1px solid #d1d5db;
   background: #f8f9fa;
   max-width: 600px;
   gap: 15px;
   flex-wrap: wrap;
+  --border-width: 1px;
+  --border-style: solid;
+  --border-color: #d1d5db;
 }
 
 body.dark .files {
