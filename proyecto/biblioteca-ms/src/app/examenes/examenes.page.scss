@@ -40,16 +40,15 @@ body.dark .visible-dark {
   text-align: center;
   font-size: 70px;
   font-weight: bold;
-  color: #000000;
+  color: #000000 !important;
   justify-content: center;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-/* Solo aplicar color blanco en modo oscuro específico */
-body.dark .titulo,
-.dark .titulo,
-[data-theme="dark"] .titulo {
+/* Selector específico para modo oscuro con mayor especificidad */
+body.dark ion-content .titulo,
+body.dark .titulo {
   color: #ffffff !important;
 }
 
