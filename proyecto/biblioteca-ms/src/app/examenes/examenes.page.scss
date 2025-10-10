@@ -57,15 +57,43 @@ body.dark .files label {
 .files input[type="file"] {
   flex: 1;
   min-width: 200px;
-  padding: 8px;
-  border-radius: 6px;
+  padding: 12px;
+  border-radius: 8px;
   border: 1px solid #ddd;
+  background: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.files input[type="file"]::-webkit-file-upload-button {
+  background: #3880ff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 10px;
+  font-weight: 500;
+}
+
+.files input[type="file"]::-webkit-file-upload-button:hover {
+  background: #2563eb;
 }
 
 body.dark .files input[type="file"] {
   background: #424242;
   border-color: #666;
   color: #fff;
+}
+
+body.dark .files input[type="file"]::-webkit-file-upload-button {
+  background: #4a90e2;
+  color: white;
+}
+
+body.dark .files input[type="file"]::-webkit-file-upload-button:hover {
+  background: #357abd;
 }
 
 .titulo {
