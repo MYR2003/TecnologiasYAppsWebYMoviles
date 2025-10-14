@@ -124,24 +124,134 @@ async function Consulta() {
     temp.fecha = new Date()
     return temp
 }
+//
+async function ConsultaDiagnostico() {
+    let temp = {
+        idconsulta:0,
+        iddiagnostico:0,
+        //esprincipal,''
+    }
+    const consultas = await client.query('SELECT * FROM consulta_diagnostico')
+    const diagnosticos = await client.query('SELECT * FROM diagnostico')
+    let tempConsulta = SeleccionRandom(consultas.rows)
+    let tempDiagnostico = SeleccionRandom(diagnosticos.rows)
+    temp.idconsulta = tempConsulta.idconsulta
+    temp.iddiagnostico = tempDiagnostico.iddiagnostico
+    return temp
+}
 
-function ConsultaDiagnostico() {}
-function ConsultaSintoma() {}
-function ConsultaTratamiento() {}
-function ExamenConsulta() {}
-function Medico() {}
-function PersonaContacto() {}
-function Receta() {}
+async function ConsultaSintoma() {
+    let temp = {
+        idconsulta:0,
+        idsintoma:0,
+        /*
+        severidad:'',
+        nota:''
+        */
+    }
+    const consultas = await client.query('SELECT * FROM consulta')
+    const sintomas = await client.query('SELECT * FROM sintoma')
+    let tempConsulta = SeleccionRandom(consultas.rows)
+    let tempSintoma = SeleccionRandom(sintomas.rows)
+    temp.idconsulta = tempConsulta.idconsulta
+    temp.idsintoma = tempSintoma.idsintoma
+    return temp
+}
 
-/*
-Persona()
-Contacto()
-FichaMedica()
-AlergiaPersona()
-Consulta()
+async function ConsultaTratamiento() {
+    let temp = {
+        idconsulta:0,
+        idtratamiento:0,
+        /*
+        instrucciones:'',
+        fechainicio:0,
+        fechafin:0
+        */
+    }
+    const consultas = await client.query('SELECT * FROM consulta')
+    const tratamientos = await client.query('SELECT * FROM tratamiento')
+    let tempConsulta = SeleccionRandom(consultas.rows)
+    let tempTratamiento = SeleccionRandom(tratamientos.rows)
+    temp.idconsulta = tempConsulta.idconsulta
+    temp.idtratamiento = tempTratamiento.idtratamiento
+    return temp
+}
 
+async function ExamenConsulta() {
+    let temp = {
+        idconsulta:0,
+        idexamen:0,
+        /*
+        resultadosexamen:''
+        */
+    }
+    const consultas = await client.query('SELECT * FROM consulta')
+    const examenes = await client.query('SELECT * FROM examen')
+    let tempConsulta = SeleccionRandom(consultas.rows)
+    let tempExamen = SeleccionRandom(examenes.rows)
+    temp.idconsulta = tempConsulta.idconsulta
+    temp.idexamen = tempExamen.idexamen
+    return temp
+}
 
-*/
+async function Medico() {
+
+    let temp = {
+        idespecialidad:0,
+        nombre:'',
+        apellido:'',
+        rut:0,
+        /*
+        fechanacimiento:0,
+        telefono:0,
+        email:''
+        */
+    }
+    const especialidades = await client.query('SELECT * FROM especialidad')
+    let tempEspecialidad = SeleccionRandom(especialidades.rows)
+    temp.idespecialidad = tempEspecialidad.idespecialidad
+    temp.nombre = SeleccionRandom(nombres)
+    temp.apellido = SeleccionRandom(apellidos)
+    temp.rut = NumeroEntreNumerosRandom(10000000,28000000)
+    return rut
+}
+
+async function PersonaContacto() {
+    let temp = {
+        idpersona:0,
+        idcontacto:0,
+        /*
+        relacion:'',
+        esprincipal:false
+        */
+    }
+    const personas = await client.query('SELECT * FROM persona')
+    const contacto = await client.query('SELECT * FROM contacto_emergencia')
+    let tempPersona = SeleccionRandom(personas.rows)
+    let tempContacto = SeleccionRandom(contacto.rows)
+    temp.idpersona = tempPersona.idpersona
+    temp.idcontacto = tempContacto.idcontacto
+    return temp
+}
+
+async function Receta() {
+    let temp = {
+        idmedicamento:0,
+        idconsulta:0,
+        /*
+        cantidad:0,
+        medidas:'',
+        instrucciones:''
+        */
+    }
+    const medicamentos = await client.query('SELECT * FROM medicamento')
+    const consultas = await client.query('SELECT * FROM consulta')
+    let tempMedicamento = SeleccionRandom(medicamentos.rows)
+    let tempConsulta = SeleccionRandom(consultas.rows)
+    temp.idmedicamento = tempMedicamento.idmedicamento
+    temp.idconsulta = tempConsulta.idconsulta
+    return temp
+}
 
 app.get('/', async (req, res) => {
     const temp = await Consulta()
