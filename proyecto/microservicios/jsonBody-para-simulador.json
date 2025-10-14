@@ -1,0 +1,14 @@
+{
+    "persona":1,
+    "contacto":1,
+    "fichaMedica":2,
+    "alergiaPersona":2,
+    "consulta":10,
+    "consultaDiagnostico":3,
+    "consultaSintoma":4,
+    "consultaTratamiento":4,
+    "examenConsulta":3,
+    "medico":5,
+    "personaContacto":4,
+    "receta":3
+}
