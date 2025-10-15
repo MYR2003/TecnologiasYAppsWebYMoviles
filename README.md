@@ -40,3 +40,10 @@ Este sistema permite a los usuarios gestionar sus fichas médicas y exámenes cl
 - Implementar componente de subida de imagen y vista de exámenes.
 - Servicio para extracción de texto desde imagen (OCR, mock inicial).
 - CRUD de exámenes y visualización.
+
+
+## Instrucciones de uso
+Para correr el "backend" se debe entrar a la carpeta proyecto>microservicios y en esta carpeta correr el archivo bash.sh ya sea como un ejecutable o con otro metodo.
+
+### Simulador de datos
+Primero correr en la base de datos el script.txt, y luego postear a la api en http://localhost:3099/ con body el json que se encuentra en jsonBody-para-simulador.json y cambiar los valores por la cantidad de POSTs que se quiera hacer para cada entidad.

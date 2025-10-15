@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,10 @@ import { firstValueFrom } from 'rxjs';
 export class Consulta {
   constructor(private http: HttpClient) {}
 
-  async getConsulta(): Promise<any[]> {
-    return await firstValueFrom(this.http.get<any[]>('http://localhost:3002'))
+  getConsulta(): Observable<any[]> {
+    const vari = this.http.get<any[]>('http://localhost:3002')
+    console.log(vari)
+    return vari
+    //return firstValueFrom(this.http.get<any[]>('http://localhost:3002'))
   }
 }

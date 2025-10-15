@@ -42,18 +42,16 @@
               <span class="tendencia" [ngClass]="{'up': tendenciaExamenes > 0, 'down': tendenciaExamenes < 0}">
                 <ion-icon *ngIf="tendenciaExamenes > 0" name="arrow-up-outline"></ion-icon>
                 <ion-icon *ngIf="tendenciaExamenes < 0" name="arrow-down-outline"></ion-icon>
-                <span *ngIf="tendenciaExamenes !== 0" [ngClass]="tendenciaExamenes > 0 ? 'tendencia-green' : (tendenciaExamenes < 0 ? 'tendencia-red' : '')">
+                <span *ngIf="tendenciaExamenes !== 0"
+                  [ngClass]="tendenciaExamenes > 0 ? 'tendencia-green' : (tendenciaExamenes < 0 ? 'tendencia-red' : '')">
                   {{ tendenciaExamenes > 0 ? '+' : '' }}{{ tendenciaExamenes }}% respecto a la semana anterior
                 </span>
               </span>
             </div>
             <div class="sparkline-container">
               <svg *ngIf="exPorDia.length > 1" [attr.width]="120" [attr.height]="24" class="sparkline">
-                <polyline
-                  [attr.points]="getSparklinePoints(exPorDia, 120, 24)"
-                  fill="none"
-                  stroke="#2563eb"
-                  stroke-width="2"/>
+                <polyline [attr.points]="getSparklinePoints(exPorDia, 120, 24)" fill="none" stroke="#2563eb"
+                  stroke-width="2" />
               </svg>
             </div>
           </div>
@@ -64,7 +62,8 @@
               <span class="tendencia" [ngClass]="{'up': tendenciaPersonas > 0, 'down': tendenciaPersonas < 0}">
                 <ion-icon *ngIf="tendenciaPersonas > 0" name="arrow-up-outline"></ion-icon>
                 <ion-icon *ngIf="tendenciaPersonas < 0" name="arrow-down-outline"></ion-icon>
-                <span *ngIf="tendenciaPersonas !== 0" [ngClass]="tendenciaPersonas > 0 ? 'tendencia-green' : (tendenciaPersonas < 0 ? 'tendencia-red' : '')">
+                <span *ngIf="tendenciaPersonas !== 0"
+                  [ngClass]="tendenciaPersonas > 0 ? 'tendencia-green' : (tendenciaPersonas < 0 ? 'tendencia-red' : '')">
                   {{ tendenciaPersonas > 0 ? '+' : '' }}{{ tendenciaPersonas }}% respecto a la semana anterior
                 </span>
               </span>
@@ -90,11 +89,32 @@
           <div *ngFor="let val of exPorDia; let i = index" class="bar-group">
             <div class="bar-tooltip">
               <div class="bar-valor">{{ val }}</div>
-              <div class="bar" [ngStyle]="{height: ((val / (maxValue || 1)) * 100) + '%'}" [attr.title]="labels[i] + ': ' + val"></div>
+              <div class="bar" [ngStyle]="{height: ((val / (maxValue || 1)) * 100) + '%'}"
+                [attr.title]="labels[i] + ': ' + val"></div>
             </div>
             <span class="bar-label">{{ labels[i] }}</span>
           </div>
         </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Lista simple para mostrar las consultas obtenidas -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Consultas ({{ consultas.length }})</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list *ngIf="consultas.length > 0; else noConsultas">
+          <ion-item *ngFor="let c of consultas; index as i">
+            <ion-label>
+              <h2>Consulta {{ i + 1 }}</h2>
+              <p>{{ c | json }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <ng-template #noConsultas>
+          <ion-text color="medium">No hay consultas para mostrar.</ion-text>
+        </ng-template>
       </ion-card-content>
     </ion-card>
   </ng-container>

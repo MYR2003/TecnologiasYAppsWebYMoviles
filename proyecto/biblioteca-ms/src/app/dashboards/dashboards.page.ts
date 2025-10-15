@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { Consulta } from '../microservicios/consulta/consulta';
 
 @Component({
   selector: 'app-dashboards',
@@ -13,6 +14,7 @@ import { delay } from 'rxjs/operators';
   styleUrls: ['./dashboards.page.scss']
 })
 export class DashboardsPage {
+  consultas: any[] = [];
   // Estados para loading, error, empty y datos
   loading = true;
   error: string | null = null;
@@ -34,7 +36,7 @@ export class DashboardsPage {
   labelsMes = Array.from({length: 30}, (_, i) => (i+1).toString());
   labelsAnio = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-  constructor() {
+  constructor(private consulta: Consulta) {
     // Simula carga de datos con Observable (puedes cambiar delay o error para probar)
     this.data$ = of({
       totalExamenes: 26,
@@ -46,6 +48,12 @@ export class DashboardsPage {
       exPorDiaAnio: [20, 35, 18, 40, 22, 55, 30, 60, 28, 45, 33, 50]
     }).pipe(delay(1500));
     this.loadData();
+  }
+
+  ngOnInit() {
+    this.consulta.getConsulta().subscribe(res => {
+      this.consultas = res
+    })
   }
 
   loadData() {

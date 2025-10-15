@@ -1,0 +1,66 @@
+INSERT INTO alergia(alergia) VALUES ('Caspa de gato');
+INSERT INTO alergia(alergia) VALUES ('Camarones');
+INSERT INTO alergia(alergia) VALUES ('Gluten');
+INSERT INTO alergia(alergia) VALUES ('Picaduras de sancudos');
+
+INSERT INTO tipo_diagnostico(tipodiagnostico) VALUES ('Tipo A');
+INSERT INTO tipo_diagnostico(tipodiagnostico) VALUES ('Tipo B');
+INSERT INTO tipo_diagnostico(tipodiagnostico) VALUES ('Tipo C');
+INSERT INTO tipo_diagnostico(tipodiagnostico) VALUES ('Tipo D');
+INSERT INTO diagnostico(idtipodiagnostico, diagnostico) VALUES (1, 'Diagnostico Z');
+INSERT INTO diagnostico(idtipodiagnostico, diagnostico) VALUES (1, 'Diagnostico Y');
+INSERT INTO diagnostico(idtipodiagnostico, diagnostico) VALUES (2, 'Diagnostico X');
+INSERT INTO diagnostico(idtipodiagnostico, diagnostico) VALUES (2, 'Diagnostico W');
+INSERT INTO diagnostico(idtipodiagnostico, diagnostico) VALUES (2, 'Diagnostico V');
+INSERT INTO diagnostico(idtipodiagnostico, diagnostico) VALUES (3, 'Diagnostico T');
+INSERT INTO diagnostico(idtipodiagnostico, diagnostico) VALUES (4, 'Diagnostico Q');
+
+INSERT INTO especialidad(especialidad) VALUES ('Medicina general');
+INSERT INTO especialidad(especialidad) VALUES ('Broncopulmonar');
+INSERT INTO especialidad(especialidad) VALUES ('Odontología');
+
+INSERT INTO tipoexamen(tipoexamen) VALUES ('Tipo 1');
+INSERT INTO tipoexamen(tipoexamen) VALUES ('Tipo 2');
+INSERT INTO tipoexamen(tipoexamen) VALUES ('Tipo 3');
+INSERT INTO tipoexamen(tipoexamen) VALUES ('Tipo 4');
+INSERT INTO tipoexamen(tipoexamen) VALUES ('Tipo 5');
+INSERT INTO tipoexamen(tipoexamen) VALUES ('Tipo 6');
+INSERT INTO examen(idtipoexamen, examen) VALUES (1, 'examen 1');
+INSERT INTO examen(idtipoexamen, examen) VALUES (1, 'examen 2');
+INSERT INTO examen(idtipoexamen, examen) VALUES (1, 'examen 3');
+INSERT INTO examen(idtipoexamen, examen) VALUES (2, 'examen 4');
+INSERT INTO examen(idtipoexamen, examen) VALUES (2, 'examen 5');
+INSERT INTO examen(idtipoexamen, examen) VALUES (3, 'examen 6');
+INSERT INTO examen(idtipoexamen, examen) VALUES (4, 'examen 7');
+INSERT INTO examen(idtipoexamen, examen) VALUES (4, 'examen 8');
+INSERT INTO examen(idtipoexamen, examen) VALUES (5, 'examen 9');
+INSERT INTO examen(idtipoexamen, examen) VALUES (5, 'examen 10');
+INSERT INTO examen(idtipoexamen, examen) VALUES (5, 'examen 11');
+INSERT INTO examen(idtipoexamen, examen) VALUES (6, 'examen 12');
+INSERT INTO examen(idtipoexamen, examen) VALUES (6, 'examen 13');
+
+INSERT INTO medicamento(medicamento) VALUES ('Paracetamol');
+INSERT INTO medicamento(medicamento) VALUES ('Paltomiel');
+INSERT INTO medicamento(medicamento) VALUES ('Cyndaquill');
+INSERT INTO medicamento(medicamento) VALUES ('Wartortle');
+
+INSERT INTO sintoma(sintoma) VALUES ('Tos');
+INSERT INTO sintoma(sintoma) VALUES ('Le falta un brazo');
+INSERT INTO sintoma(sintoma) VALUES ('Dolor de cabeza');
+INSERT INTO sintoma(sintoma) VALUES ('Cansancio');
+INSERT INTO sintoma(sintoma) VALUES ('Balazo en la cabeza');
+
+INSERT INTO tipo_tratamiento(tipotratamiento) VALUES ('Tipo AA');
+INSERT INTO tipo_tratamiento(tipotratamiento) VALUES ('Tipo AB');
+INSERT INTO tipo_tratamiento(tipotratamiento) VALUES ('Tipo BA');
+INSERT INTO tipo_tratamiento(tipotratamiento) VALUES ('Tipo BB');
+INSERT INTO tipo_tratamiento(tipotratamiento) VALUES ('Tipo BC');
+INSERT INTO tratamiento(idtipotratamiento, tratamiento) VALUES (1, 'Tratamiento 1');
+INSERT INTO tratamiento(idtipotratamiento, tratamiento) VALUES (1, 'Tratamiento 2');
+INSERT INTO tratamiento(idtipotratamiento, tratamiento) VALUES (1, 'Tratamiento 3');
+INSERT INTO tratamiento(idtipotratamiento, tratamiento) VALUES (2, 'Tratamiento 4');
+INSERT INTO tratamiento(idtipotratamiento, tratamiento) VALUES (3, 'Tratamiento 5');
+INSERT INTO tratamiento(idtipotratamiento, tratamiento) VALUES (3, 'Tratamiento 6');
+INSERT INTO tratamiento(idtipotratamiento, tratamiento) VALUES (4, 'Tratamiento 7');
+INSERT INTO tratamiento(idtipotratamiento, tratamiento) VALUES (4, 'Tratamiento 8');
+INSERT INTO tratamiento(idtipotratamiento, tratamiento) VALUES (4, 'Tratamiento 9');
