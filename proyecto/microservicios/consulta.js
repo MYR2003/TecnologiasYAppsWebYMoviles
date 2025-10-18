@@ -17,6 +17,18 @@ app.get('/', async (req,res) => {
     }
 });
 
+app.post('/', async (req, res) => {
+    const {idpersona, idmedico, idfichamedica, fecha, motivo, duracionminutos, observaciones} = req.body
+    try {
+        const query = 'INSERT INTO consulta(idpersona, idmedico, idfichamedica, fecha, motivo, duracionminutos, observaciones) VALUES ($1, $2, $3, $4, $5, $6, $7)';
+        const values = [idpersona, idmedico, idfichamedica, fecha, motivo, duracionminutos, observaciones]
+        const result = await client.query(query, values);
+        res.json(result.rows)
+    } catch (error) {
+        throw error
+    }
+})
+
 app.listen(port, () => {
     console.log(`microservicio abierto en el puerto ${port}`)
 });
