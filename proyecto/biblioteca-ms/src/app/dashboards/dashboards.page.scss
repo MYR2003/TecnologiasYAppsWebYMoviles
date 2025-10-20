@@ -179,11 +179,13 @@ ion-card-header, ion-card-content {
   --padding-start: 8px;
   --padding-end: 8px;
   --color: #3880ff;
-  font-size: 24px;
+  font-size: 32px;
   
-  ion-icon {
+  .arrow-icon {
     color: #3880ff !important;
-    font-size: 28px;
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 1;
   }
   
   &:hover:not(:disabled) {
@@ -191,9 +193,9 @@ ion-card-header, ion-card-content {
   }
   
   &:disabled {
-    opacity: 0.3;
+    opacity: 0.4;
     
-    ion-icon {
+    .arrow-icon {
       color: #92949c !important;
     }
   }
@@ -211,11 +213,11 @@ body:not(.dark) .pagination-card {
   .pagination-button {
     --color: #3880ff;
     
-    ion-icon {
+    .arrow-icon {
       color: #3880ff !important;
     }
     
-    &:disabled ion-icon {
+    &:disabled .arrow-icon {
       color: #92949c !important;
     }
   }
@@ -230,11 +232,11 @@ body.dark .pagination-card {
   .pagination-button {
     --color: #4c8dff;
     
-    ion-icon {
+    .arrow-icon {
       color: #4c8dff !important;
     }
     
-    &:disabled ion-icon {
+    &:disabled .arrow-icon {
       color: #5f5f5f !important;
     }
   }

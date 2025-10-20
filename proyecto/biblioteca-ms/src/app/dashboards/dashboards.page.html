@@ -128,7 +128,7 @@
           [disabled]="!hasPreviousPage || loadingMore" 
           (click)="goToPreviousPage()"
           class="pagination-button">
-          <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+          <span class="arrow-icon">←</span>
         </ion-button>
         
         <ion-text class="pagination-info">
@@ -140,7 +140,7 @@
           [disabled]="!hasNextPage || loadingMore" 
           (click)="goToNextPage()"
           class="pagination-button">
-          <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+          <span class="arrow-icon">→</span>
         </ion-button>
       </ion-card-content>
     </ion-card>
