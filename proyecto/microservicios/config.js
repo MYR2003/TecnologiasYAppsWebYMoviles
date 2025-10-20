@@ -6,6 +6,7 @@ const client = new Client({
   database: 'pym',
   password: '1234',
   port: 5432,
+  client_encoding: 'UTF8'
 });
 
 module.exports = {client};

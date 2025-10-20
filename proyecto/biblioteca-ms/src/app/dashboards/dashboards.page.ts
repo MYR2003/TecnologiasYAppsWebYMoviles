@@ -74,7 +74,12 @@ export class DashboardsPage {
       next: (response) => {
         console.log('[Dashboards] Respuesta consultas', response);
         if (response.data && response.data.length > 0) {
-          this.consultas = response.data;
+          // Decodificar los textos con problemas de encoding
+          this.consultas = response.data.map((c: any) => ({
+            ...c,
+            motivo: this.fixEncoding(c.motivo),
+            observaciones: this.fixEncoding(c.observaciones)
+          }));
           this.totalConsultas = response.total;
           this.totalPages = Math.ceil(this.totalConsultas / this.pageSize);
           
@@ -169,6 +174,33 @@ export class DashboardsPage {
     if (this.periodo === 'mes') return 'por día (mes)';
     return 'por mes (año)';
   }
+  
+  fixEncoding(text: string | null | undefined): string {
+    if (!text) return '';
+    
+    // Reemplazos directos para las palabras más comunes
+    let fixed = text;
+    fixed = fixed.replace(/RevisiÃƒÂ³n/g, 'Revisión');
+    fixed = fixed.replace(/RevisiÃ³n/g, 'Revisión');
+    fixed = fixed.replace(/revisiÃ³n/g, 'revisión');
+    fixed = fixed.replace(/operaciÃ³n/g, 'operación');
+    fixed = fixed.replace(/informaciÃ³n/g, 'información');
+    fixed = fixed.replace(/atenciÃ³n/g, 'atención');
+    fixed = fixed.replace(/DuraciÃ³n/g, 'Duración');
+    fixed = fixed.replace(/duraciÃ³n/g, 'duración');
+    fixed = fixed.replace(/examinaciÃ³n/g, 'examinación');
+    
+    // Reemplazos de caracteres individuales
+    fixed = fixed.replace(/Ã³/g, 'ó');
+    fixed = fixed.replace(/Ã©/g, 'é');
+    fixed = fixed.replace(/Ã¡/g, 'á');
+    fixed = fixed.replace(/Ã­/g, 'í');
+    fixed = fixed.replace(/Ãº/g, 'ú');
+    fixed = fixed.replace(/Ã±/g, 'ñ');
+    
+    return fixed;
+  }
+  
   public getSparklinePoints(data: number[], width: number, height: number): string {
     if (!data || data.length < 2) return '';
     const max = Math.max(...data);
