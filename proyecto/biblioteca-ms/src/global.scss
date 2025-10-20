@@ -8,6 +8,14 @@ body.dark ion-card.dashboards-card * {
 	color: #f1f5f9 !important;
 }
 
+/* Excepción para botones de paginación - deben ser visibles */
+body:not(.dark) .pagination-card .pagination-button .arrow-icon {
+	color: #ffffff !important;
+}
+body.dark .pagination-card .pagination-button .arrow-icon {
+	color: #ffffff !important;
+}
+
 /* Título principal - forzar colores por tema */
 body:not(.dark) .titulo {
 	color: #000000 !important;

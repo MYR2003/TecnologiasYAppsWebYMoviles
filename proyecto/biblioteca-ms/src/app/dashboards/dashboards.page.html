@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="dashboards-page">
+<ion-content class="dashboards-page" [scrollY]="true" [fullscreen]="true">
   <!-- Estado de carga -->
   <ion-loading *ngIf="loading" message="Cargando métricas..." [showBackdrop]="true" [duration]="0"></ion-loading>
 
