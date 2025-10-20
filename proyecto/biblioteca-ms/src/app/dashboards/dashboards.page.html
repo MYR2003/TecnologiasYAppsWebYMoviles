@@ -101,14 +101,16 @@
     <!-- Lista simple para mostrar las consultas obtenidas -->
     <ion-card>
       <ion-card-header>
-        <ion-card-title>Consultas ({{ consultas.length }})</ion-card-title>
+        <ion-card-title>Consultas ({{ consultas.length }} de {{ totalConsultas }})</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-list *ngIf="consultas.length > 0; else noConsultas">
           <ion-item *ngFor="let c of consultas; index as i">
             <ion-label>
-              <h2>Consulta {{ i + 1 }}</h2>
-              <p>{{ c | json }}</p>
+              <h2>Consulta #{{ c.idconsulta }}</h2>
+              <p><strong>Fecha:</strong> {{ c.fecha | date:'short' }}</p>
+              <p *ngIf="c.motivo"><strong>Motivo:</strong> {{ c.motivo }}</p>
+              <p *ngIf="c.duracionminutos"><strong>Duración:</strong> {{ c.duracionminutos }} min</p>
             </ion-label>
           </ion-item>
         </ion-list>
@@ -117,5 +119,13 @@
         </ng-template>
       </ion-card-content>
     </ion-card>
+
+    <!-- Infinite Scroll para cargar más consultas -->
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Cargando más consultas...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </ng-container>
 </ion-content>

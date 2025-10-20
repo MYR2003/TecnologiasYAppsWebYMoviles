@@ -20,6 +20,13 @@ export class DashboardsPage {
   error: string | null = null;
   empty = false;
 
+  // Variables para paginación
+  currentOffset = 0;
+  pageSize = 50;
+  totalConsultas = 0;
+  hasMoreData = true;
+  loadingMore = false;
+
   // Datos reactivos con Observable
   data$: Observable<any>;
 
@@ -51,9 +58,44 @@ export class DashboardsPage {
   }
 
   ngOnInit() {
-    this.consulta.getConsulta().subscribe(res => {
-      this.consultas = res
-    })
+    this.loadConsultas();
+  }
+
+  loadConsultas(event?: any) {
+    if (this.loadingMore || !this.hasMoreData) {
+      event?.target?.complete();
+      return;
+    }
+
+    this.loadingMore = true;
+
+    this.consulta.getConsulta(this.pageSize, this.currentOffset).subscribe({
+      next: (response) => {
+        if (response.data && response.data.length > 0) {
+          this.consultas = [...this.consultas, ...response.data];
+          this.totalConsultas = response.total;
+          this.hasMoreData = response.hasMore;
+          this.currentOffset += response.data.length;
+          
+          console.log(`Cargadas ${this.consultas.length} de ${this.totalConsultas} consultas totales`);
+        } else {
+          this.hasMoreData = false;
+        }
+
+        this.loadingMore = false;
+        event?.target?.complete();
+      },
+      error: (err) => {
+        console.error('Error al cargar consultas:', err);
+        this.loadingMore = false;
+        this.hasMoreData = false;
+        event?.target?.complete();
+      }
+    });
+  }
+
+  onIonInfinite(event: any) {
+    this.loadConsultas(event);
   }
 
   loadData() {

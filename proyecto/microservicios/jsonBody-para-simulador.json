@@ -1,14 +1,14 @@
 {
-    "persona":1,
-    "contacto":1,
-    "fichaMedica":2,
-    "alergiaPersona":2,
-    "consulta":10,
-    "consultaDiagnostico":3,
-    "consultaSintoma":4,
-    "consultaTratamiento":4,
-    "examenConsulta":3,
-    "medico":5,
-    "personaContacto":4,
-    "receta":3
+    "persona":2000,
+    "contacto":100,
+    "fichaMedica":2000,
+    "alergiaPersona":500,
+    "consulta":10000,
+    "consultaDiagnostico":5000,
+    "consultaSintoma":8000,
+    "consultaTratamiento":7000,
+    "examenConsulta":100,
+    "medico":100,
+    "personaContacto":500,
+    "receta":1000
 }

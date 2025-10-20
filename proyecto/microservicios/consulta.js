@@ -10,10 +10,28 @@ client.connect();
 
 app.get('/', async (req,res) => {
     try {
-        const temp = await client.query('SELECT * FROM consulta');
-        res.json(temp.rows)
+        // Soporte de paginación con parámetros limit y offset
+        const limit = req.query.limit ? parseInt(req.query.limit) : 100; // Por defecto 100
+        const offset = req.query.offset ? parseInt(req.query.offset) : 0;
+        
+        // Consulta con límite y ordenamiento
+        const query = 'SELECT * FROM consulta ORDER BY fecha DESC LIMIT $1 OFFSET $2';
+        const temp = await client.query(query, [limit, offset]);
+        
+        // Obtener el total de registros
+        const countResult = await client.query('SELECT COUNT(*) FROM consulta');
+        const total = parseInt(countResult.rows[0].count);
+        
+        res.json({
+            data: temp.rows,
+            total: total,
+            limit: limit,
+            offset: offset,
+            hasMore: (offset + limit) < total
+        });
     } catch (error) {
-        throw error
+        console.error('Error en GET /consulta:', error);
+        res.status(500).json({ error: error.message });
     }
 });
 
