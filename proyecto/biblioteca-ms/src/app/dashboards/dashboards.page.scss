@@ -160,3 +160,86 @@ ion-card-header, ion-card-content {
   margin-top: 4px;
   color: var(--ion-text-color);
 }
+
+/* Estilos para la paginación */
+.pagination-card {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.pagination-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+}
+
+.pagination-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --color: #3880ff;
+  font-size: 24px;
+  
+  ion-icon {
+    color: #3880ff !important;
+    font-size: 28px;
+  }
+  
+  &:hover:not(:disabled) {
+    opacity: 0.7;
+  }
+  
+  &:disabled {
+    opacity: 0.3;
+    
+    ion-icon {
+      color: #92949c !important;
+    }
+  }
+}
+
+.pagination-info {
+  font-size: 16px;
+  font-weight: 500;
+  min-width: 120px;
+  text-align: center;
+}
+
+// Estilos específicos para modo claro
+body:not(.dark) .pagination-card {
+  .pagination-button {
+    --color: #3880ff;
+    
+    ion-icon {
+      color: #3880ff !important;
+    }
+    
+    &:disabled ion-icon {
+      color: #92949c !important;
+    }
+  }
+  
+  .pagination-info {
+    color: #222 !important;
+  }
+}
+
+// Estilos específicos para modo oscuro
+body.dark .pagination-card {
+  .pagination-button {
+    --color: #4c8dff;
+    
+    ion-icon {
+      color: #4c8dff !important;
+    }
+    
+    &:disabled ion-icon {
+      color: #5f5f5f !important;
+    }
+  }
+  
+  .pagination-info {
+    color: #f1f5f9 !important;
+  }
+}

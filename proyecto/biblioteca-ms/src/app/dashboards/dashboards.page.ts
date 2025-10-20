@@ -21,10 +21,10 @@ export class DashboardsPage {
   empty = false;
 
   // Variables para paginación
-  currentOffset = 0;
-  pageSize = 50;
+  currentPage = 1;
+  pageSize = 10;
   totalConsultas = 0;
-  hasMoreData = true;
+  totalPages = 0;
   loadingMore = false;
 
   // Datos reactivos con Observable
@@ -61,41 +61,64 @@ export class DashboardsPage {
     this.loadConsultas();
   }
 
-  loadConsultas(event?: any) {
-    if (this.loadingMore || !this.hasMoreData) {
-      event?.target?.complete();
+  loadConsultas() {
+    if (this.loadingMore) {
       return;
     }
 
     this.loadingMore = true;
+    const offset = (this.currentPage - 1) * this.pageSize;
+    console.log('[Dashboards] Solicitar consultas', { pageSize: this.pageSize, offset: offset, page: this.currentPage });
 
-    this.consulta.getConsulta(this.pageSize, this.currentOffset).subscribe({
+    this.consulta.getConsulta(this.pageSize, offset).subscribe({
       next: (response) => {
+        console.log('[Dashboards] Respuesta consultas', response);
         if (response.data && response.data.length > 0) {
-          this.consultas = [...this.consultas, ...response.data];
+          this.consultas = response.data;
           this.totalConsultas = response.total;
-          this.hasMoreData = response.hasMore;
-          this.currentOffset += response.data.length;
+          this.totalPages = Math.ceil(this.totalConsultas / this.pageSize);
           
-          console.log(`Cargadas ${this.consultas.length} de ${this.totalConsultas} consultas totales`);
+          console.log(`Mostrando página ${this.currentPage} de ${this.totalPages} (${this.consultas.length} consultas de ${this.totalConsultas} totales)`);
         } else {
-          this.hasMoreData = false;
+          this.consultas = [];
+          this.totalConsultas = 0;
+          this.totalPages = 0;
         }
 
         this.loadingMore = false;
-        event?.target?.complete();
       },
       error: (err) => {
         console.error('Error al cargar consultas:', err);
         this.loadingMore = false;
-        this.hasMoreData = false;
-        event?.target?.complete();
       }
     });
   }
 
+  goToPreviousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadConsultas();
+    }
+  }
+
+  goToNextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadConsultas();
+    }
+  }
+
+  get hasPreviousPage(): boolean {
+    return this.currentPage > 1;
+  }
+
+  get hasNextPage(): boolean {
+    return this.currentPage < this.totalPages;
+  }
+
   onIonInfinite(event: any) {
-    this.loadConsultas(event);
+    // Ya no se usa el infinite scroll
+    event?.target?.complete();
   }
 
   loadData() {

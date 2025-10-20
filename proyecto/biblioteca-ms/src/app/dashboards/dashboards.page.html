@@ -101,7 +101,7 @@
     <!-- Lista simple para mostrar las consultas obtenidas -->
     <ion-card>
       <ion-card-header>
-        <ion-card-title>Consultas ({{ consultas.length }} de {{ totalConsultas }})</ion-card-title>
+        <ion-card-title>Consultas ({{ totalConsultas > 0 ? ((currentPage - 1) * pageSize + 1) + '-' + ((currentPage - 1) * pageSize + consultas.length) + ' de ' + totalConsultas : '0' }})</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-list *ngIf="consultas.length > 0; else noConsultas">
@@ -120,12 +120,29 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- Infinite Scroll para cargar más consultas -->
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="onIonInfinite($event)">
-      <ion-infinite-scroll-content
-        loadingSpinner="bubbles"
-        loadingText="Cargando más consultas...">
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
+    <!-- Controles de paginación -->
+    <ion-card *ngIf="totalPages > 1" class="dashboards-card pagination-card">
+      <ion-card-content class="dashboards-card-content pagination-content">
+        <ion-button 
+          fill="clear" 
+          [disabled]="!hasPreviousPage || loadingMore" 
+          (click)="goToPreviousPage()"
+          class="pagination-button">
+          <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+        </ion-button>
+        
+        <ion-text class="pagination-info">
+          Página {{ currentPage }} de {{ totalPages }}
+        </ion-text>
+        
+        <ion-button 
+          fill="clear" 
+          [disabled]="!hasNextPage || loadingMore" 
+          (click)="goToNextPage()"
+          class="pagination-button">
+          <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
   </ng-container>
 </ion-content>
