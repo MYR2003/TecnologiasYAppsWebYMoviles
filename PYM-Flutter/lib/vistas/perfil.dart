@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../servicios/auth.dart';
 import 'login.dart';
+import '../servicios/geolocalizacion.dart';
 
 const baseUrl = "http://10.0.2.2";
 
@@ -17,10 +18,29 @@ class _PerfilViewState extends State<PerfilView> {
   Map<String, dynamic>? medico;
   bool cargando = true;
 
+  // Servicio de geo
+  final geoService = GeolocalizacionService();
+  String ubicacionTexto = '';
+
   @override
   void initState() {
     super.initState();
     _cargarMedicoSesion();
+    _cargarUbicacion();
+  }
+
+  // Cargo Ubicación
+  Future<void> _cargarUbicacion() async {
+    try {
+      final data = await geoService.obtenerUbicacion();
+      if (data != null) {
+        setState(() {
+          ubicacionTexto = '${data['city']}, ${data['country']}';
+        });
+      }
+    } catch (e) {
+      print('Error al obtener ubicación: $e');
+    }
   }
 
   Future<void> _cargarMedicoSesion() async {
@@ -29,7 +49,6 @@ class _PerfilViewState extends State<PerfilView> {
       final medicoGuardado = await auth.getSession();
 
       if (medicoGuardado == null) {
-        // Si no hay sesión guardada, intenta cargar al menos el primero
         final res = await http.get(Uri.parse('$baseUrl:3015/'));
         if (res.statusCode == 200) {
           final data = jsonDecode(utf8.decode(res.bodyBytes));
@@ -84,7 +103,6 @@ class _PerfilViewState extends State<PerfilView> {
   }
 
   Widget _contenidoPerfil() {
-    // Limpiar "Dr." y obtener inicial real
     final nombreLimpio = medico!['nombre']
         ?.toString()
         .replaceAll(RegExp(r'^[Dd][Rr][Aa]?\.\s*'), '')
@@ -93,12 +111,10 @@ class _PerfilViewState extends State<PerfilView> {
         ? nombreLimpio[0].toUpperCase()
         : '?';
 
-    // Formatear fecha
     final fecha = medico!['fechanacimiento']?.toString() ?? '';
     final fechaLimpia =
         fecha.contains('T') ? fecha.split('T').first : 'No disponible';
 
-    // Asignar nombre de especialidad
     const especialidades = {
       1: 'Medicina General',
       2: 'Pediatría',
@@ -155,6 +171,17 @@ class _PerfilViewState extends State<PerfilView> {
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
+          // Ubicación
+          if (ubicacionTexto.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            Text(
+              'Ubicación actual: $ubicacionTexto',
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
+          ],
         ],
       ),
     );

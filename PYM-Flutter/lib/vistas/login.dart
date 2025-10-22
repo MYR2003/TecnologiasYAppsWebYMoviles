@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../servicios/auth.dart';
-import 'home.dart'; // ✅ Para ir al Home después de loguearse
+import 'home.dart';
 
 const baseUrl = "http://10.0.2.2";
 
@@ -46,7 +46,6 @@ class _LoginViewState extends State<LoginView> {
 
           if (!mounted) return;
 
-          // ✅ Redirigir al Home
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (_) => const HomeView()),

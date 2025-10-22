@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 const baseUrl = "http://10.0.2.2";
 
 class AuthService {
-  // Guarda los datos del médico autenticado
+  // Guarda los datos del médico
   Future<void> saveSession(Map<String, dynamic> medico) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('medico', jsonEncode(medico));
