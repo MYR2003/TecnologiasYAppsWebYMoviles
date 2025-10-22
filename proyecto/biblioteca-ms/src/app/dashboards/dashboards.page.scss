@@ -1,3 +1,17 @@
+// Asegurar scroll en ion-content
+ion-content.dashboards-page {
+  --overflow: auto;
+  --padding-top: 16px;
+  --padding-bottom: 120px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+.dashboards-page {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
 .tendencia-green {
   color: #22c55e !important;
 }
@@ -176,25 +190,31 @@ ion-card-header, ion-card-content {
 }
 
 .pagination-button {
-  --padding-start: 8px;
-  --padding-end: 8px;
-  --color: #3880ff;
-  font-size: 24px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --color: #000000;
+  font-size: 40px;
+  min-width: 50px;
+  min-height: 50px;
   
-  ion-icon {
-    color: #3880ff !important;
-    font-size: 28px;
+  .arrow-icon {
+    color: #000000 !important;
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1;
+    display: block;
   }
   
   &:hover:not(:disabled) {
     opacity: 0.7;
+    background: rgba(0, 0, 0, 0.05);
   }
   
   &:disabled {
     opacity: 0.3;
     
-    ion-icon {
-      color: #92949c !important;
+    .arrow-icon {
+      color: #666666 !important;
     }
   }
 }
@@ -209,37 +229,57 @@ ion-card-header, ion-card-content {
 // Estilos específicos para modo claro
 body:not(.dark) .pagination-card {
   .pagination-button {
-    --color: #3880ff;
+    --color: #ffffff;
+    --background: #007bff;
+    --background-activated: #0056b3;
+    --background-hover: #0069d9;
+    border-radius: 8px;
     
-    ion-icon {
-      color: #3880ff !important;
+    .arrow-icon {
+      color: #ffffff !important;
+      text-shadow: none;
     }
     
-    &:disabled ion-icon {
-      color: #92949c !important;
+    &:disabled {
+      --background: #e0e0e0;
+      
+      .arrow-icon {
+        color: #999999 !important;
+      }
     }
   }
   
   .pagination-info {
     color: #222 !important;
+    font-weight: 600;
   }
 }
 
 // Estilos específicos para modo oscuro
 body.dark .pagination-card {
   .pagination-button {
-    --color: #4c8dff;
+    --color: #ffffff;
+    --background: #0056b3;
+    --background-activated: #003d82;
+    --background-hover: #004799;
+    border-radius: 8px;
     
-    ion-icon {
-      color: #4c8dff !important;
+    .arrow-icon {
+      color: #ffffff !important;
+      text-shadow: none;
     }
     
-    &:disabled ion-icon {
-      color: #5f5f5f !important;
+    &:disabled {
+      --background: #444444;
+      
+      .arrow-icon {
+        color: #888888 !important;
+      }
     }
   }
   
   .pagination-info {
     color: #f1f5f9 !important;
+    font-weight: 600;
   }
 }
