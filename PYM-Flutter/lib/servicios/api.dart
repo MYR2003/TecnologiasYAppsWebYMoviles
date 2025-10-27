@@ -1,72 +1,52 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-const baseUrl = "http://10.0.2.2";
+const String baseUrl = "http://10.0.2.2";
+
 
 class ApiService {
+  Future<List<dynamic>> _getList(String endpoint, {int port = 3000}) async {
+    final Uri url = Uri.parse('$baseUrl:$port/$endpoint');
+    print('GET → $url');
+
+    try {
+      final response = await http
+          .get(url)
+          .timeout(const Duration(seconds: 8));
+
+      print('Código de respuesta: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        if (decoded is List) {
+          print('${decoded.length} registros recibidos de $endpoint');
+          return decoded;
+        } else {
+          print('La respuesta no es una lista');
+          return [];
+        }
+      } else {
+        print('Error ${response.statusCode}: ${response.body}');
+        return [];
+      }
+    } catch (e) {
+      print('Error al conectar con $endpoint → $e');
+      return [];
+    }
+  }
+
+  // Pacientes
   Future<List<dynamic>> getPacientes() async {
-    final url = Uri.parse('$baseUrl:3016/');
-    print("Llamando a $url");
-
-    try {
-      final res = await http.get(url).timeout(const Duration(seconds: 5));
-      print("Código de respuesta pacientes: ${res.statusCode}");
-
-      if (res.statusCode == 200) {
-        final data = jsonDecode(utf8.decode(res.bodyBytes));
-        print("${data.length} pacientes recibidos");
-        return data;
-      } else {
-        print("Error pacientes: ${res.body}");
-        return [];
-      }
-    } catch (e) {
-      print("Error al cargar pacientes: $e");
-      return [];
-    }
+    return await _getList('', port: 3016);
   }
 
+  // Consultas
   Future<List<dynamic>> getConsultas() async {
-    final url = Uri.parse('$baseUrl:3002/');
-    print("Llamando a $url");
-
-    try {
-      final res = await http.get(url).timeout(const Duration(seconds: 5));
-      print("Código de respuesta consultas: ${res.statusCode}");
-
-      if (res.statusCode == 200) {
-        final data = jsonDecode(utf8.decode(res.bodyBytes));
-        print("${data.length} consultas recibidas");
-        return data;
-      } else {
-        print("Error consultas: ${res.body}");
-        return [];
-      }
-    } catch (e) {
-      print("Error al cargar consultas: $e");
-      return [];
-    }
+    return await _getList('', port: 3002);
   }
 
+  // Médicos
   Future<List<dynamic>> getMedicos() async {
-    final url = Uri.parse('$baseUrl:3015/');
-    print("Llamando a $url");
-
-    try {
-      final res = await http.get(url).timeout(const Duration(seconds: 5));
-      print("Código de respuesta médicos: ${res.statusCode}");
-
-      if (res.statusCode == 200) {
-        final data = jsonDecode(utf8.decode(res.bodyBytes));
-        print("${data.length} médicos recibidos");
-        return data;
-      } else {
-        print("Error médicos: ${res.body}");
-        return [];
-      }
-    } catch (e) {
-      print("Error al cargar médicos: $e");
-      return [];
-    }
+    return await _getList('', port: 3015);
   }
 }

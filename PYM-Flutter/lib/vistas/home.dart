@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'agenda.dart';
 import 'pacientes.dart';
 import 'perfil.dart';
-import 'geolocalizacion.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -17,7 +16,6 @@ class _HomeViewState extends State<HomeView> {
   final List<Widget> _views = [
     PacientesView(),
     AgendaView(),
-    const GeolocalizacionPage(),
     PerfilView(),
   ];
 
@@ -45,10 +43,6 @@ class _HomeViewState extends State<HomeView> {
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month),
             label: 'Agenda',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.location_on),
-            label: 'Ubicación',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
