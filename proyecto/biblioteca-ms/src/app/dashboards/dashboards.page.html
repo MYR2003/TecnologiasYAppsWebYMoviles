@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="dashboards-page">
+<ion-content class="dashboards-page" [scrollY]="true" [fullscreen]="true">
   <!-- Estado de carga -->
   <ion-loading *ngIf="loading" message="Cargando métricas..." [showBackdrop]="true" [duration]="0"></ion-loading>
 
@@ -101,20 +101,47 @@
     <!-- Lista simple para mostrar las consultas obtenidas -->
     <ion-card>
       <ion-card-header>
-        <ion-card-title>Consultas ({{ consultas.length }})</ion-card-title>
+        <ion-card-title>Consultas ({{ totalConsultas > 0 ? ((currentPage - 1) * pageSize + 1) + '-' + ((currentPage - 1) * pageSize + consultas.length) + ' de ' + totalConsultas : '0' }})</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-list *ngIf="consultas.length > 0; else noConsultas">
           <ion-item *ngFor="let c of consultas; index as i">
             <ion-label>
-              <h2>Consulta {{ i + 1 }}</h2>
-              <p>{{ c | json }}</p>
+              <h2>Consulta #{{ c.idconsulta }}</h2>
+              <p><strong>Fecha:</strong> {{ c.fecha | date:'short' }}</p>
+              <p *ngIf="c.motivo"><strong>Motivo:</strong> {{ c.motivo }}</p>
+              <p *ngIf="c.duracionminutos"><strong>Duración:</strong> {{ c.duracionminutos }} min</p>
             </ion-label>
           </ion-item>
         </ion-list>
         <ng-template #noConsultas>
           <ion-text color="medium">No hay consultas para mostrar.</ion-text>
         </ng-template>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Controles de paginación -->
+    <ion-card *ngIf="totalPages > 1" class="dashboards-card pagination-card">
+      <ion-card-content class="dashboards-card-content pagination-content">
+        <ion-button 
+          fill="clear" 
+          [disabled]="!hasPreviousPage || loadingMore" 
+          (click)="goToPreviousPage()"
+          class="pagination-button">
+          <span class="arrow-icon">←</span>
+        </ion-button>
+        
+        <ion-text class="pagination-info">
+          Página {{ currentPage }} de {{ totalPages }}
+        </ion-text>
+        
+        <ion-button 
+          fill="clear" 
+          [disabled]="!hasNextPage || loadingMore" 
+          (click)="goToNextPage()"
+          class="pagination-button">
+          <span class="arrow-icon">→</span>
+        </ion-button>
       </ion-card-content>
     </ion-card>
   </ng-container>
