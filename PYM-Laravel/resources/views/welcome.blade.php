@@ -9,7 +9,7 @@
 
     <div class="mt-5">
         <h5>Tiempo de uso de la aplicación durante la semana</h5>
-        <canvas id="usageChart" width="100" height="100"></canvas>
+        <canvas id="usageChart" width="400" height="150" style="margin-left: 300px; margin-right: 300px"></canvas>
     </div>
 </div>
 
@@ -21,7 +21,7 @@ new Chart(ctx, {
         labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
         datasets: [{
             label: 'Tiempo de uso',
-            data: [120, 150, 150, 180, 90],
+            data: [4, 3, 2, 5, 1],
             borderColor: 'rgba(0, 255, 255, 0.8)',
             backgroundColor: 'rgba(0, 255, 255, 0.3)',
             fill: true,
