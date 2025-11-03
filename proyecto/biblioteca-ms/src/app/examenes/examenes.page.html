@@ -5,49 +5,49 @@
 
       </ion-menu-button>
     </ion-buttons>
-    <ion-title>Exámenes</ion-title>
+    <ion-title>{{ 'exams.pageTitle' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="contenido">
   <ion-grid>
     <ion-text class="titulo visible-dark">
-      Bienvenido a PYM app
+      {{ 'exams.welcomeTitle' | translate }}
     </ion-text>
   </ion-grid>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-img src="../../assets/icon/favicon.png" alt="" class="foto">
-        </ion-img>
-      </ion-col>
-      <ion-col>
-    <ion-text class="perfil">
-      {{ nombreUsuario }}
-    </ion-text>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
   <div class="files">
-    <label for="fileInput">Selecciona imagen o PDF:</label>
-    <input id="fileInput" type="file" accept="image/jpeg,application/pdf" (change)="onFileChange($event)" title="Selecciona imagen o PDF" />
-    <ion-button (click)="subirImagen()" [disabled]="!selectedFile || loading">Subir archivo</ion-button>
+    <label for="fileInput">{{ 'exams.selectFileLabel' | translate }}</label>
+    <input
+      id="fileInput"
+      type="file"
+      accept="image/jpeg,application/pdf"
+      (change)="onFileChange($event)"
+      [attr.title]="'exams.selectFileTitle' | translate"
+    />
+    <ion-button (click)="subirImagen()" [disabled]="!selectedFile || loading">{{ 'exams.uploadButton' | translate }}</ion-button>
   </div>
 
   <ion-spinner *ngIf="loading"></ion-spinner>
-  <ion-text color="danger" *ngIf="error">{{ error }}</ion-text>
-  <ion-text class="no-examenes-text" *ngIf="examenes.length === 0 && !loading && !selectedFile">No hay exámenes cargados.</ion-text>
+  <ion-text color="danger" *ngIf="showStatusMessages && error">{{ error }}</ion-text>
+  <ion-text class="no-examenes-text" *ngIf="showStatusMessages && examenes.length === 0 && !loading">
+    {{ 'exams.noExams' | translate }}
+  </ion-text>
 
   <ion-list *ngIf="examenes.length > 0">
     <ion-item *ngFor="let examen of examenes">
       <ion-label>
-        <h2>Examen #{{ examen.idExamen }}</h2>
-        <p>Fecha: {{ examen.fecha }}</p>
-        <p>Datos extraídos: {{ examen.datosExtraidos }}</p>
+        <h2>{{ 'exams.examNumber' | translate:{ id: examen.idExamen } }}</h2>
+        <p>{{ 'exams.dateLabel' | translate }}: {{ examen.fecha }}</p>
+        <p>{{ 'exams.extractedDataLabel' | translate }}: {{ examen.datosExtraidos }}</p>
       </ion-label>
-      <img *ngIf="examen.imagen && examen.imagen.startsWith('data:image')" [src]="examen.imagen" class="examen-img" alt="Imagen del examen {{ examen.idExamen }}" title="Imagen del examen" />
-      <ion-button color="danger" (click)="eliminarExamen(examen.idExamen)" slot="end">Eliminar</ion-button>
+      <img
+        *ngIf="examen.imagen && examen.imagen.startsWith('data:image')"
+        [src]="examen.imagen"
+        class="examen-img"
+        alt="{{ 'exams.imageAlt' | translate:{ id: examen.idExamen } }}"
+        title="{{ 'exams.imageAlt' | translate:{ id: examen.idExamen } }}"
+      />
+      <ion-button color="danger" (click)="eliminarExamen(examen.idExamen)" slot="end">{{ 'exams.deleteButton' | translate }}</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>

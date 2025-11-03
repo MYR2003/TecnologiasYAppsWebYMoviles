@@ -1,0 +1,42 @@
+<ion-content fullscreen class="landing">
+  <section class="hero" aria-labelledby="landing-hero-title">
+    <div class="hero__content">
+      <h1 id="landing-hero-title" class="hero__title">{{ 'landing.heroTitle' | translate }}</h1>
+      <p class="hero__subtitle">
+        {{ 'landing.heroSubtitle' | translate }}
+      </p>
+      <ion-button size="large" color="primary" routerLink="/examenes" routerDirection="root" class="hero__cta">
+        {{ 'landing.heroButton' | translate }}
+      </ion-button>
+    </div>
+    <div class="hero__visual">
+      <div class="visual-card">
+        <strong>{{ 'landing.visual1Title' | translate }}</strong>
+        <span>{{ 'landing.visual1Text' | translate }}</span>
+      </div>
+      <div class="visual-card">
+        <strong>{{ 'landing.visual2Title' | translate }}</strong>
+        <span>{{ 'landing.visual2Text' | translate }}</span>
+      </div>
+    </div>
+  </section>
+  <section class="highlights">
+    <div class="highlight">
+      <h3>{{ 'landing.highlight1Title' | translate }}</h3>
+      <p>{{ 'landing.highlight1Text' | translate }}</p>
+    </div>
+    <div class="highlight">
+      <h3>{{ 'landing.highlight2Title' | translate }}</h3>
+      <p>{{ 'landing.highlight2Text' | translate }}</p>
+    </div>
+    <div class="highlight">
+      <h3>{{ 'landing.highlight3Title' | translate }}</h3>
+      <p>{{ 'landing.highlight3Text' | translate }}</p>
+    </div>
+  </section>
+  <section class="privacy-note" aria-label="Compromiso de privacidad">
+    <p>
+      {{ 'landing.privacyNote' | translate }}
+    </p>
+  </section>
+</ion-content>

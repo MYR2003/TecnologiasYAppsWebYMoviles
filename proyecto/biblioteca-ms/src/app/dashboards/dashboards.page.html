@@ -3,18 +3,18 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Dashboards</ion-title>
+    <ion-title>{{ 'dashboards.pageTitle' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="dashboards-page" [scrollY]="true" [fullscreen]="true">
   <!-- Estado de carga -->
-  <ion-loading *ngIf="loading" message="Cargando métricas..." [showBackdrop]="true" [duration]="0"></ion-loading>
+  <ion-loading *ngIf="loading" [message]="'dashboards.loadingMessage' | translate" [showBackdrop]="true" [duration]="0"></ion-loading>
 
   <!-- Estado de error -->
   <ion-card *ngIf="!loading && error" color="danger">
     <ion-card-header>
-      <ion-card-title>Error</ion-card-title>
+      <ion-card-title>{{ 'dashboards.errorTitle' | translate }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>{{ error }}</ion-card-content>
   </ion-card>
@@ -22,53 +22,34 @@
   <!-- Estado vacío -->
   <ion-card *ngIf="!loading && !error && empty" color="warning">
     <ion-card-header>
-      <ion-card-title>Sin datos</ion-card-title>
+      <ion-card-title>{{ 'dashboards.emptyTitle' | translate }}</ion-card-title>
     </ion-card-header>
-    <ion-card-content>No hay métricas disponibles.</ion-card-content>
+    <ion-card-content>{{ 'dashboards.emptyMessage' | translate }}</ion-card-content>
   </ion-card>
 
   <!-- Estado normal -->
   <ng-container *ngIf="!loading && !error && !empty">
     <ion-card class="dashboards-card">
       <ion-card-header class="dashboards-card-header">
-        <ion-card-title>Métricas históricas</ion-card-title>
+        <ion-card-title>{{ 'dashboards.historicalMetrics' | translate }}</ion-card-title>
       </ion-card-header>
       <ion-card-content class="dashboards-card-content">
         <div class="metricas-flex">
           <div class="metrica-box">
-            <div class="metrica-label">Total exámenes</div>
-            <div class="metrica-valor">
-              {{ totalExamenes }}
-              <span class="tendencia" [ngClass]="{'up': tendenciaExamenes > 0, 'down': tendenciaExamenes < 0}">
-                <ion-icon *ngIf="tendenciaExamenes > 0" name="arrow-up-outline"></ion-icon>
-                <ion-icon *ngIf="tendenciaExamenes < 0" name="arrow-down-outline"></ion-icon>
-                <span *ngIf="tendenciaExamenes !== 0"
-                  [ngClass]="tendenciaExamenes > 0 ? 'tendencia-green' : (tendenciaExamenes < 0 ? 'tendencia-red' : '')">
-                  {{ tendenciaExamenes > 0 ? '+' : '' }}{{ tendenciaExamenes }}% respecto a la semana anterior
-                </span>
-              </span>
-            </div>
-            <div class="sparkline-container">
-              <svg *ngIf="exPorDia.length > 1" [attr.width]="120" [attr.height]="24" class="sparkline">
-                <polyline [attr.points]="getSparklinePoints(exPorDia, 120, 24)" fill="none" stroke="#2563eb"
-                  stroke-width="2" />
-              </svg>
+            <div class="metrica-label">{{ 'dashboards.totalExams' | translate }}</div>
+            <div class="metrica-valor">{{ totalExamenes }}</div>
+            <div class="tendencia tendencia-positive">
+              <ion-icon name="trending-up-outline"></ion-icon>
+              <span>{{ 'dashboards.trendComparison' | translate:{ percent: tendenciaExamenes } }}</span>
             </div>
           </div>
           <div class="metrica-box">
-            <div class="metrica-label">Total personas</div>
-            <div class="metrica-valor">
-              {{ totalPersonas }}
-              <span class="tendencia" [ngClass]="{'up': tendenciaPersonas > 0, 'down': tendenciaPersonas < 0}">
-                <ion-icon *ngIf="tendenciaPersonas > 0" name="arrow-up-outline"></ion-icon>
-                <ion-icon *ngIf="tendenciaPersonas < 0" name="arrow-down-outline"></ion-icon>
-                <span *ngIf="tendenciaPersonas !== 0"
-                  [ngClass]="tendenciaPersonas > 0 ? 'tendencia-green' : (tendenciaPersonas < 0 ? 'tendencia-red' : '')">
-                  {{ tendenciaPersonas > 0 ? '+' : '' }}{{ tendenciaPersonas }}% respecto a la semana anterior
-                </span>
-              </span>
+            <div class="metrica-label">{{ 'dashboards.totalPeople' | translate }}</div>
+            <div class="metrica-valor">{{ totalPersonas }}</div>
+            <div class="tendencia tendencia-positive">
+              <ion-icon name="trending-up-outline"></ion-icon>
+              <span>{{ 'dashboards.trendComparison' | translate:{ percent: tendenciaPersonas } }}</span>
             </div>
-            <div class="sparkline-placeholder"> <!-- Aquí iría el sparkline --> </div>
           </div>
         </div>
       </ion-card-content>
@@ -76,46 +57,83 @@
 
     <ion-card class="dashboards-card">
       <ion-card-header class="dashboards-card-header">
-        <ion-card-title>Exámenes {{ periodLabel }}
-          <ion-select interface="popover" [(ngModel)]="periodo" class="periodo-select">
-            <ion-select-option value="semana">Semana</ion-select-option>
-            <ion-select-option value="mes">Mes</ion-select-option>
-            <ion-select-option value="anio">Año</ion-select-option>
+        <ion-card-title>{{ 'dashboards.examsByPeriod' | translate:{ period: periodLabel } }}
+          <ion-select interface="popover" [(ngModel)]="periodo" class="periodo-select" (ionChange)="onPeriodoChange()">
+            <ion-select-option value="semana">{{ 'dashboards.period.week' | translate }}</ion-select-option>
+            <ion-select-option value="mes">{{ 'dashboards.period.month' | translate }}</ion-select-option>
+            <ion-select-option value="anio">{{ 'dashboards.period.year' | translate }}</ion-select-option>
           </ion-select>
         </ion-card-title>
       </ion-card-header>
       <ion-card-content class="dashboards-card-content">
-        <div class="bar-chart">
-          <div *ngFor="let val of exPorDia; let i = index" class="bar-group">
-            <div class="bar-tooltip">
-              <div class="bar-valor">{{ val }}</div>
-              <div class="bar" [ngStyle]="{height: ((val / (maxValue || 1)) * 100) + '%'}"
-                [attr.title]="labels[i] + ': ' + val"></div>
+  <ng-container *ngIf="chartData as chart">
+          <ng-container *ngIf="chart.points.length > 0; else chartVacio">
+            <div class="line-chart">
+              <div class="line-chart-inner" [style.minWidth.px]="chart.width">
+                <svg class="line-chart-svg"
+                     [attr.viewBox]="'0 0 ' + chart.width + ' ' + chart.height"
+                     [attr.width]="chart.width"
+                     [attr.height]="chart.height"
+                     preserveAspectRatio="none">
+                  <g class="line-chart-guides">
+                    <line *ngFor="let guide of chart.guides"
+                          [attr.x1]="chart.padding.left"
+                          [attr.x2]="chart.width - chart.padding.right"
+                          [attr.y1]="guide.y"
+                          [attr.y2]="guide.y"></line>
+                  </g>
+                  <polyline class="line-chart-path" [attr.points]="chart.polyline"></polyline>
+                  <g class="line-chart-points">
+                    <circle
+                      *ngFor="let point of chart.points"
+                      class="line-chart-point"
+                      [class.active]="selectedPoint?.index === point.index"
+                      [attr.cx]="point.x"
+                      [attr.cy]="point.y"
+                      r="6"
+                      (click)="selectPoint(point)">
+                      <title>{{ 'dashboards.chart.tooltip' | translate:{ label: point.label, value: point.value } }}</title>
+                    </circle>
+                  </g>
+                </svg>
+                <div class="line-chart-labels">
+                  <span *ngFor="let point of chart.points">{{ point.label }}</span>
+                </div>
+              </div>
             </div>
-            <span class="bar-label">{{ labels[i] }}</span>
-          </div>
-        </div>
+            <div class="line-detail" *ngIf="selectedPoint">
+              <h4>{{ selectedPoint.label }}</h4>
+              <p>{{ 'dashboards.chart.detailTitle' | translate:{ value: selectedPoint.value } }}</p>
+              <p class="line-detail-note">
+                {{ periodo === 'anio' ? ('dashboards.chart.detailNote.year' | translate) : ('dashboards.chart.detailNote.day' | translate) }}
+              </p>
+            </div>
+          </ng-container>
+        </ng-container>
+        <ng-template #chartVacio>
+          <ion-text color="medium">{{ 'dashboards.chart.noData' | translate }}</ion-text>
+        </ng-template>
       </ion-card-content>
     </ion-card>
 
     <!-- Lista simple para mostrar las consultas obtenidas -->
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Consultas ({{ totalConsultas > 0 ? ((currentPage - 1) * pageSize + 1) + '-' + ((currentPage - 1) * pageSize + consultas.length) + ' de ' + totalConsultas : '0' }})</ion-card-title>
+    <ion-card class="dashboards-card consultas-card">
+      <ion-card-header class="dashboards-card-header">
+        <ion-card-title>{{ consultasHeader }}</ion-card-title>
       </ion-card-header>
-      <ion-card-content>
+      <ion-card-content class="dashboards-card-content">
         <ion-list *ngIf="consultas.length > 0; else noConsultas">
           <ion-item *ngFor="let c of consultas; index as i">
             <ion-label>
-              <h2>Consulta #{{ c.idconsulta }}</h2>
-              <p><strong>Fecha:</strong> {{ c.fecha | date:'short' }}</p>
-              <p *ngIf="c.motivo"><strong>Motivo:</strong> {{ c.motivo }}</p>
-              <p *ngIf="c.duracionminutos"><strong>Duración:</strong> {{ c.duracionminutos }} min</p>
+              <h2>{{ 'cards.consultation.title' | translate }} #{{ c.idconsulta }}</h2>
+              <p><strong>{{ 'exams.dateLabel' | translate }}:</strong> {{ c.fecha | date:'short' }}</p>
+              <p *ngIf="c.motivo"><strong>{{ 'cards.consultation.motive' | translate }}:</strong> {{ c.motivo }}</p>
+              <p *ngIf="c.duracionminutos"><strong>{{ 'cards.consultation.durationLabel' | translate }}:</strong> {{ 'cards.consultation.durationValue' | translate:{ minutes: c.duracionminutos } }}</p>
             </ion-label>
           </ion-item>
         </ion-list>
         <ng-template #noConsultas>
-          <ion-text color="medium">No hay consultas para mostrar.</ion-text>
+          <ion-text color="medium">{{ 'dashboards.consultationsEmpty' | translate }}</ion-text>
         </ng-template>
       </ion-card-content>
     </ion-card>
@@ -132,7 +150,7 @@
         </ion-button>
         
         <ion-text class="pagination-info">
-          Página {{ currentPage }} de {{ totalPages }}
+          {{ 'dashboards.paginationInfo' | translate:{ current: currentPage, total: totalPages } }}
         </ion-text>
         
         <ion-button 

@@ -62,7 +62,7 @@ body.dark .files {
 }
 
 .files input[type="file"]::-webkit-file-upload-button {
-  background: #3880ff;
+  background: var(--ion-color-primary);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -73,27 +73,27 @@ body.dark .files {
 }
 
 .files input[type="file"]::-webkit-file-upload-button:hover {
-  background: #2563eb;
+  background: var(--ion-color-primary-shade);
 }
 
 /* Mejorar visibilidad del botón del selector de archivo en modo oscuro */
 body.dark .files input[type="file"]::file-selector-button {
-  background: #4a90e2;
+  background: var(--ion-color-primary-tint);
   color: white;
 }
 
 body.dark .files input[type="file"]::-webkit-file-upload-button {
-  background: #4a90e2;
+  background: var(--ion-color-primary-tint);
   color: white;
 }
 
 body.dark .files input[type="file"]::-webkit-file-upload-button {
-  background: #4a90e2;
+  background: var(--ion-color-primary-tint);
   color: white;
 }
 
 body.dark .files input[type="file"]::-webkit-file-upload-button:hover {
-  background: #357abd;
+  background: var(--ion-color-primary);
 }
 
 .titulo {
@@ -127,7 +127,7 @@ body.dark .titulo.visible-dark {
 }
 
 .perfil {
-  color: #333;
+  color: var(--ion-text-color);
   font-weight: 600;
   font-size: 18px;
   display: flex;
@@ -136,7 +136,7 @@ body.dark .titulo.visible-dark {
 }
 
 body.dark .perfil {
-  color: #ffffff;
+  color: var(--ion-text-color);
 }
 
 .foto {
@@ -171,7 +171,7 @@ body:not(.dark) div.files input[type="file"]::-webkit-file-upload-button,
 body.dark div.files input[type="file"]::file-selector-button,
 body:not(.dark) div.files input[type="file"]::file-selector-button {
   color: white !important;
-  background: #3880ff !important;
+  background: var(--ion-color-primary) !important;
   border: none !important;
   -webkit-text-fill-color: white !important;
 }
@@ -184,7 +184,7 @@ div.files input[type="file"]::file-selector-button,
 input[type="file"]::-webkit-file-upload-button,
 input[type="file"]::file-selector-button {
   color: white !important;
-  background: #3880ff !important;
+  background: var(--ion-color-primary) !important;
   border: none !important;
   -webkit-text-fill-color: white !important;
   font-weight: 500 !important;

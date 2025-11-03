@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '../core/i18n/translate.pipe';
+import { TranslationService } from '../core/i18n/translation.service';
 
 @Component({
   selector: 'app-registrar-persona',
   standalone: true,
-  imports: [CommonModule, IonicModule, FormsModule],
+  imports: [CommonModule, IonicModule, FormsModule, TranslatePipe],
   templateUrl: './registrar-persona.page.html',
   styleUrls: ['./registrar-persona.page.scss']
 })
@@ -24,7 +26,7 @@ export class RegistrarPersonaPage {
   error = '';
   success = false;
 
-  constructor(private personasService: PersonasService, private router: Router) {}
+  constructor(private personasService: PersonasService, private router: Router, private readonly translation: TranslationService) {}
 
   salir() {
     this.router.navigate(['/']);
@@ -62,7 +64,7 @@ export class RegistrarPersonaPage {
   this.router.navigate(['/']);
       },
       error: (err) => {
-        this.error = 'Error al guardar persona';
+        this.error = this.translation.translate('person.saveError');
         this.loading = false;
       }
     });

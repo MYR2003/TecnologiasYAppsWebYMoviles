@@ -1,0 +1,123 @@
+.landing {
+  --background: linear-gradient(180deg, #f5f7ff 0%, #ffffff 100%);
+  display: flex;
+  flex-direction: column;
+  --padding-start: 20px;
+  --padding-end: 20px;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+  padding: 64px 0 40px;
+}
+
+.hero__title {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 800;
+  color: #1f2937;
+  text-transform: none;
+  line-height: 1.1;
+}
+
+.hero__subtitle {
+  max-width: 640px;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: #4b5563;
+  margin: 0 auto;
+}
+
+.hero__cta {
+  margin-top: 16px;
+  padding: 0 32px;
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(56, 128, 255, 0.25);
+}
+
+.hero__visual {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.visual-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  padding: 20px;
+  min-width: 220px;
+  max-width: 260px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #1f2937;
+}
+
+.visual-card strong {
+  font-size: 1.1rem;
+}
+
+.visual-card span {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 40px 0 80px;
+}
+
+.highlight {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+  text-align: left;
+}
+
+.highlight h3 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+  color: #1f2937;
+}
+
+.highlight p {
+  color: #4b5563;
+  margin: 0;
+}
+
+.privacy-note {
+  background: rgba(37, 99, 235, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 0 0 60px;
+  color: #1f2937;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+  text-align: center;
+}
+
+@media (min-width: 992px) {
+  .hero {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .hero__content {
+    flex: 1;
+    align-items: flex-start;
+  }
+
+  .hero__visual {
+    flex: 1;
+    justify-content: flex-end;
+  }
+}

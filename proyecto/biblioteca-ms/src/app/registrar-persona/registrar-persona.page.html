@@ -2,32 +2,32 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="salir()" fill="clear">
-        Salir
+        {{ 'person.exitButton' | translate }}
       </ion-button>
     </ion-buttons>
-    <ion-title>Registrar Persona</ion-title>
+    <ion-title>{{ 'person.pageTitle' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <form class="form-persona" (ngSubmit)="guardarPersona()">
     <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
+      <ion-label position="floating">{{ 'person.nameLabel' | translate }}</ion-label>
       <ion-input [(ngModel)]="persona.nombre" name="nombre"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Apellido</ion-label>
+      <ion-label position="floating">{{ 'person.lastNameLabel' | translate }}</ion-label>
       <ion-input [(ngModel)]="persona.apellido" name="apellido"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">RUT</ion-label>
+      <ion-label position="floating">{{ 'person.rutLabel' | translate }}</ion-label>
       <ion-input [(ngModel)]="persona.rut" name="rut"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Fecha de nacimiento</ion-label>
+      <ion-label position="floating">{{ 'person.birthDateLabel' | translate }}</ion-label>
       <ion-input [(ngModel)]="persona.fechaNacimiento" name="fechaNacimiento" type="date"></ion-input>
     </ion-item>
     <!-- Agrega más campos según sea necesario -->
-    <ion-button expand="block" type="submit">Guardar Persona</ion-button>
+    <ion-button expand="block" type="submit">{{ 'person.saveButton' | translate }}</ion-button>
   </form>
 </ion-content>

@@ -2,23 +2,69 @@
   <ion-menu side="start" menuId="main-menu" contentId="main-content">
     <ion-header>
       <ion-toolbar color="primary">
-        <ion-title>Menú</ion-title>
+        <ion-title>{{ 'menu.title' | translate }}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
       <ion-list>
-        <ion-item button routerLink="/" routerDirection="root" menuClose>
-          <ion-label>Exámenes</ion-label>
+        <ion-item button lines="none" class="menu-link" (click)="navigateTo('/examenes')" menuClose detail="false">
+          <ion-label>{{ 'menu.exams' | translate }}</ion-label>
         </ion-item>
-        <ion-item button routerLink="/dashboards" routerDirection="root" menuClose>
-          <ion-label>Dashboards</ion-label>
+        <ion-item button lines="none" class="menu-link" (click)="navigateTo('/dashboards')" menuClose detail="false">
+          <ion-label>{{ 'menu.dashboards' | translate }}</ion-label>
         </ion-item>
-        <ion-item lines="none">
-          <ion-label>Cambiar modo</ion-label>
+        <ion-item lines="none" class="sidebar-section-header" aria-hidden="true">
+          <ion-label>{{ 'menu.accessibility' | translate }}</ion-label>
+        </ion-item>
+        <ion-item lines="none" class="menu-card text-size-item">
+          <ion-label position="stacked">{{ 'menu.textSize' | translate }}</ion-label>
+          <ion-range
+            [min]="14"
+            [max]="22"
+            [step]="1"
+            [ticks]="true"
+            [snaps]="true"
+            [pin]="true"
+            [value]="textScale"
+            (ionChange)="onTextScaleChange($event)"
+            [attr.aria-label]="'menu.textSizeAria' | translate"
+          >
+            <ion-label slot="start">A-</ion-label>
+            <ion-label slot="end">A+</ion-label>
+          </ion-range>
+          <span class="text-size-value" aria-live="polite">{{ textScale }} px</span>
+        </ion-item>
+        <ion-item lines="none" class="menu-card language-item">
+          <ion-label position="stacked">{{ 'menu.languageLabel' | translate }}</ion-label>
+          <ion-select
+            interface="popover"
+            [(ngModel)]="language"
+            (ionChange)="onLanguageChange($event)"
+            [placeholder]="'menu.languagePlaceholder' | translate"
+            [attr.aria-label]="'menu.languageAria' | translate"
+          >
+            <ion-select-option *ngFor="let option of languages" [value]="option.code">
+              {{ option.label }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item lines="none" class="menu-card toggle-item">
+          <ion-label>{{ 'menu.darkMode' | translate }}</ion-label>
           <ion-toggle slot="end" [checked]="isDark" (ionChange)="toggleDarkMode($event)"></ion-toggle>
         </ion-item>
+        <ion-item lines="none" class="menu-card reset-item">
+          <ion-button
+            expand="block"
+            fill="solid"
+            color="primary"
+            (click)="resetAccessibility()"
+            [attr.aria-label]="'menu.resetAria' | translate"
+          >
+            {{ 'menu.resetPreferences' | translate }}
+          </ion-button>
+        </ion-item>
         <ion-item lines="none" class="sidebar-support">
-          <ion-label color="medium">Soporte: <a href="mailto:contacto@pym.cl">contacto@pym.cl</a></ion-label>
+          <ion-label color="medium">{{ 'menu.support' | translate }}: <a href="mailto:contacto@pym.cl">contacto@pym.cl</a></ion-label>
         </ion-item>
       </ion-list>
     </ion-content>

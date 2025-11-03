@@ -1,11 +1,12 @@
 /* Dashboards: color de textos en tarjetas */
 body:not(.dark) ion-card.dashboards-card,
 body:not(.dark) ion-card.dashboards-card * {
-	color: #222 !important;
+	color: #0f172a !important;
+	--color: #0f172a !important;
 }
 body.dark ion-card.dashboards-card,
 body.dark ion-card.dashboards-card * {
-	color: #f1f5f9 !important;
+	color: var(--ion-text-color) !important;
 }
 
 /* Excepción para botones de paginación - deben ser visibles */
@@ -18,22 +19,22 @@ body.dark .pagination-card .pagination-button .arrow-icon {
 
 /* Título principal - forzar colores por tema */
 body:not(.dark) .titulo {
-	color: #000000 !important;
+	color: #0f172a !important;
 }
 body.dark .titulo {
-	color: #ffffff !important;
+	color: #e2f1ff !important;
 }
 
 /* Textos generales en modo oscuro - excluyendo .files */
 body.dark ion-text,
 body.dark .perfil {
-	color: #ffffff !important;
+	color: #e2f1ff !important;
 }
 
 /* Textos generales en modo claro - excluyendo .files */
 body:not(.dark) ion-text,
 body:not(.dark) .perfil {
-	color: #333333 !important;
+	color: #0f172a !important;
 }
 
 /* Textos de información en modo oscuro */
@@ -42,36 +43,36 @@ body.dark .no-examenes-text {
 }
 /* Dashboards: tarjetas modo claro/oscuro forzadas */
 body:not(.dark) ion-card.dashboards-card {
-	background: #fff !important;
-	color: #222 !important;
-	border: 1px solid #e5e7eb !important;
-	box-shadow: 0 2px 12px 0 rgba(37,99,235,0.06), 0 1.5px 4px 0 rgba(0,0,0,0.04) !important;
+	background: #ffffff !important;
+	color: var(--ion-text-color) !important;
+	border: 1px solid #c9e7f8 !important;
+	box-shadow: 0 2px 12px 0 rgba(3,169,244,0.08), 0 1.5px 4px 0 rgba(15,23,42,0.05) !important;
 }
 body:not(.dark) ion-card-header.dashboards-card-header,
 body:not(.dark) ion-card-content.dashboards-card-content {
 	background: transparent !important;
-	color: #222 !important;
+	color: var(--ion-text-color) !important;
 }
 body.dark ion-card.dashboards-card {
-	background: #23272f !important;
-	color: #f1f5f9 !important;
-	border: 1px solid #333642 !important;
-	box-shadow: 0 2px 12px 0 rgba(37,99,235,0.04), 0 1.5px 4px 0 rgba(0,0,0,0.08) !important;
+	background: #052c3a !important;
+	color: var(--ion-text-color) !important;
+	border: 1px solid #0f4458 !important;
+	box-shadow: 0 2px 12px 0 rgba(93,208,255,0.06), 0 1.5px 4px 0 rgba(0,0,0,0.25) !important;
 }
 body.dark ion-card-header.dashboards-card-header,
 body.dark ion-card-content.dashboards-card-content {
 	background: transparent !important;
-	color: #f1f5f9 !important;
+	color: var(--ion-text-color) !important;
 }
 .no-examenes-text {
-	color: #222 !important;
+	color: var(--ion-text-color) !important;
 	font-weight: 500;
 	font-size: 1.1rem;
 	margin: 16px 0 0 8px;
 	display: block;
 }
 body.dark .no-examenes-text {
-	color: #fff !important;
+	color: var(--ion-text-color) !important;
 }
 ion-list, .card, .tarjeta, .ion-card {
 	background: var(--ion-card-background) !important;
@@ -81,14 +82,14 @@ body:not(.dark) ion-list,
 body:not(.dark) .card,
 body:not(.dark) .tarjeta,
 body:not(.dark) .ion-card {
-	background: #f8fafc !important;
+	background: #f2f9ff !important;
 }
 
 body.dark ion-list,
 body.dark .card,
 body.dark .tarjeta,
 body.dark .ion-card {
-	background: #23272f !important;
+	background: #052c3a !important;
 }
 
 body, ion-app, ion-content {
@@ -109,7 +110,7 @@ ion-content:not(.dark),
 ion-content:not(.dark)::part(scroll),
 ion-content:not(.dark) .inner-scroll,
 ion-content:not(.dark) .scroll-content {
-	background: #f8fafc !important;
+	background: #f2f9ff !important;
 }
 
 body.dark,
@@ -122,7 +123,7 @@ body.dark ion-content,
 body.dark ion-content::part(scroll),
 body.dark ion-content .inner-scroll,
 body.dark ion-content .scroll-content {
-	background: #18181b !important;
+	background: #001f2a !important;
 }
 
 
@@ -133,7 +134,7 @@ ion-card, .card, .tarjeta, .ion-card {
 	box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
 	margin-bottom: 16px;
 	padding: 16px;
-	border: 1px solid #e5e7eb;
+	border: 1px solid #c9e7f8;
 }
 
 ion-item {
@@ -185,9 +186,11 @@ ion-title {
 }
 
 ion-toolbar {
-	background: var(--ion-card-background) !important;
-	color: var(--ion-text-color);
-	transition: background 0.2s;
+	--background: var(--ion-color-primary) !important;
+	--color: var(--ion-color-primary-contrast) !important;
+	background: var(--ion-color-primary) !important;
+	color: var(--ion-color-primary-contrast) !important;
+	transition: background 0.2s, color 0.2s;
 }
 /*
  * App Global CSS
@@ -250,7 +253,7 @@ body:not(.dark) .files input[type="file"]::-webkit-file-upload-button,
 body.dark .files input[type="file"]::file-selector-button,
 body:not(.dark) .files input[type="file"]::file-selector-button {
   color: white !important;
-  background: #3880ff !important;
+	background: var(--ion-color-primary) !important;
   border: none !important;
   -webkit-text-fill-color: white !important;
 }
@@ -261,7 +264,13 @@ body:not(.dark) .files input[type="file"]::file-selector-button {
 div.files input[type="file"]::-webkit-file-upload-button,
 div.files input[type="file"]::file-selector-button {
   color: white !important;
-  background: #3880ff !important;
+	background: var(--ion-color-primary) !important;
   border: none !important;
   -webkit-text-fill-color: white !important;
+}
+
+/* Accesibilidad: escalado de texto */
+:root {
+	--app-font-size: 16px;
+	font-size: var(--app-font-size);
 }

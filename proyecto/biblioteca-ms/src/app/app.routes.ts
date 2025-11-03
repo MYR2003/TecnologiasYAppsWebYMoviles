@@ -3,8 +3,11 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
+    loadChildren: () => import('./landing/landing.routes').then(m => m.routes),
+  },
+  {
+    path: 'examenes',
     loadChildren: () => import('./examenes/examenes.routes').then(m => m.routes),
-    pathMatch: 'full',
   },
   {
     path: 'registrar-persona',
