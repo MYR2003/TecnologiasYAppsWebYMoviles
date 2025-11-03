@@ -1,36 +1,59 @@
+<!-- resources/views/layouts/app.blade.php -->
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title') - PYM Investigaciones</title>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
-
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+    <style>
+        body { background: #f8f9fa; font-family: Arial, sans-serif; }
+        header {
+            background: #000;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header a { color: white; margin-right: 1.5rem; text-decoration: none; }
+        header a.active { font-weight: bold; }
+        .sidebar {
+            width: 250px;
+            background: #fff;
+            padding: 1rem;
+            border-right: 1px solid #ccc;
+            height: calc(100vh - 60px);
+        }
+        .content {
+            padding: 2rem;
+            flex: 1;
+        }
+        .container-flex {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
+            <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboards</a>
         </div>
-    </body>
+        <div>
+            <span>{{ Auth::user()->name ?? 'Invitado' }}</span>
+            @auth
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-light">Salir</button>
+                </form>
+            @endauth
+        </div>
+    </header>
+
+    @yield('body')
+</body>
 </html>
