@@ -1,18 +1,35 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, kIsWeb, TargetPlatform;
 import 'package:http/http.dart' as http;
 
-const String baseUrl = "http://10.0.2.2";
+const String _androidEmulatorHost = 'http://10.0.2.2';
+const String _desktopHost = 'http://127.0.0.1';
+const String _webHost = 'http://localhost';
 
+String _resolveBaseHost() {
+  if (kIsWeb) {
+    return _webHost;
+  }
+  switch (defaultTargetPlatform) {
+    case TargetPlatform.android:
+      return _androidEmulatorHost;
+    default:
+      return _desktopHost;
+  }
+}
 
 class ApiService {
+  ApiService({String? baseHost}) : _baseHost = baseHost ?? _resolveBaseHost();
+
+  final String _baseHost;
+
   Future<List<dynamic>> _getList(String endpoint, {int port = 3000}) async {
-    final Uri url = Uri.parse('$baseUrl:$port/$endpoint');
+    final Uri url = Uri.parse('$_baseHost:$port/$endpoint');
     print('GET → $url');
 
     try {
-      final response = await http
-          .get(url)
-          .timeout(const Duration(seconds: 8));
+      final response = await http.get(url).timeout(const Duration(seconds: 8));
 
       print('Código de respuesta: ${response.statusCode}');
 

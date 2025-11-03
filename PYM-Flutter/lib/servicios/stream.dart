@@ -1,10 +1,30 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, kIsWeb, TargetPlatform;
 import 'package:http/http.dart' as http;
 
-const String baseUrl = "http://10.0.2.2";
+const String _androidEmulatorHost = 'http://10.0.2.2';
+const String _desktopHost = 'http://127.0.0.1';
+const String _webHost = 'http://localhost';
+
+String _resolveBaseHost() {
+  if (kIsWeb) {
+    return _webHost;
+  }
+  switch (defaultTargetPlatform) {
+    case TargetPlatform.android:
+      return _androidEmulatorHost;
+    default:
+      return _desktopHost;
+  }
+}
 
 class StreamService {
+  StreamService({String? baseHost}) : _baseHost = baseHost ?? _resolveBaseHost();
+
+  final String _baseHost;
+
   Stream<List<dynamic>> getDataStream({
     required int port,
     String endpoint = '',
@@ -12,7 +32,10 @@ class StreamService {
   }) async* {
     while (true) {
       try {
-        final uri = Uri.parse('$baseUrl:$port/$endpoint');
+        final normalizedEndpoint = endpoint.isEmpty
+            ? ''
+            : '/${endpoint.replaceFirst(RegExp('^/+'), '')}';
+        final uri = Uri.parse('$_baseHost:$port$normalizedEndpoint');
         final res = await http
             .get(uri)
             .timeout(const Duration(seconds: 8));

@@ -5,8 +5,6 @@ import '../servicios/api.dart';
 import '../servicios/auth.dart';
 import 'home.dart';
 
-const baseUrl = "http://10.0.2.2"; // Emulador Android local
-
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
@@ -20,6 +18,10 @@ class _LoginViewState extends State<LoginView> {
   bool cargando = false;
   String? error;
 
+  String _normalizarRut(String valor) {
+    return valor.toLowerCase().replaceAll(RegExp(r'[^0-9k]'), '').trim();
+  }
+
   @override
   void dispose() {
     rutController.dispose();
@@ -28,7 +30,8 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Future<void> _iniciarSesion() async {
-    final rut = rutController.text.trim();
+    final rutIngresado = rutController.text.trim();
+    final rut = _normalizarRut(rutIngresado);
     final apellido = apellidoController.text.trim().toLowerCase();
 
     if (rut.isEmpty || apellido.isEmpty) {
@@ -47,12 +50,16 @@ class _LoginViewState extends State<LoginView> {
       final api = ApiService();
       final medicos = await api.getMedicos();
 
-      final medico = medicos.firstWhere(
-        (m) =>
-            (m['rut']?.toString().trim() == rut) &&
-            (m['apellido']?.toString().toLowerCase().trim() == apellido),
-        orElse: () => null,
-      );
+      Map<String, dynamic>? medico;
+      for (final registro in medicos.whereType<Map<String, dynamic>>()) {
+        final rutRegistro = _normalizarRut(registro['rut']?.toString() ?? '');
+        final apellidoRegistro =
+            registro['apellido']?.toString().toLowerCase().trim() ?? '';
+        if (rutRegistro == rut && apellidoRegistro == apellido) {
+          medico = registro;
+          break;
+        }
+      }
 
       if (medico != null) {
         await AuthService().saveSession(medico);
@@ -130,10 +137,7 @@ class _LoginViewState extends State<LoginView> {
                       ),
                 if (error != null) ...[
                   const SizedBox(height: 20),
-                  Text(
-                    error!,
-                    style: const TextStyle(color: Colors.red),
-                  ),
+                  Text(error!, style: const TextStyle(color: Colors.red)),
                 ],
               ],
             ),
