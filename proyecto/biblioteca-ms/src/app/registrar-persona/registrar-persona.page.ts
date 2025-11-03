@@ -29,7 +29,7 @@ export class RegistrarPersonaPage {
   constructor(private personasService: PersonasService, private router: Router, private readonly translation: TranslationService) {}
 
   salir() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/examenes']);
   }
 
   ngOnInit() {
@@ -58,10 +58,10 @@ export class RegistrarPersonaPage {
       fichasMedicas: []
     }).subscribe({
       next: (resp) => {
-  this.success = true;
-  this.loading = false;
-  // Redirigir a la página de Exámenes
-  this.router.navigate(['/']);
+        this.success = true;
+        this.loading = false;
+        // Redirigir a la página de Exámenes
+        this.router.navigate(['/examenes']);
       },
       error: (err) => {
         this.error = this.translation.translate('person.saveError');
