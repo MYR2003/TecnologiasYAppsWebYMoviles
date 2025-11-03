@@ -1,6 +1,6 @@
 <!-- resources/views/welcome.blade.php -->
 @extends('layouts.app')
-@section('title', 'Home')
+@section('title', 'Dashboard')
 
 @section('body')
 <div class="text-center mt-5">
