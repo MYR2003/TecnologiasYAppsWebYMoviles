@@ -12,11 +12,18 @@ class PerfilView extends StatefulWidget {
 class _PerfilViewState extends State<PerfilView> {
   Map<String, dynamic>? medico;
   bool cargando = true;
+  final TextEditingController _correoController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _cargarPerfil();
+  }
+
+  @override
+  void dispose() {
+    _correoController.dispose();
+    super.dispose();
   }
 
   Future<void> _cargarPerfil() async {
@@ -28,6 +35,8 @@ class _PerfilViewState extends State<PerfilView> {
       medico = session;
       cargando = false;
     });
+    _correoController.text = (session?['correo'] ?? 'Sin correo registrado')
+        .toString();
   }
 
   Future<void> _cerrarSesion() async {
@@ -125,6 +134,26 @@ class _PerfilViewState extends State<PerfilView> {
                           icon: Icons.mail_outline,
                           label: 'Correo contacto',
                           value: correo,
+                          trailing: TextButton.icon(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              minimumSize: Size.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            onPressed: _editarCorreo,
+                            icon: const Icon(
+                              Icons.edit_outlined,
+                              size: 18,
+                              color: Color(0xFF0284C7),
+                            ),
+                            label: const Text(
+                              'Editar',
+                              style: TextStyle(
+                                color: Color(0xFF0284C7),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 14),
                         _ProfileRow(
@@ -133,21 +162,28 @@ class _PerfilViewState extends State<PerfilView> {
                           value: especialidad,
                         ),
                         const Spacer(),
-                        ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF0EA5E9),
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18),
-                            ),
-                          ),
-                          onPressed: _cerrarSesion,
-                          icon: const Icon(Icons.logout),
-                          label: const Text(
-                            'Cerrar sesión',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                        Center(
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF0EA5E9),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
+                              ),
+                              onPressed: _cerrarSesion,
+                              icon: const Icon(Icons.logout),
+                              label: const Text(
+                                'Cerrar sesión',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -161,6 +197,53 @@ class _PerfilViewState extends State<PerfilView> {
         ),
       ),
     );
+  }
+
+  Future<void> _editarCorreo() async {
+    _correoController.text = (medico?['correo'] ?? 'Sin correo registrado')
+        .toString();
+
+    final nuevoCorreo = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: _EditarCorreoSheet(controller: _correoController),
+        );
+      },
+    );
+
+    if (nuevoCorreo == null) return;
+
+    final trimmed = nuevoCorreo.trim();
+    if (trimmed.isEmpty || trimmed == medico?['correo']) return;
+
+    final emailRegExp = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+    if (!emailRegExp.hasMatch(trimmed)) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Ingresa un correo válido.')),
+      );
+      return;
+    }
+
+    final actualizado = {...?medico, 'correo': trimmed};
+
+    setState(() {
+      medico = actualizado;
+    });
+
+    final auth = AuthService();
+    await auth.saveSession(actualizado);
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Correo actualizado.')));
   }
 }
 
@@ -248,11 +331,13 @@ class _ProfileRow extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.value,
+    this.trailing,
   });
 
   final IconData icon;
   final String label;
   final String value;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +365,80 @@ class _ProfileRow extends StatelessWidget {
             ],
           ),
         ),
+        if (trailing != null) ...[const SizedBox(width: 12), trailing!],
       ],
+    );
+  }
+}
+
+class _EditarCorreoSheet extends StatelessWidget {
+  const _EditarCorreoSheet({required this.controller});
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Actualizar correo',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF0F172A),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: controller,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.mail_outline),
+              labelText: 'Correo electrónico',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF0284C7),
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context, controller.text);
+              },
+              child: const Text(
+                'Guardar cambios',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
