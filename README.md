@@ -43,7 +43,7 @@ Este sistema permite a los usuarios gestionar sus fichas médicas y exámenes cl
 
 
 ## Instrucciones de uso
-Para correr el "backend" se debe entrar a la carpeta proyecto>microservicios y en esta carpeta correr el archivo bash.sh ya sea como un ejecutable o con otro metodo.
+Para correr el "backend" se debe entrar a la carpeta `proyecto/microservicios` y en esta carpeta correr el archivo `bash.sh` (como ejecutable o con el método que prefieras). El script levanta todos los microservicios disponibles, incluido `mock-backend.js`. Antes de la primera ejecución asegúrate de instalar dependencias con `npm install` en esa misma carpeta.
 
 ### Simulador de datos
 Primero correr en la base de datos el script.txt, y luego postear a la api en http://localhost:3099/ con body el json que se encuentra en jsonBody-para-simulador.json y cambiar los valores por la cantidad de POSTs que se quiera hacer para cada entidad.

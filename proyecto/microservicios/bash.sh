@@ -1,6 +1,8 @@
 #!/bin/bash
 # En este archivo se añaden todos los microservicios
 
+cd "$(dirname "$0")"
+ 
 #node alergias.js & node consultas.js &
 #node index.js
 
