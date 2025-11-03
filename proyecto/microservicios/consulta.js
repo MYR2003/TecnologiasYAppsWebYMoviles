@@ -8,12 +8,44 @@ app.use(cors())
 
 client.connect();
 
-app.get('/', async (req,res) => {
+app.get('/', async (req, res) => {
     try {
-        const temp = await client.query('SELECT * FROM consulta');
-        res.json(temp.rows)
+        const limitParam = Number.parseInt(req.query.limit, 10);
+        const offsetParam = Number.parseInt(req.query.offset, 10);
+
+        const limit = Number.isFinite(limitParam) && limitParam > 0 ? Math.min(limitParam, 100) : 20;
+        const offset = Number.isFinite(offsetParam) && offsetParam >= 0 ? offsetParam : 0;
+
+        const totalResult = await client.query('SELECT COUNT(*)::int AS count FROM consulta');
+        const total = totalResult.rows?.[0]?.count ?? 0;
+
+        const dataResult = await client.query(
+            'SELECT * FROM consulta ORDER BY idconsulta LIMIT $1 OFFSET $2',
+            [limit, offset]
+        );
+
+        const data = (dataResult.rows ?? []).map((row) => ({
+            idconsulta: row.idconsulta,
+            idpersona: row.idpersona,
+            idmedico: row.idmedico,
+            idfichamedica: row.idfichamedica,
+            fecha: row.fecha,
+            motivo: row.motivo ?? null,
+            duracionminutos: row.duracionminutos ?? null,
+            observaciones: row.observaciones ? String(row.observaciones).slice(0, 5000) : null,
+        }));
+        const hasMore = offset + data.length < total;
+
+        res.json({
+            data,
+            total,
+            limit,
+            offset,
+            hasMore
+        });
     } catch (error) {
-        throw error
+        console.error('Error al obtener consultas:', error);
+        res.status(500).json({ error: 'Error al obtener consultas' });
     }
 });
 
