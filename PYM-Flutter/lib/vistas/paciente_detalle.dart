@@ -1,23 +1,111 @@
 import 'package:flutter/material.dart';
+import '../servicios/api.dart';
+import '../modelos/paciente.dart';
+import 'paciente_form.dart';
 
 class DetallePacienteScreen extends StatelessWidget {
   const DetallePacienteScreen({super.key, required this.paciente});
 
   final Map<String, dynamic> paciente;
 
+  Future<void> _eliminarPaciente(BuildContext context) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar eliminación'),
+        content: Text('¿Estás seguro de eliminar a ${_getNombreCompleto()}?'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Eliminar'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true && context.mounted) {
+      final apiService = ApiService();
+      final result = await apiService.eliminarPaciente(paciente['idpersona']);
+      
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result['message']),
+          backgroundColor: result['success'] ? Colors.green : Colors.red,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+
+      if (result['success']) {
+        Navigator.pop(context, true); // Retorna true para refrescar la lista
+      }
+    }
+  }
+
+  Future<void> _editarPaciente(BuildContext context) async {
+    final pacienteObj = Paciente.fromJson(paciente);
+    final result = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PacienteFormScreen(paciente: pacienteObj),
+      ),
+    );
+
+    if (result == true && context.mounted) {
+      Navigator.pop(context, true); // Retorna true para refrescar la lista
+    }
+  }
+
+  String _getNombreCompleto() {
+    final apellido = (paciente['apellido'] ?? '').toString();
+    final nombre = (paciente['nombre'] ?? '').toString();
+    return '$nombre $apellido'.trim();
+  }
+
+  String _calcularEdad() {
+    final fecha = paciente['fechanacimiento'];
+    if (fecha == null) return 'No registrada';
+    try {
+      final date = DateTime.parse(fecha.toString());
+      final now = DateTime.now();
+      final edad = now.year - date.year - 
+          ((now.month > date.month || 
+            (now.month == date.month && now.day >= date.day)) ? 0 : 1);
+      return '$edad años';
+    } catch (e) {
+      return 'No registrada';
+    }
+  }
+
+  String _formatearFecha(String? fecha) {
+    if (fecha == null) return 'No registrada';
+    try {
+      final date = DateTime.parse(fecha);
+      return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+    } catch (e) {
+      return 'No registrada';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final nombre = (paciente['nombre'] ?? 'Paciente sin nombre').toString();
-    final rut = (paciente['rut'] ?? 'Desconocido').toString();
-    final edad = (paciente['edad'] ?? 'N/A').toString();
-    final diagnostico = (paciente['diagnostico'] ?? 'No especificado')
-        .toString();
-    final fechaIngreso = (paciente['fecha_ingreso'] ?? 'No disponible')
-        .toString();
-    final sexo = (paciente['sexo'] ?? 'No informado').toString();
+    final nombreCompleto = _getNombreCompleto();
+    final rut = (paciente['rut'] ?? 'Sin RUT').toString();
+    final edad = _calcularEdad();
+    final fechaNacimiento = _formatearFecha(paciente['fechanacimiento']?.toString());
+    final sistemaSalud = (paciente['sistemadesalud'] ?? 'No especificado').toString();
     final telefono = (paciente['telefono'] ?? 'No registrado').toString();
-    final direccion = (paciente['direccion'] ?? 'No registrada').toString();
-    final sistema = (paciente['sistema_salud'] ?? 'Sin información').toString();
+    final domicilio = (paciente['domicilio'] ?? 'No registrado').toString();
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -43,7 +131,7 @@ class DetallePacienteScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _HeroHeader(nombre: nombre, sistema: sistema),
+                _HeroHeader(nombre: nombreCompleto),
                 const SizedBox(height: 24),
                 _InfoSection(
                   title: 'Datos personales',
@@ -56,9 +144,21 @@ class DetallePacienteScreen extends StatelessWidget {
                       value: edad,
                     ),
                     _InfoRow(
-                      icon: Icons.wc_outlined,
-                      label: 'Sexo',
-                      value: sexo,
+                      icon: Icons.calendar_today_outlined,
+                      label: 'Fecha de nacimiento',
+                      value: fechaNacimiento,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 18),
+                _InfoSection(
+                  title: 'Sistema de salud',
+                  icon: Icons.local_hospital_outlined,
+                  children: [
+                    _InfoRow(
+                      icon: Icons.medical_services_outlined,
+                      label: 'Sistema',
+                      value: sistemaSalud,
                     ),
                   ],
                 ),
@@ -74,45 +174,61 @@ class DetallePacienteScreen extends StatelessWidget {
                     ),
                     _InfoRow(
                       icon: Icons.home_outlined,
-                      label: 'Dirección',
-                      value: direccion,
-                    ),
-                    _InfoRow(
-                      icon: Icons.calendar_today_outlined,
-                      label: 'Ingreso a PYM',
-                      value: fechaIngreso,
+                      label: 'Domicilio',
+                      value: domicilio,
                     ),
                   ],
                 ),
-                const SizedBox(height: 18),
-                _InfoSection(
-                  title: 'Notas clínicas',
-                  icon: Icons.insights_outlined,
-                  children: [_DiagnosisCard(diagnostico: diagnostico)],
-                ),
                 const SizedBox(height: 24),
-                Align(
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: const Color(0xFF0284C7),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 32,
-                        vertical: 14,
+                // Botones de acción
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF0EA5E9),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 4,
+                        ),
+                        onPressed: () => _editarPaciente(context),
+                        icon: const Icon(Icons.edit),
+                        label: const Text(
+                          'Editar',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 4,
+                        ),
+                        onPressed: () => _eliminarPaciente(context),
+                        icon: const Icon(Icons.delete),
+                        label: const Text(
+                          'Eliminar',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
-                      elevation: 10,
-                      shadowColor: const Color(0x33027BB7),
                     ),
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                    label: const Text(
-                      'Volver a pacientes',
-                      style: TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                  ),
+                  ],
                 ),
               ],
             ),
@@ -124,10 +240,9 @@ class DetallePacienteScreen extends StatelessWidget {
 }
 
 class _HeroHeader extends StatelessWidget {
-  const _HeroHeader({required this.nombre, required this.sistema});
+  const _HeroHeader({required this.nombre});
 
   final String nombre;
-  final String sistema;
 
   @override
   Widget build(BuildContext context) {
@@ -179,27 +294,13 @@ class _HeroHeader extends StatelessWidget {
           ),
           const SizedBox(width: 18),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  nombre,
-                  style: const TextStyle(
-                    color: Color(0xFF0F172A),
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  sistema,
-                  style: const TextStyle(
-                    color: Color(0xFF64748B),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
+            child: Text(
+              nombre,
+              style: const TextStyle(
+                color: Color(0xFF0F172A),
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ],
@@ -299,45 +400,6 @@ class _InfoRow extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _DiagnosisCard extends StatelessWidget {
-  const _DiagnosisCard({required this.diagnostico});
-
-  final String diagnostico;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
-        gradient: const LinearGradient(
-          colors: [Color(0xFFE0F2FE), Color(0xFFEFF6FF)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Icon(Icons.stacked_line_chart, color: Color(0xFF0284C7)),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              diagnostico,
-              style: const TextStyle(
-                color: Color(0xFF0F172A),
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
             ),
           ),
         ],

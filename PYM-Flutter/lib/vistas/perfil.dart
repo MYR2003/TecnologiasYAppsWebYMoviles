@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../servicios/auth.dart';
 import 'login.dart';
+import 'medico_form.dart';
 
 class PerfilView extends StatefulWidget {
   const PerfilView({super.key});
@@ -12,18 +13,11 @@ class PerfilView extends StatefulWidget {
 class _PerfilViewState extends State<PerfilView> {
   Map<String, dynamic>? medico;
   bool cargando = true;
-  final TextEditingController _correoController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _cargarPerfil();
-  }
-
-  @override
-  void dispose() {
-    _correoController.dispose();
-    super.dispose();
   }
 
   Future<void> _cargarPerfil() async {
@@ -35,8 +29,6 @@ class _PerfilViewState extends State<PerfilView> {
       medico = session;
       cargando = false;
     });
-    _correoController.text = (session?['correo'] ?? 'Sin correo registrado')
-        .toString();
   }
 
   Future<void> _cerrarSesion() async {
@@ -62,10 +54,13 @@ class _PerfilViewState extends State<PerfilView> {
     }
 
     final nombre = (medico?['nombre'] ?? 'Profesional PYM').toString();
-    final especialidad = (medico?['especialidad'] ?? 'Sin especialidad')
-        .toString();
+    final apellido = (medico?['apellido'] ?? '').toString();
+    final nombreCompleto = '$nombre $apellido'.trim();
+    final especialidad = (medico?['especialidad'] ?? 'Sin especialidad').toString();
     final rut = (medico?['rut'] ?? 'No disponible').toString();
-    final correo = (medico?['correo'] ?? 'Sin correo registrado').toString();
+    final email = (medico?['email'] ?? 'Sin correo registrado').toString();
+    final telefono = (medico?['telefono'] ?? 'Sin teléfono').toString();
+    final fechaNacimiento = (medico?['fechanacimiento'] ?? 'No registrada').toString();
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -76,9 +71,6 @@ class _PerfilViewState extends State<PerfilView> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
-        actions: [
-          IconButton(icon: const Icon(Icons.logout), onPressed: _cerrarSesion),
-        ],
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -94,7 +86,7 @@ class _PerfilViewState extends State<PerfilView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _ProfileHero(nombre: nombre, especialidad: especialidad),
+                _ProfileHero(nombre: nombreCompleto, especialidad: especialidad),
                 const SizedBox(height: 30),
                 Expanded(
                   child: Container(
@@ -115,53 +107,60 @@ class _PerfilViewState extends State<PerfilView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Datos profesionales',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF0F172A),
-                          ),
-                        ),
-                        const SizedBox(height: 18),
-                        _ProfileRow(
-                          icon: Icons.badge_outlined,
-                          label: 'RUT',
-                          value: rut,
-                        ),
-                        const SizedBox(height: 14),
-                        _ProfileRow(
-                          icon: Icons.mail_outline,
-                          label: 'Correo contacto',
-                          value: correo,
-                          trailing: TextButton.icon(
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            onPressed: _editarCorreo,
-                            icon: const Icon(
-                              Icons.edit_outlined,
-                              size: 18,
-                              color: Color(0xFF0284C7),
-                            ),
-                            label: const Text(
-                              'Editar',
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Datos profesionales',
                               style: TextStyle(
-                                color: Color(0xFF0284C7),
-                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF0F172A),
                               ),
                             ),
+                            TextButton.icon(
+                              onPressed: _editarPerfil,
+                              icon: const Icon(Icons.edit, size: 18),
+                              label: const Text('Editar'),
+                              style: TextButton.styleFrom(
+                                foregroundColor: const Color(0xFF0284C7),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 18),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                _ProfileRow(
+                                  icon: Icons.badge_outlined,
+                                  label: 'RUT',
+                                  value: rut,
+                                ),
+                                const SizedBox(height: 14),
+                                _ProfileRow(
+                                  icon: Icons.mail_outline,
+                                  label: 'Email',
+                                  value: email,
+                                ),
+                                const SizedBox(height: 14),
+                                _ProfileRow(
+                                  icon: Icons.phone_outlined,
+                                  label: 'Teléfono',
+                                  value: telefono,
+                                ),
+                                const SizedBox(height: 14),
+                                _ProfileRow(
+                                  icon: Icons.cake_outlined,
+                                  label: 'Fecha de nacimiento',
+                                  value: _formatearFecha(fechaNacimiento),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 14),
-                        _ProfileRow(
-                          icon: Icons.medical_services_outlined,
-                          label: 'Especialidad',
-                          value: especialidad,
-                        ),
-                        const Spacer(),
+                        const SizedBox(height: 16),
                         Center(
                           child: SizedBox(
                             width: double.infinity,
@@ -199,51 +198,28 @@ class _PerfilViewState extends State<PerfilView> {
     );
   }
 
-  Future<void> _editarCorreo() async {
-    _correoController.text = (medico?['correo'] ?? 'Sin correo registrado')
-        .toString();
+  String _formatearFecha(String fecha) {
+    if (fecha == 'No registrada' || fecha.isEmpty) return 'No registrada';
+    try {
+      final date = DateTime.parse(fecha);
+      return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+    } catch (e) {
+      return fecha;
+    }
+  }
 
-    final nuevoCorreo = await showModalBottomSheet<String>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: _EditarCorreoSheet(controller: _correoController),
-        );
-      },
+  Future<void> _editarPerfil() async {
+    final resultado = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => MedicoFormScreen(medico: medico!),
+      ),
     );
 
-    if (nuevoCorreo == null) return;
-
-    final trimmed = nuevoCorreo.trim();
-    if (trimmed.isEmpty || trimmed == medico?['correo']) return;
-
-    final emailRegExp = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-    if (!emailRegExp.hasMatch(trimmed)) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Ingresa un correo válido.')),
-      );
-      return;
+    // Si se guardaron cambios, recargar el perfil
+    if (resultado == true && mounted) {
+      await _cargarPerfil();
     }
-
-    final actualizado = {...?medico, 'correo': trimmed};
-
-    setState(() {
-      medico = actualizado;
-    });
-
-    final auth = AuthService();
-    await auth.saveSession(actualizado);
-
-    if (!mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Correo actualizado.')));
   }
 }
 
@@ -331,13 +307,11 @@ class _ProfileRow extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.value,
-    this.trailing,
   });
 
   final IconData icon;
   final String label;
   final String value;
-  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -365,80 +339,7 @@ class _ProfileRow extends StatelessWidget {
             ],
           ),
         ),
-        if (trailing != null) ...[const SizedBox(width: 12), trailing!],
       ],
-    );
-  }
-}
-
-class _EditarCorreoSheet extends StatelessWidget {
-  const _EditarCorreoSheet({required this.controller});
-
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-      ),
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Actualizar correo',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF0F172A),
-                ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: controller,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.mail_outline),
-              labelText: 'Correo electrónico',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0284C7),
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context, controller.text);
-              },
-              child: const Text(
-                'Guardar cambios',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

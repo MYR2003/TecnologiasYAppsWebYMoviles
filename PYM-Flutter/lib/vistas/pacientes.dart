@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../servicios/stream.dart';
+import '../modelos/paciente.dart';
 import 'paciente_detalle.dart';
+import 'paciente_form.dart';
 
 class PacientesView extends StatefulWidget {
   const PacientesView({super.key});
@@ -11,6 +13,84 @@ class PacientesView extends StatefulWidget {
 
 class _PacientesViewState extends State<PacientesView> {
   final StreamService _streamService = StreamService();
+  final TextEditingController _searchController = TextEditingController();
+  final ValueNotifier<String> _searchQueryNotifier = ValueNotifier<String>('');
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchQueryNotifier.dispose();
+    super.dispose();
+  }
+
+  List<Map<String, dynamic>> _filtrarPacientes(List<dynamic> pacientes, String query) {
+    if (query.isEmpty) {
+      return pacientes.cast<Map<String, dynamic>>();
+    }
+
+    final queryLower = query.toLowerCase().trim();
+    final palabrasBuscadas = queryLower.split(' ').where((p) => p.isNotEmpty).toList();
+    
+    // Filtrar pacientes que coincidan
+    final resultados = pacientes.where((p) {
+      final paciente = p as Map<String, dynamic>;
+      final nombre = (paciente['nombre'] ?? '').toString().toLowerCase();
+      final apellido = (paciente['apellido'] ?? '').toString().toLowerCase();
+      final rut = (paciente['rut'] ?? '').toString().toLowerCase();
+      
+      // Buscar en RUT directamente (una sola palabra)
+      if (palabrasBuscadas.length == 1 && rut.contains(queryLower)) return true;
+      
+      // Si busca múltiples palabras, TODAS deben estar en nombre o apellido
+      if (palabrasBuscadas.length > 1) {
+        // Verificar que todas las palabras estén en el nombre completo
+        return palabrasBuscadas.every((palabra) => 
+            nombre.contains(palabra) || apellido.contains(palabra));
+      }
+      
+      // Si busca una sola palabra, buscar en nombre, apellido o RUT
+      return nombre.contains(queryLower) || 
+             apellido.contains(queryLower) || 
+             rut.contains(queryLower);
+    }).cast<Map<String, dynamic>>().toList();
+    
+    // Ordenar resultados: prioridad a coincidencias exactas en orden
+    resultados.sort((a, b) {
+      final nombreA = (a['nombre'] ?? '').toString().toLowerCase();
+      final apellidoA = (a['apellido'] ?? '').toString().toLowerCase();
+      final nombreCompletoA = '$nombreA $apellidoA';
+      
+      final nombreB = (b['nombre'] ?? '').toString().toLowerCase();
+      final apellidoB = (b['apellido'] ?? '').toString().toLowerCase();
+      final nombreCompletoB = '$nombreB $apellidoB';
+      
+      // Coincidencia exacta con el orden tiene prioridad máxima
+      final exactaA = nombreCompletoA.contains(queryLower);
+      final exactaB = nombreCompletoB.contains(queryLower);
+      
+      if (exactaA && !exactaB) return -1;
+      if (!exactaA && exactaB) return 1;
+      
+      // Si ambos o ninguno son exactos, orden alfabético
+      return nombreCompletoA.compareTo(nombreCompletoB);
+    });
+    
+    return resultados;
+  }
+
+  Future<void> _navegarAFormulario({Paciente? paciente}) async {
+    final result = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PacienteFormScreen(paciente: paciente),
+      ),
+    );
+
+    // Si se hizo algún cambio, refrescar la lista
+    if (result == true && mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +103,16 @@ class _PacientesViewState extends State<PacientesView> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _navegarAFormulario(),
+        backgroundColor: const Color(0xFF0EA5E9),
+        icon: const Icon(Icons.person_add),
+        label: const Text(
+          'Nuevo',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        elevation: 6,
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -68,45 +158,120 @@ class _PacientesViewState extends State<PacientesView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
                     child: _SummaryHeader(total: pacientes.length),
                   ),
+                  // Buscador
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    child: _SearchBar(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        _searchQueryNotifier.value = value;
+                      },
+                    ),
+                  ),
+                  // Lista con ValueListenableBuilder
                   Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(32),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x33027BB7),
-                            offset: Offset(0, -2),
-                            blurRadius: 12,
-                          ),
-                        ],
-                      ),
-                      child: ListView.separated(
-                        padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
-                        itemCount: pacientes.length,
-                        separatorBuilder: (_, __) => const SizedBox(height: 18),
-                        itemBuilder: (context, index) {
-                          final paciente =
-                              pacientes[index] as Map<String, dynamic>;
-                          return _PacienteCard(
-                            paciente: paciente,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) =>
-                                      DetallePacienteScreen(paciente: paciente),
+                    child: ValueListenableBuilder<String>(
+                      valueListenable: _searchQueryNotifier,
+                      builder: (context, searchQuery, _) {
+                        final pacientesFiltrados = _filtrarPacientes(pacientes, searchQuery);
+                        
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Resultados de búsqueda
+                            if (searchQuery.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                child: Text(
+                                  '${pacientesFiltrados.length} resultado(s) encontrado(s)',
+                                  style: const TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              );
-                            },
-                          );
-                        },
-                      ),
+                              ),
+                            const SizedBox(height: 12),
+                            Expanded(
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(32),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color(0x33027BB7),
+                                      offset: Offset(0, -2),
+                                      blurRadius: 12,
+                                    ),
+                                  ],
+                                ),
+                                child: pacientesFiltrados.isEmpty
+                                    ? Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(32),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                Icons.search_off,
+                                                size: 64,
+                                                color: Colors.grey[400],
+                                              ),
+                                              const SizedBox(height: 16),
+                                              Text(
+                                                'No se encontraron pacientes',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.grey[600],
+                                                ),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                'Intenta con otro término de búsqueda',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.grey[500],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    : ListView.separated(
+                                        padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
+                                        itemCount: pacientesFiltrados.length,
+                                        separatorBuilder: (_, __) => const SizedBox(height: 18),
+                                        itemBuilder: (context, index) {
+                                          final paciente = pacientesFiltrados[index];
+                                          return _PacienteCard(
+                                            paciente: paciente,
+                                            onTap: () async {
+                                              final result = await Navigator.push<bool>(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      DetallePacienteScreen(paciente: paciente),
+                                                ),
+                                              );
+                                              // Si se editó o eliminó, refrescar
+                                              if (result == true && mounted) {
+                                                setState(() {});
+                                              }
+                                            },
+                                          );
+                                        },
+                                      ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ],
@@ -159,7 +324,7 @@ class _SummaryHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  '$total personas activas en PYM',
+                  '$total pacientes en PYM',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -176,18 +341,23 @@ class _SummaryHeader extends StatelessWidget {
 }
 
 class _PacienteCard extends StatelessWidget {
-  const _PacienteCard({required this.paciente, required this.onTap});
+  const _PacienteCard({
+    required this.paciente,
+    required this.onTap,
+  });
 
   final Map<String, dynamic> paciente;
   final VoidCallback onTap;
 
-  String get _nombre =>
-      (paciente['nombre'] ?? 'Paciente sin nombre').toString();
+  String get _nombreCompleto {
+    final apellido = (paciente['apellido'] ?? '').toString();
+    final nombre = (paciente['nombre'] ?? '').toString();
+    return '$nombre $apellido'.trim();
+  }
 
-  String get _rut => (paciente['rut'] ?? 'Desconocido').toString();
+  String get _rut => (paciente['rut'] ?? 'Sin RUT').toString();
 
-  String get _sistemaSalud =>
-      (paciente['sistema_salud'] ?? 'Sistema no definido').toString();
+  String get _sistemaSalud => (paciente['sistemadesalud'] ?? 'No especificado').toString();
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +384,7 @@ class _PacienteCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _Avatar(nombre: _nombre),
+            _Avatar(nombreCompleto: _nombreCompleto),
             const SizedBox(width: 18),
             Expanded(
               child: Column(
@@ -224,7 +394,7 @@ class _PacienteCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          _nombre,
+                          _nombreCompleto,
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
@@ -232,7 +402,8 @@ class _PacienteCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Icon(Icons.chevron_right, color: Color(0xFF0EA5E9)),
+                      const Icon(Icons.chevron_right,
+                          color: Color(0xFF0EA5E9)),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -246,8 +417,8 @@ class _PacienteCard extends StatelessWidget {
                         value: _rut,
                       ),
                       _InfoChip(
-                        icon: Icons.health_and_safety_outlined,
-                        label: 'Sistema',
+                        icon: Icons.local_hospital_outlined,
+                        label: 'Previsión',
                         value: _sistemaSalud,
                       ),
                     ],
@@ -263,21 +434,26 @@ class _PacienteCard extends StatelessWidget {
 }
 
 class _Avatar extends StatelessWidget {
-  const _Avatar({required this.nombre});
+  const _Avatar({required this.nombreCompleto});
 
-  final String nombre;
+  final String nombreCompleto;
 
   @override
   Widget build(BuildContext context) {
-    final iniciales = nombre.isNotEmpty
-        ? nombre
-              .trim()
-              .split(RegExp(r"\s+"))
-              .take(2)
-              .map((p) => p[0])
-              .join()
-              .toUpperCase()
-        : 'PY';
+    // Extraer iniciales del formato "Nombre Apellido"
+    String iniciales = 'PY';
+    
+    if (nombreCompleto.isNotEmpty) {
+      final palabras = nombreCompleto.trim().split(RegExp(r"\s+"));
+      if (palabras.length >= 2) {
+        // Primera letra del nombre y primera del apellido
+        iniciales = '${palabras[0][0]}${palabras[1][0]}'.toUpperCase();
+      } else if (palabras.length == 1 && palabras[0].isNotEmpty) {
+        // Solo una palabra, tomar primera letra
+        iniciales = palabras[0][0].toUpperCase();
+      }
+    }
+    
     return Container(
       height: 58,
       width: 58,
@@ -334,6 +510,66 @@ class _InfoChip extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _SearchBar extends StatelessWidget {
+  const _SearchBar({
+    required this.controller,
+    required this.onChanged,
+  });
+
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ValueListenableBuilder<TextEditingValue>(
+        valueListenable: controller,
+        builder: (context, value, child) {
+          return TextField(
+            controller: controller,
+            onChanged: onChanged,
+            decoration: InputDecoration(
+              hintText: 'Buscar por RUT, nombre o apellido...',
+              hintStyle: TextStyle(color: Colors.grey[400]),
+              prefixIcon: const Icon(Icons.search, color: Color(0xFF0EA5E9)),
+              suffixIcon: value.text.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear, color: Colors.grey),
+                      onPressed: () {
+                        controller.clear();
+                        onChanged('');
+                      },
+                    )
+                  : null,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 16,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
