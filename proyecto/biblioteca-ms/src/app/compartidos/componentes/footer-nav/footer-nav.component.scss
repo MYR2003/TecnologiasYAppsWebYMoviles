@@ -1,0 +1,89 @@
+:host {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: block;
+}
+
+.footer-nav {
+  --background: rgba(255, 255, 255, 0.92);
+  --border-color: rgba(3, 169, 244, 0.15);
+  border-top: 1px solid var(--border-color);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  padding: 10px 4px;
+  box-shadow: 0 -6px 18px rgba(15, 23, 42, 0.12);
+}
+
+body.dark .footer-nav {
+  --background: rgba(5, 44, 58, 0.9);
+  --border-color: rgba(93, 208, 255, 0.22);
+}
+
+.footer-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: stretch;
+  max-width: 520px;
+  margin: 0 auto;
+  gap: 8px;
+  padding: 0 12px;
+}
+
+.footer-button {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 4px;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.footer-button:hover,
+.footer-button.active {
+  color: #ffffff;
+}
+
+.footer-button .icon {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 1.7rem;
+  margin: 0;
+  line-height: 1;
+}
+
+.footer-button .text-glyph {
+  font-weight: 700;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.footer-button .label {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 0;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  letter-spacing: 0.015em;
+  text-transform: none;
+}
+
+.footer-button.active .icon,
+.footer-button.active .text-glyph {
+  color: #ffffff;
+}

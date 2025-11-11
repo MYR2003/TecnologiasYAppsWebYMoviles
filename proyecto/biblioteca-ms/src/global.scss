@@ -192,6 +192,16 @@ ion-toolbar {
 	color: var(--ion-color-primary-contrast) !important;
 	transition: background 0.2s, color 0.2s;
 }
+
+ion-router-outlet {
+	display: block;
+	padding-bottom: 80px;
+}
+
+/* Remover padding del router outlet en la página de login */
+body.login-page ion-router-outlet {
+	padding-bottom: 0;
+}
 /*
  * App Global CSS
  * ----------------------------------------------------------------------------

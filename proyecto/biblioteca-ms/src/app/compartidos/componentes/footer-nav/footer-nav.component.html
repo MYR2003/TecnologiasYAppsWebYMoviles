@@ -1,0 +1,16 @@
+<ion-toolbar class="footer-nav" mode="md">
+  <div class="footer-buttons">
+    <a
+      *ngFor="let item of navItems"
+      class="footer-button"
+      [routerLink]="item.url"
+      [routerLinkActive]="'active'"
+      [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+      [attr.aria-label]="item.label | translate"
+    >
+      <ion-icon *ngIf="item.iconName" [name]="item.iconName" class="icon"></ion-icon>
+      <span *ngIf="item.iconText" class="text-glyph icon" aria-hidden="true">{{ item.iconText }}</span>
+      <span class="label">{{ item.label | translate }}</span>
+    </a>
+  </div>
+</ion-toolbar>

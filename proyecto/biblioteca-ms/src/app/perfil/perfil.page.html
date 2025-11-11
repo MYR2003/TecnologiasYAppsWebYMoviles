@@ -1,0 +1,210 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ 'profile.pageTitle' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="perfil-content" [fullscreen]="true">
+  <div class="perfil-state" *ngIf="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <ion-text>{{ 'profile.messages.loading' | translate }}</ion-text>
+  </div>
+
+  <ion-card class="perfil-error" color="danger" *ngIf="!loading && error">
+    <ion-card-header>
+      <ion-card-title>{{ 'profile.messages.genericErrorTitle' | translate }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ error | translate }}
+    </ion-card-content>
+  </ion-card>
+
+  <ng-container *ngIf="!loading && !error">
+    <section class="profile-hero">
+      <ion-card class="profile-header-card">
+        <ion-card-content>
+          <div class="profile-header">
+            <ion-avatar class="profile-avatar">
+              <span>{{ personaIniciales }}</span>
+            </ion-avatar>
+            <div class="profile-title">
+              <h1>{{ persona?.nombre }} {{ persona?.apellido }}</h1>
+              <p class="profile-rut">{{ persona?.rut }}</p>
+              <div class="profile-contact-row">
+                <ion-icon name="call-outline"></ion-icon>
+                <span>{{ persona?.telefono || ('profile.labels.noPhone' | translate) }}</span>
+              </div>
+              <div class="profile-contact-row" *ngIf="persona?.domicilio">
+                <ion-icon name="location-outline"></ion-icon>
+                <span>{{ persona?.domicilio }}</span>
+              </div>
+            </div>
+            <div class="profile-actions">
+              <ion-button fill="clear" size="small" [routerLink]="rutaEditarPerfil">
+                <ion-icon slot="start" name="create-outline"></ion-icon>
+                {{ 'profile.actions.edit' | translate }}
+              </ion-button>
+              <ion-button fill="solid" size="small" color="primary" [routerLink]="'/dashboards'">
+                <ion-icon slot="start" name="analytics-outline"></ion-icon>
+                {{ 'profile.actions.viewDashboards' | translate }}
+              </ion-button>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </section>
+
+    <section class="cards-grid">
+      <ion-card class="profile-card">
+        <ion-card-header>
+          <ion-card-title>{{ 'profile.sections.personalData' | translate }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list lines="none">
+            <ion-item>
+              <ion-icon slot="start" name="calendar-outline"></ion-icon>
+              <ion-label>
+                <h3>{{ 'profile.labels.birthDate' | translate }}</h3>
+                <p>{{ persona?.fechanacimiento ? (persona?.fechanacimiento | date:'longDate') : ('profile.labels.notAvailable' | translate) }}</p>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon slot="start" name="hourglass-outline"></ion-icon>
+              <ion-label>
+                <h3>{{ 'profile.labels.age' | translate }}</h3>
+                <p>{{ edadPersona !== null ? (edadPersona + ' ' + ('profile.labels.years' | translate)) : ('profile.labels.notAvailable' | translate) }}</p>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon slot="start" name="id-card-outline"></ion-icon>
+              <ion-label>
+                <h3>{{ 'profile.labels.healthSystem' | translate }}</h3>
+                <p>{{ persona?.sistemadesalud || ('profile.labels.notAvailable' | translate) }}</p>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-icon slot="start" name="home-outline"></ion-icon>
+              <ion-label>
+                <h3>{{ 'profile.labels.address' | translate }}</h3>
+                <p>{{ persona?.domicilio || ('profile.labels.notAvailable' | translate) }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="profile-card">
+        <ion-card-header>
+          <ion-card-title>{{ 'profile.sections.contacts' | translate }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div *ngIf="contactoPrincipal; else noContacts">
+            <h3 class="contact-title">{{ 'profile.labels.primaryContact' | translate }}</h3>
+            <p class="contact-name">{{ contactoPrincipal?.nombre }} {{ contactoPrincipal?.apellido }}</p>
+            <ul class="contact-details">
+              <li *ngIf="contactoPrincipal?.relacion">
+                <ion-icon name="people-outline"></ion-icon>
+                <span>{{ contactoPrincipal?.relacion }}</span>
+              </li>
+              <li *ngIf="contactoPrincipal?.telefono">
+                <ion-icon name="call-outline"></ion-icon>
+                <span>{{ contactoPrincipal?.telefono }}</span>
+              </li>
+              <li *ngIf="contactoPrincipal?.direccion">
+                <ion-icon name="location-outline"></ion-icon>
+                <span>{{ contactoPrincipal?.direccion }}</span>
+              </li>
+            </ul>
+            <div *ngIf="contactosSecundarios.length > 0" class="secondary-contacts">
+              <h4>{{ 'profile.labels.secondaryContacts' | translate }}</h4>
+              <ion-chip *ngFor="let contacto of contactosSecundarios" color="primary" fill="outline">
+                <ion-icon name="person-outline"></ion-icon>
+                <ion-label>{{ contacto.nombre }} {{ contacto.apellido }}</ion-label>
+              </ion-chip>
+            </div>
+          </div>
+          <ng-template #noContacts>
+            <ion-text color="medium">{{ 'profile.messages.noContacts' | translate }}</ion-text>
+          </ng-template>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="profile-card">
+        <ion-card-header>
+          <ion-card-title>{{ 'profile.sections.healthRecord' | translate }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div *ngIf="fichaMedica; else noHealthRecord" class="health-record">
+            <div class="health-item">
+              <span class="label">{{ 'profile.labels.height' | translate }}</span>
+              <span class="value">{{ fichaMedica?.altura !== undefined ? (fichaMedica?.altura | number:'1.0-2') + ' m' : ('profile.labels.notAvailable' | translate) }}</span>
+            </div>
+            <div class="health-item">
+              <span class="label">{{ 'profile.labels.weight' | translate }}</span>
+              <span class="value">{{ fichaMedica?.peso !== undefined ? (fichaMedica?.peso | number:'1.0-1') + ' kg' : ('profile.labels.notAvailable' | translate) }}</span>
+            </div>
+            <div class="health-item">
+              <span class="label">{{ 'profile.labels.pressure' | translate }}</span>
+              <span class="value">{{ fichaMedica?.presion !== undefined ? fichaMedica?.presion + ' mmHg' : ('profile.labels.notAvailable' | translate) }}</span>
+            </div>
+          </div>
+          <ng-template #noHealthRecord>
+            <ion-text color="medium">{{ 'profile.messages.noHealthRecord' | translate }}</ion-text>
+          </ng-template>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="profile-card">
+        <ion-card-header>
+          <ion-card-title>{{ 'profile.sections.consultations' | translate }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="consult-summary">
+            <div>
+              <span class="label">{{ 'profile.labels.totalConsultations' | translate }}</span>
+              <span class="value">{{ totalConsultas }}</span>
+            </div>
+            <div>
+              <span class="label">{{ 'profile.labels.lastConsultation' | translate }}</span>
+              <span class="value">{{ ultimaConsulta?.fecha ? (ultimaConsulta?.fecha | date:'short') : ('profile.labels.notAvailable' | translate) }}</span>
+            </div>
+          </div>
+          <ion-list lines="full" *ngIf="consultasRecientes.length > 0; else noConsultations">
+            <ion-item *ngFor="let consulta of consultasRecientes">
+              <ion-label>
+                <h3>{{ consulta.fecha | date:'mediumDate' }}</h3>
+                <p *ngIf="consulta.motivo">{{ consulta.motivo }}</p>
+                <p *ngIf="consulta.duracionminutos">
+                  {{ 'profile.labels.consultationDuration' | translate:{ minutes: consulta.duracionminutos } }}
+                </p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+          <ng-template #noConsultations>
+            <ion-text color="medium">{{ 'profile.messages.noConsultations' | translate }}</ion-text>
+          </ng-template>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="profile-card">
+        <ion-card-header>
+          <ion-card-title>{{ 'profile.sections.allergies' | translate }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="allergies" *ngIf="alergias.length > 0; else noAllergies">
+            <ion-chip *ngFor="let alergia of alergias" color="primary" outline="true">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <ion-label>{{ alergia }}</ion-label>
+            </ion-chip>
+          </div>
+          <ng-template #noAllergies>
+            <ion-text color="medium">{{ 'profile.messages.noAllergies' | translate }}</ion-text>
+          </ng-template>
+        </ion-card-content>
+      </ion-card>
+    </section>
+  </ng-container>
+</ion-content>

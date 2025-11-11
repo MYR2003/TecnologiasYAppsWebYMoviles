@@ -1,7 +1,7 @@
 
 import { Component, OnDestroy } from '@angular/core';
-import { NgFor } from '@angular/common';
-import { Router } from '@angular/router';
+import { NgFor, NgIf } from '@angular/common';
+import { Router, NavigationEnd } from '@angular/router';
 import {
   IonApp,
   IonRouterOutlet,
@@ -22,9 +22,11 @@ import {
 } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { TranslationService } from './core/i18n/translation.service';
 import { TranslatePipe } from './core/i18n/translate.pipe';
 import { LanguageCode, LanguageOption } from './core/i18n/translations';
+import { FooterNavComponent } from './compartidos/componentes/footer-nav/footer-nav.component';
 
 @Component({
   selector: 'app-root',
@@ -47,8 +49,10 @@ import { LanguageCode, LanguageOption } from './core/i18n/translations';
     IonSelectOption,
   IonText,
   NgFor,
+    NgIf,
     FormsModule,
     TranslatePipe,
+    FooterNavComponent,
   ],
 })
 export class AppComponent implements OnDestroy {
@@ -56,6 +60,7 @@ export class AppComponent implements OnDestroy {
   textScale = 16;
   language: LanguageCode;
   languages: LanguageOption[] = [];
+  showFooter = true;
 
   private readonly TEXT_SCALE_KEY = 'accessibility:text-scale';
   private readonly DARK_MODE_KEY = 'accessibility:dark-mode';
@@ -63,6 +68,7 @@ export class AppComponent implements OnDestroy {
   private readonly MIN_TEXT_SCALE = 14;
   private readonly MAX_TEXT_SCALE = 22;
   private readonly languageSubscription: Subscription;
+  private readonly routerSubscription: Subscription;
 
   constructor(private router: Router, private readonly translation: TranslationService) {
     // Detectar modo inicial
@@ -76,11 +82,37 @@ export class AppComponent implements OnDestroy {
     this.languageSubscription = this.translation.languageChanges$.subscribe((lang) => {
       this.language = lang;
     });
+    
+    // Suscribirse a cambios de ruta para ocultar/mostrar el footer
+    this.routerSubscription = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        const isLoginPage = event.url.startsWith('/login');
+        this.showFooter = !isLoginPage;
+        
+        // Agregar/quitar clase login-page al body
+        if (isLoginPage) {
+          document.body.classList.add('login-page');
+        } else {
+          document.body.classList.remove('login-page');
+        }
+      });
+    
+    // Establecer estado inicial del footer y clase body
+    const isLoginPage = this.router.url.startsWith('/login');
+    this.showFooter = !isLoginPage;
+    if (isLoginPage) {
+      document.body.classList.add('login-page');
+    } else {
+      document.body.classList.remove('login-page');
+    }
+    
     this.restorePreferences();
   }
 
   ngOnDestroy(): void {
     this.languageSubscription.unsubscribe();
+    this.routerSubscription.unsubscribe();
   }
 
   navigateTo(url: string) {

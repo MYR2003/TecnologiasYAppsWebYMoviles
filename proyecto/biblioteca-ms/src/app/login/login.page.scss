@@ -1,0 +1,116 @@
+.login-content {
+  --background: linear-gradient(135deg, #f2f9ff 0%, #e1f2ff 100%);
+}
+
+body.dark .login-content {
+  --background: linear-gradient(135deg, #001f2a 0%, #052c3a 100%);
+}
+
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.login-card {
+  max-width: 420px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #c9e7f8;
+  border-radius: 16px;
+  padding: 32px 28px;
+  box-shadow: 0 8px 32px rgba(3, 169, 244, 0.15);
+}
+
+body.dark .login-card {
+  background: rgba(5, 44, 58, 0.95);
+  border: 1px solid #0f4458;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #03a9f4;
+  margin: 0 0 8px;
+}
+
+body.dark .login-title {
+  color: #5dd0ff;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: #4f7a96;
+  margin: 0;
+}
+
+body.dark .login-subtitle {
+  color: #99d2eb;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login-input {
+  --background: rgba(255, 255, 255, 0.9);
+  --border-color: #d7ebfb;
+  --border-radius: 8px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+}
+
+body.dark .login-input {
+  --background: rgba(5, 44, 58, 0.9);
+  --border-color: #0f4458;
+  --color: #e2f1ff;
+}
+
+.login-input ion-label {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+body.dark .login-input ion-label {
+  color: #d7ecf7;
+}
+
+.login-button {
+  --background: #03a9f4;
+  --background-activated: #038fcf;
+  --background-hover: #049adb;
+  --border-radius: 10px;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-top: 8px;
+  box-shadow: 0 6px 16px rgba(3, 169, 244, 0.25);
+}
+
+.login-button ion-spinner {
+  --color: #ffffff;
+}
+
+.login-error {
+  text-align: center;
+  margin-top: 4px;
+}
+
+.login-error p {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+}
