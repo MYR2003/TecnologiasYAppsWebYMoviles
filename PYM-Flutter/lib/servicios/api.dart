@@ -31,8 +31,9 @@ class ApiService {
     int offset = 0,
     Map<String, dynamic> queryParams = const {},
   }) async {
-    final normalizedEndpoint =
-        endpoint.isNotEmpty && !endpoint.startsWith('/') ? '/$endpoint' : endpoint;
+    final normalizedEndpoint = endpoint.isNotEmpty && !endpoint.startsWith('/')
+        ? '/$endpoint'
+        : endpoint;
 
     final qp = {
       'limit': limit.toString(),
@@ -40,8 +41,15 @@ class ApiService {
       ...queryParams.map((k, v) => MapEntry(k, v?.toString() ?? '')),
     }..removeWhere((key, value) => value.isEmpty);
 
-    final queryString = qp.entries.map((e) => '${Uri.encodeQueryComponent(e.key)}=${Uri.encodeQueryComponent(e.value)}').join('&');
-    final Uri url = Uri.parse('$_baseHost:$port$normalizedEndpoint?$queryString');
+    final queryString = qp.entries
+        .map(
+          (e) =>
+              '${Uri.encodeQueryComponent(e.key)}=${Uri.encodeQueryComponent(e.value)}',
+        )
+        .join('&');
+    final Uri url = Uri.parse(
+      '$_baseHost:$port$normalizedEndpoint?$queryString',
+    );
     print('GET paginado -> $url');
 
     try {
@@ -72,10 +80,22 @@ class ApiService {
       }
 
       print('Respuesta no esperada: ${response.body}');
-      return {'data': <dynamic>[], 'total': 0, 'limit': limit, 'offset': offset, 'hasMore': false};
+      return {
+        'data': <dynamic>[],
+        'total': 0,
+        'limit': limit,
+        'offset': offset,
+        'hasMore': false,
+      };
     } catch (e) {
       print('Error en getPaginated $endpoint -> $e');
-      return {'data': <dynamic>[], 'total': 0, 'limit': limit, 'offset': offset, 'hasMore': false};
+      return {
+        'data': <dynamic>[],
+        'total': 0,
+        'limit': limit,
+        'offset': offset,
+        'hasMore': false,
+      };
     }
   }
 
@@ -156,7 +176,8 @@ class ApiService {
   // ======== CRUD Pacientes ========
 
   Future<Map<String, dynamic>> crearPaciente(
-      Map<String, dynamic> pacienteData) async {
+    Map<String, dynamic> pacienteData,
+  ) async {
     final Uri url = Uri.parse('$_baseHost:3016/');
     print('POST -> $url');
     print('Datos: $pacienteData');
@@ -179,7 +200,7 @@ class ApiService {
         print('Error ${response.statusCode}: ${response.body}');
         return {
           'success': false,
-          'message': 'Error al crear paciente: ${response.statusCode}'
+          'message': 'Error al crear paciente: ${response.statusCode}',
         };
       }
     } catch (e) {
@@ -189,7 +210,8 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>> actualizarPaciente(
-      Map<String, dynamic> pacienteData) async {
+    Map<String, dynamic> pacienteData,
+  ) async {
     final Uri url = Uri.parse('$_baseHost:3016/');
     print('PUT -> $url');
     print('Datos: $pacienteData');
@@ -209,13 +231,13 @@ class ApiService {
         print('Paciente actualizado exitosamente');
         return {
           'success': true,
-          'message': 'Paciente actualizado exitosamente'
+          'message': 'Paciente actualizado exitosamente',
         };
       } else {
         print('Error ${response.statusCode}: ${response.body}');
         return {
           'success': false,
-          'message': 'Error al actualizar paciente: ${response.statusCode}'
+          'message': 'Error al actualizar paciente: ${response.statusCode}',
         };
       }
     } catch (e) {
@@ -242,15 +264,12 @@ class ApiService {
 
       if (response.statusCode == 200) {
         print('Paciente eliminado exitosamente');
-        return {
-          'success': true,
-          'message': 'Paciente eliminado exitosamente'
-        };
+        return {'success': true, 'message': 'Paciente eliminado exitosamente'};
       } else {
         print('Error ${response.statusCode}: ${response.body}');
         return {
           'success': false,
-          'message': 'Error al eliminar paciente: ${response.statusCode}'
+          'message': 'Error al eliminar paciente: ${response.statusCode}',
         };
       }
     } catch (e) {
@@ -262,7 +281,9 @@ class ApiService {
   // ======== CRUD Medicos ========
 
   Future<Map<String, dynamic>> actualizarMedico(
-      int idMedico, Map<String, dynamic> medicoData) async {
+    int idMedico,
+    Map<String, dynamic> medicoData,
+  ) async {
     final Uri url = Uri.parse('$_baseHost:3015/$idMedico');
     print('PUT -> $url');
     print('Datos: $medicoData');
@@ -284,13 +305,13 @@ class ApiService {
         return {
           'success': true,
           'message': 'Perfil actualizado correctamente',
-          'data': decoded['data']
+          'data': decoded['data'],
         };
       } else {
         print('Error ${response.statusCode}: ${response.body}');
         return {
           'success': false,
-          'message': 'Error al actualizar medico: ${response.statusCode}'
+          'message': 'Error al actualizar medico: ${response.statusCode}',
         };
       }
     } catch (e) {
@@ -302,7 +323,8 @@ class ApiService {
   // ======== CRUD Consultas ========
 
   Future<Map<String, dynamic>> crearConsulta(
-      Map<String, dynamic> consultaData) async {
+    Map<String, dynamic> consultaData,
+  ) async {
     final Uri url = Uri.parse('$_baseHost:3002/');
     print('POST -> $url');
     print('Datos: $consultaData');
@@ -319,15 +341,12 @@ class ApiService {
       print('Codigo de respuesta: ${response.statusCode}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return {
-          'success': true,
-          'message': 'Consulta creada correctamente'
-        };
+        return {'success': true, 'message': 'Consulta creada correctamente'};
       }
 
       return {
         'success': false,
-        'message': 'Error al crear consulta: ${response.statusCode}'
+        'message': 'Error al crear consulta: ${response.statusCode}',
       };
     } catch (e) {
       print('Error al crear consulta -> $e');
@@ -336,7 +355,9 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>> actualizarConsulta(
-      int idConsulta, Map<String, dynamic> consultaData) async {
+    int idConsulta,
+    Map<String, dynamic> consultaData,
+  ) async {
     final Uri url = Uri.parse('$_baseHost:3002/$idConsulta');
     print('PUT -> $url');
     print('Datos: $consultaData');
@@ -355,13 +376,13 @@ class ApiService {
       if (response.statusCode == 200) {
         return {
           'success': true,
-          'message': 'Consulta actualizada correctamente'
+          'message': 'Consulta actualizada correctamente',
         };
       }
 
       return {
         'success': false,
-        'message': 'Error al actualizar consulta: ${response.statusCode}'
+        'message': 'Error al actualizar consulta: ${response.statusCode}',
       };
     } catch (e) {
       print('Error al actualizar consulta -> $e');
@@ -375,27 +396,142 @@ class ApiService {
 
     try {
       final response = await http
-          .delete(
-            url,
-            headers: {'Content-Type': 'application/json'},
-          )
+          .delete(url, headers: {'Content-Type': 'application/json'})
           .timeout(const Duration(seconds: 8));
 
       print('Codigo de respuesta: ${response.statusCode}');
 
       if (response.statusCode == 200) {
+        return {'success': true, 'message': 'Consulta eliminada correctamente'};
+      }
+
+      return {
+        'success': false,
+        'message': 'Error al eliminar consulta: ${response.statusCode}',
+      };
+    } catch (e) {
+      print('Error al eliminar consulta -> $e');
+      return {'success': false, 'message': 'Error de conexion: $e'};
+    }
+  }
+
+  // ======== EXAMENES ========
+
+  Future<List<dynamic>> obtenerExamenesPaciente(int idPaciente) async {
+    return await _getList('persona/$idPaciente', port: 3010);
+  }
+
+  Future<Map<String, dynamic>> obtenerExamen(int idExamen) async {
+    final Uri url = Uri.parse('$_baseHost:3010/$idExamen');
+    print('GET -> $url');
+
+    try {
+      final response = await http.get(url).timeout(const Duration(seconds: 8));
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        return {'success': true, 'data': decoded};
+      }
+
+      return {'success': false, 'message': 'Error: ${response.statusCode}'};
+    } catch (e) {
+      print('Error al obtener examen -> $e');
+      return {'success': false, 'message': 'Error de conexion: $e'};
+    }
+  }
+
+  // ======== ACCESOS A EXAMENES ========
+
+  Future<Map<String, dynamic>> solicitarAccesoExamen(
+    int examenId,
+    int medicoId,
+  ) async {
+    final Uri url = Uri.parse('$_baseHost:3011/');
+    print('POST solicitud acceso -> $url');
+    print('Datos: examenId=$examenId, medicoId=$medicoId');
+
+    try {
+      final response = await http
+          .post(
+            url,
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode({
+              'examen_id': examenId,
+              'usuario_solicitante_id': medicoId,
+            }),
+          )
+          .timeout(const Duration(seconds: 8));
+
+      print('Codigo de respuesta: ${response.statusCode}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return {'success': true, 'message': 'Solicitud enviada correctamente'};
+      } else if (response.statusCode == 400) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
         return {
-          'success': true,
-          'message': 'Consulta eliminada correctamente'
+          'success': false,
+          'message': decoded['error'] ?? 'Error en la solicitud',
         };
       }
 
       return {
         'success': false,
-        'message': 'Error al eliminar consulta: ${response.statusCode}'
+        'message': 'Error al enviar solicitud: ${response.statusCode}',
       };
     } catch (e) {
-      print('Error al eliminar consulta -> $e');
+      print('Error al solicitar acceso -> $e');
+      return {'success': false, 'message': 'Error de conexion: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> verificarEstadoAcceso(
+    int examenId,
+    int medicoId,
+  ) async {
+    final Uri url = Uri.parse('$_baseHost:3011/estado/$examenId/$medicoId');
+    print('GET estado acceso -> $url');
+
+    try {
+      final response = await http.get(url).timeout(const Duration(seconds: 8));
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        return {
+          'success': true,
+          'estado': decoded['estado'],
+          'solicitud': decoded['solicitud'],
+        };
+      }
+
+      return {'success': false, 'message': 'Error: ${response.statusCode}'};
+    } catch (e) {
+      print('Error al verificar estado -> $e');
+      return {'success': false, 'message': 'Error de conexion: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> verificarAccesoAprobado(
+    int examenId,
+    int medicoId,
+  ) async {
+    final Uri url = Uri.parse('$_baseHost:3011/verificar/$examenId/$medicoId');
+    print('GET verificar acceso -> $url');
+
+    try {
+      final response = await http.get(url).timeout(const Duration(seconds: 8));
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+        return {
+          'success': true,
+          'tieneAcceso': decoded['tieneAcceso'],
+          'acceso': decoded['acceso'],
+        };
+      }
+
+      return {'success': false, 'message': 'Error: ${response.statusCode}'};
+    } catch (e) {
+      print('Error al verificar acceso -> $e');
       return {'success': false, 'message': 'Error de conexion: $e'};
     }
   }

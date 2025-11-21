@@ -57,6 +57,48 @@
       </ion-card>
     </section>
 
+    <!-- Sección de Solicitudes de Acceso a Exámenes -->
+    <section class="cards-grid" *ngIf="solicitudesPendientes.length > 0">
+      <ion-card class="profile-card solicitudes-card">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="medical-outline"></ion-icon>
+            Solicitudes de Acceso a Exámenes
+            <ion-badge color="danger">{{ solicitudesPendientes.length }}</ion-badge>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item *ngFor="let solicitud of solicitudesPendientes" class="solicitud-item">
+              <ion-label>
+                <h3>{{ solicitud.nombre_examen }}</h3>
+                <p>Solicitante: <strong>{{ getNombreSolicitante(solicitud) }}</strong></p>
+                <p>Fecha: {{ solicitud.fecha_solicitud | date:'dd/MM/yyyy HH:mm' }}</p>
+              </ion-label>
+              <div slot="end" class="solicitud-actions">
+                <ion-button 
+                  color="success" 
+                  size="small" 
+                  (click)="responderSolicitud(solicitud, 'aprobado')"
+                  [disabled]="loadingSolicitudes">
+                  <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+                  Aprobar
+                </ion-button>
+                <ion-button 
+                  color="danger" 
+                  size="small" 
+                  (click)="responderSolicitud(solicitud, 'rechazado')"
+                  [disabled]="loadingSolicitudes">
+                  <ion-icon name="close-circle" slot="start"></ion-icon>
+                  Rechazar
+                </ion-button>
+              </div>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </section>
+
     <section class="cards-grid">
       <ion-card class="profile-card">
         <ion-card-header>

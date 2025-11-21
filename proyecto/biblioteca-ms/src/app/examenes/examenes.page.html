@@ -1,9 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button>
-
-      </ion-menu-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>{{ 'exams.pageTitle' | translate }}</ion-title>
   </ion-toolbar>
@@ -15,39 +13,56 @@
       {{ 'exams.welcomeTitle' | translate }}
     </ion-text>
   </ion-grid>
+  
   <div class="files">
-    <label for="fileInput">{{ 'exams.selectFileLabel' | translate }}</label>
+    <label for="fileInput">Seleccionar archivo (JPG, PNG o PDF)</label>
     <input
       id="fileInput"
       type="file"
-      accept="image/jpeg,application/pdf"
+      accept="image/jpeg,image/png,image/jpg,application/pdf"
       (change)="onFileChange($event)"
-      [attr.title]="'exams.selectFileTitle' | translate"
+      title="Selecciona un archivo"
     />
-    <ion-button (click)="subirImagen()" [disabled]="!selectedFile || loading">{{ 'exams.uploadButton' | translate }}</ion-button>
+    <ion-button (click)="subirImagen()" [disabled]="!selectedFile || loading">
+      Subir Examen
+    </ion-button>
   </div>
 
   <ion-spinner *ngIf="loading"></ion-spinner>
   <ion-text color="danger" *ngIf="showStatusMessages && error">{{ error }}</ion-text>
   <ion-text class="no-examenes-text" *ngIf="showStatusMessages && examenes.length === 0 && !loading">
-    {{ 'exams.noExams' | translate }}
+    No hay exámenes disponibles
   </ion-text>
 
   <ion-list *ngIf="examenes.length > 0">
     <ion-item *ngFor="let examen of examenes">
       <ion-label>
-        <h2>{{ 'exams.examNumber' | translate:{ id: examen.idExamen } }}</h2>
-        <p>{{ 'exams.dateLabel' | translate }}: {{ examen.fecha }}</p>
-        <p>{{ 'exams.extractedDataLabel' | translate }}: {{ examen.datosExtraidos }}</p>
+        <h2>{{ examen.examen }}</h2>
+        <p>Fecha: {{ examen.fecha_subida | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p>ID Examen: {{ examen.idexamen }}</p>
       </ion-label>
-      <img
-        *ngIf="examen.imagen && examen.imagen.startsWith('data:image')"
-        [src]="examen.imagen"
-        class="examen-img"
-        alt="{{ 'exams.imageAlt' | translate:{ id: examen.idExamen } }}"
-        title="{{ 'exams.imageAlt' | translate:{ id: examen.idExamen } }}"
-      />
-      <ion-button color="danger" (click)="eliminarExamen(examen.idExamen)" slot="end">{{ 'exams.deleteButton' | translate }}</ion-button>
+      
+      <!-- Mostrar vista previa si es imagen -->
+      <div *ngIf="examen.imagen && examen.imagen.startsWith('data:image')" slot="end" class="preview-container">
+        <img
+          [src]="examen.imagen"
+          class="examen-img"
+          alt="Examen {{ examen.idexamen }}"
+        />
+      </div>
+      
+      <!-- Mostrar ícono de PDF -->
+      <ion-icon 
+        *ngIf="examen.imagen && examen.imagen.startsWith('data:application/pdf')" 
+        name="document-text" 
+        slot="end"
+        size="large"
+        color="primary">
+      </ion-icon>
+      
+      <ion-button color="danger" (click)="eliminarExamen(examen.idexamen)" slot="end">
+        Eliminar
+      </ion-button>
     </ion-item>
   </ion-list>
 </ion-content>

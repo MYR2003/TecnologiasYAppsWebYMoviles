@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ExamenesService, Examen } from '../core/servicios/examenes.service';
-import { PersonasService, Persona } from '../core/servicios/personas.service';
 import { FormsModule } from '@angular/forms';
 import { TranslationService } from '../core/i18n/translation.service';
 import { TranslatePipe } from '../core/i18n/translate.pipe';
@@ -21,14 +20,14 @@ export class ExamenesPage {
   error = '';
   empty = false;
   selectedFile: File | null = null;
-  idPersona = 1; // Simulación, luego usar auth
-  nombreUsuario = 'Usuario Actual'; // Dinámico, reemplazar con servicio de auth
+  idPersona = 1; // TODO: Obtener del servicio de autenticación
   showStatusMessages = false;
-  // personas: Persona[] = [];
 
-  constructor(private examenesService: ExamenesService, private router: Router, private readonly translation: TranslationService) {}
-
-
+  constructor(
+    private examenesService: ExamenesService, 
+    private router: Router, 
+    private readonly translation: TranslationService
+  ) {}
 
   ngOnInit() {
     this.selectedFile = null;
@@ -38,16 +37,101 @@ export class ExamenesPage {
   cargarExamenes() {
     this.loading = true;
     this.error = '';
-      this.examenesService.getExamenesPorPersona(this.idPersona).subscribe({
+    this.examenesService.getExamenesPorPersona(this.idPersona).subscribe({
       next: (data) => {
         this.examenes = data;
         this.empty = data.length === 0;
         this.loading = false;
       },
       error: (err) => {
-        this.error = this.translation.translate('exams.loadError');
+        this.error = 'Error al cargar exámenes';
         this.loading = false;
+        console.error(err);
       }
+    });
+  }
+
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      // Validar tipo de archivo
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
+      if (!allowedTypes.includes(file.type)) {
+        this.error = 'Solo se permiten archivos JPG, PNG o PDF';
+        this.selectedFile = null;
+        return;
+      }
+      
+      // Validar tamaño (50MB máximo)
+      const maxSize = 50 * 1024 * 1024;
+      if (file.size > maxSize) {
+        this.error = 'El archivo es demasiado grande. Máximo 50MB';
+        this.selectedFile = null;
+        return;
+      }
+      
+      this.selectedFile = file;
+      this.error = '';
+    }
+  }
+
+  subirImagen() {
+    this.enableStatusMessages();
+    if (!this.selectedFile) {
+      this.error = 'No se ha seleccionado ningún archivo';
+      return;
+    }
+
+    this.loading = true;
+    this.error = '';
+    
+    this.examenesService.subirImagen(this.selectedFile, this.idPersona).subscribe({
+      next: (examen) => {
+        this.examenes.unshift(examen);
+        this.selectedFile = null;
+        this.loading = false;
+        this.empty = false;
+        
+        // Resetear el input de archivo
+        const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+        if (fileInput) {
+          fileInput.value = '';
+        }
+      },
+      error: (err) => {
+        this.error = 'Error al subir el archivo';
+        this.loading = false;
+        console.error(err);
+      }
+    });
+  }
+
+  eliminarExamen(idExamen: number) {
+    this.enableStatusMessages();
+    this.loading = true;
+    this.error = '';
+    
+    this.examenesService.eliminarExamen(idExamen).subscribe({
+      next: () => {
+        this.examenes = this.examenes.filter(e => e.idexamen !== idExamen);
+        this.empty = this.examenes.length === 0;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = 'Error al eliminar el examen';
+        this.loading = false;
+        console.error(err);
+      }
+    });
+  }
+
+  private enableStatusMessages() {
+    if (!this.showStatusMessages) {
+      this.showStatusMessages = true;
+    }
+  }
+}
+
     });
   }
 

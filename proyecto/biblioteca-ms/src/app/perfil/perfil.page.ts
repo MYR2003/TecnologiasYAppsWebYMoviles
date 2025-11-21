@@ -11,6 +11,7 @@ import { FichaMedica } from '../microservicios/fichaMedica/ficha-medica';
 import { Persona } from '../microservicios/persona/persona';
 import { PersonaContacto } from '../microservicios/personaContacto/persona-contacto';
 import { TranslatePipe } from '../core/i18n/translate.pipe';
+import { ExamenAccesoService, SolicitudAcceso } from '../core/servicios/examen-acceso.service';
 
 interface PersonaRecord {
   idpersona: number;
@@ -68,6 +69,10 @@ export class PerfilPage implements OnInit {
   consultasRecientes: ConsultaResumen[] = [];
   totalConsultas = 0;
   ultimaConsulta?: ConsultaResumen;
+  
+  // Nuevas propiedades para solicitudes de acceso
+  solicitudesPendientes: SolicitudAcceso[] = [];
+  loadingSolicitudes = false;
 
   constructor(
     private readonly personaService: Persona,
@@ -76,12 +81,14 @@ export class PerfilPage implements OnInit {
     private readonly alergiaPersonaService: AlergiaPersona,
     private readonly alergiaService: Alergia,
     private readonly fichaMedicaService: FichaMedica,
-  private readonly consultaService: Consulta,
-  private readonly route: ActivatedRoute,
+    private readonly consultaService: Consulta,
+    private readonly route: ActivatedRoute,
+    private readonly examenAccesoService: ExamenAccesoService,
   ) {}
 
   async ngOnInit(): Promise<void> {
     await this.loadProfile();
+    await this.cargarSolicitudesPendientes();
   }
 
   get personaIniciales(): string {
@@ -249,5 +256,42 @@ export class PerfilPage implements OnInit {
       .replace(/ÃƒÂ/g, 'Á')
       .replace(/Ã‰/g, 'É')
       .replace(/Ãš/g, 'Ú');
+  }
+
+  // Nuevos métodos para manejo de solicitudes
+  async cargarSolicitudesPendientes(): Promise<void> {
+    if (!this.persona) return;
+    
+    this.loadingSolicitudes = true;
+    try {
+      this.solicitudesPendientes = await firstValueFrom(
+        this.examenAccesoService.getSolicitudesPendientesPaciente(this.persona.idpersona)
+      );
+    } catch (error) {
+      console.error('Error al cargar solicitudes pendientes', error);
+    } finally {
+      this.loadingSolicitudes = false;
+    }
+  }
+
+  async responderSolicitud(solicitud: SolicitudAcceso, estado: 'aprobado' | 'rechazado'): Promise<void> {
+    this.loadingSolicitudes = true;
+    try {
+      await firstValueFrom(
+        this.examenAccesoService.responderSolicitud(solicitud.id, estado)
+      );
+      
+      // Eliminar de la lista de pendientes
+      this.solicitudesPendientes = this.solicitudesPendientes.filter(s => s.id !== solicitud.id);
+    } catch (error) {
+      console.error('Error al responder solicitud', error);
+      this.error = 'Error al procesar la solicitud';
+    } finally {
+      this.loadingSolicitudes = false;
+    }
+  }
+
+  getNombreSolicitante(solicitud: SolicitudAcceso): string {
+    return `${solicitud.solicitante_nombre || ''} ${solicitud.solicitante_apellido || ''}`.trim();
   }
 }

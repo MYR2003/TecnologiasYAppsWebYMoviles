@@ -1,21 +1,38 @@
 const express = require('express');
 const cors = require('cors');
+const multer = require('multer');
 const {client} = require('./config');
 
 const app = express();
 const port = 3010;
 app.use(cors());
-app.use(express.json({limit: '50mb'})); // Para permitir imágenes en base64
+app.use(express.json({limit: '50mb'}));
+
+// Configurar multer para archivos en memoria
+const storage = multer.memoryStorage();
+const upload = multer({ 
+    storage: storage,
+    limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
+        if (allowedTypes.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Tipo de archivo no permitido. Solo JPG, PNG y PDF.'));
+        }
+    }
+});
 
 client.connect();
 
 // GET todos los exámenes
 app.get('/', async (req,res) => {
     try {
-        const temp = await client.query('SELECT * FROM examen');
+        const temp = await client.query('SELECT * FROM examen ORDER BY fecha_subida DESC');
         res.json(temp.rows)
     } catch (error) {
-        throw error
+        console.error(error);
+        res.status(500).json({error: 'Error al obtener exámenes'});
     }
 });
 
@@ -23,7 +40,7 @@ app.get('/', async (req,res) => {
 app.get('/persona/:idpersona', async (req,res) => {
     try {
         const {idpersona} = req.params;
-        const query = 'SELECT * FROM examen WHERE idpersona = $1';
+        const query = 'SELECT * FROM examen WHERE idpersona = $1 ORDER BY fecha_subida DESC';
         const result = await client.query(query, [idpersona]);
         res.json(result.rows);
     } catch (error) {
@@ -32,87 +49,76 @@ app.get('/persona/:idpersona', async (req,res) => {
     }
 });
 
-// POST para crear un examen con imagen
-app.post('/', async (req,res) => {
-    try {
-        const {idtipoexamen, examen, idpersona, imagen} = req.body;
-        const query = 'INSERT INTO examen(idtipoexamen, examen, idpersona, imagen, fecha_subida) VALUES($1, $2, $3, $4, NOW()) RETURNING *';
-        const values = [idtipoexamen, examen, idpersona, imagen];
-        const result = await client.query(query, values);
-        res.status(201).json(result.rows[0]);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({error: 'Error al crear el examen'});
-    }
-});
-
-// PUT para actualizar un examen (incluye imagen)
-app.put('/:id', async (req,res) => {
+// GET un examen específico
+app.get('/:id', async (req,res) => {
     try {
         const {id} = req.params;
-        const {idtipoexamen, examen, imagen} = req.body;
-        const query = 'UPDATE examen SET idtipoexamen=$1, examen=$2, imagen=$3 WHERE idexamen=$4 RETURNING *';
-        const values = [idtipoexamen, examen, imagen, id];
-        const result = await client.query(query, values);
+        const query = 'SELECT * FROM examen WHERE idexamen = $1';
+        const result = await client.query(query, [id]);
         if (result.rows.length === 0) {
             return res.status(404).json({error: 'Examen no encontrado'});
         }
         res.json(result.rows[0]);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error: 'Error al actualizar el examen'});
+        res.status(500).json({error: 'Error al obtener el examen'});
     }
 });
 
-// GET solicitudes de acceso de un examen
-app.get('/accesos/:examenId', async (req,res) => {
+// POST para subir un examen con imagen/PDF
+app.post('/subir', upload.single('file'), async (req,res) => {
     try {
-        const {examenId} = req.params;
+        if (!req.file) {
+            return res.status(400).json({error: 'No se proporcionó un archivo'});
+        }
+
+        const {idpersona, idtipoexamen, nombre_examen} = req.body;
+        
+        if (!idpersona) {
+            return res.status(400).json({error: 'idpersona es requerido'});
+        }
+
+        // Convertir archivo a base64
+        const base64File = req.file.buffer.toString('base64');
+        const mimeType = req.file.mimetype;
+        const dataUri = `data:${mimeType};base64,${base64File}`;
+
         const query = `
-            SELECT ea.*, p.nombre, p.apellido 
-            FROM examen_accesos ea
-            JOIN persona p ON ea.usuario_solicitante_id = p.idpersona
-            WHERE ea.examen_id = $1
-            ORDER BY ea.fecha_solicitud DESC
+            INSERT INTO examen(idtipoexamen, examen, idpersona, imagen, fecha_subida) 
+            VALUES($1, $2, $3, $4, NOW()) 
+            RETURNING *
         `;
-        const result = await client.query(query, [examenId]);
-        res.json(result.rows);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({error: 'Error al obtener solicitudes de acceso'});
-    }
-});
-
-// POST para solicitar acceso a un examen
-app.post('/accesos', async (req,res) => {
-    try {
-        const {examen_id, usuario_solicitante_id} = req.body;
-        const query = 'INSERT INTO examen_accesos(examen_id, usuario_solicitante_id) VALUES($1, $2) RETURNING *';
-        const result = await client.query(query, [examen_id, usuario_solicitante_id]);
+        const values = [
+            idtipoexamen || 1, 
+            nombre_examen || `Examen ${req.file.originalname}`,
+            idpersona, 
+            dataUri
+        ];
+        
+        const result = await client.query(query, values);
         res.status(201).json(result.rows[0]);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error: 'Error al solicitar acceso'});
+        res.status(500).json({error: 'Error al subir el examen'});
     }
 });
 
-// PUT para responder a una solicitud de acceso
-app.put('/accesos/:id', async (req,res) => {
+// DELETE para eliminar un examen
+app.delete('/:id', async (req,res) => {
     try {
         const {id} = req.params;
-        const {estado} = req.body; // 'aprobado' o 'rechazado'
-        const query = 'UPDATE examen_accesos SET estado=$1, fecha_respuesta=NOW() WHERE id=$2 RETURNING *';
-        const result = await client.query(query, [estado, id]);
+        const query = 'DELETE FROM examen WHERE idexamen = $1 RETURNING *';
+        const result = await client.query(query, [id]);
         if (result.rows.length === 0) {
-            return res.status(404).json({error: 'Solicitud no encontrada'});
+            return res.status(404).json({error: 'Examen no encontrado'});
         }
-        res.json(result.rows[0]);
+        res.json({message: 'Examen eliminado correctamente'});
     } catch (error) {
         console.error(error);
-        res.status(500).json({error: 'Error al actualizar solicitud'});
+        res.status(500).json({error: 'Error al eliminar el examen'});
     }
 });
 
 app.listen(port, () => {
-    console.log(`microservicio abierto en el puerto ${port}`)
+    console.log(`microservicio examen abierto en el puerto ${port}`)
 });
