@@ -119,14 +119,27 @@ export class PerfilPage implements OnInit {
     this.loading = true;
     this.error = null;
     try {
+      // Obtener el usuario autenticado
+      const currentUser = this.authService.currentUserValue;
+      if (!currentUser) {
+        this.error = 'profile.messages.noAuth';
+        await this.router.navigate(['/login']);
+        return;
+      }
+
       const personas = await this.personaService.getPersona();
       if (!personas || personas.length === 0) {
         this.error = 'profile.messages.noPerson';
         return;
       }
 
-      const routeId = Number(this.route.snapshot.paramMap.get('id'));
-      const persona = personas.find((p) => Number(p.idpersona) === routeId) ?? personas[0];
+      // Buscar la persona por el ID del usuario autenticado
+      const persona = personas.find((p) => Number(p.idpersona) === currentUser.idpersona);
+      if (!persona) {
+        this.error = 'profile.messages.personNotFound';
+        return;
+      }
+      
       this.persona = persona;
 
       const [personaContactos, contactosEmergencia, alergiasPersona, alergiasCatalogo, fichas, consultaResponse] = await Promise.all([
