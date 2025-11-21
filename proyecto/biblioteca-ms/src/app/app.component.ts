@@ -88,13 +88,21 @@ export class AppComponent implements OnDestroy {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         const isLoginPage = event.url.startsWith('/login');
-        this.showFooter = !isLoginPage;
+        const isHomePage = event.url === '/' || event.url === '';
+        this.showFooter = !isLoginPage && !isHomePage;
         
         // Agregar/quitar clase login-page al body
         if (isLoginPage) {
           document.body.classList.add('login-page');
         } else {
           document.body.classList.remove('login-page');
+        }
+        
+        // Agregar/quitar clase home-page al body
+        if (isHomePage) {
+          document.body.classList.add('home-page');
+        } else {
+          document.body.classList.remove('home-page');
         }
       });
     

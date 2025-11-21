@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../core/auth/auth.service';
 import { TranslatePipe } from '../core/i18n/translate.pipe';
-import { Medico } from '../microservicios/medico/medico';
+import { Persona } from '../microservicios/persona/persona';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +22,7 @@ export class LoginPage {
   error: string | null = null;
 
   constructor(
-    private readonly medicoService: Medico,
+    private readonly personaService: Persona,
     private readonly authService: AuthService,
     private readonly router: Router
   ) {
@@ -50,23 +50,23 @@ export class LoginPage {
     this.error = null;
 
     try {
-      const medicos = await this.medicoService.getMedico();
+      const personas = await this.personaService.getPersona();
 
-      const medicoEncontrado = medicos?.find((registro: any) => {
+      const personaEncontrada = personas?.find((registro: any) => {
         const rutRegistro = this.normalizeRut(registro.rut?.toString() ?? '');
         const apellidoRegistro = registro.apellido?.toString().toLowerCase().trim() ?? '';
         return rutRegistro === rutNormalizado && apellidoRegistro === apellidoNormalizado;
       });
 
-      if (medicoEncontrado) {
+      if (personaEncontrada) {
         this.authService.login({
-          idmedico: Number(medicoEncontrado.idmedico),
-          nombre: medicoEncontrado.nombre ?? '',
-          apellido: medicoEncontrado.apellido ?? '',
-          rut: medicoEncontrado.rut ?? '',
-          especialidad: medicoEncontrado.idespecialidad?.toString(),
-          telefono: medicoEncontrado.telefono?.toString(),
-          email: medicoEncontrado.email ?? '',
+          idpersona: Number(personaEncontrada.idpersona),
+          nombre: personaEncontrada.nombre ?? '',
+          apellido: personaEncontrada.apellido ?? '',
+          rut: personaEncontrada.rut ?? '',
+          telefono: personaEncontrada.telefono?.toString(),
+          domicilio: personaEncontrada.domicilio ?? '',
+          sistemadesalud: personaEncontrada.sistemadesalud ?? '',
         });
 
         await this.router.navigate(['/']);

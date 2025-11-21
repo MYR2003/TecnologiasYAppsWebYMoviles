@@ -284,3 +284,15 @@ div.files input[type="file"]::file-selector-button {
 	--app-font-size: 16px;
 	font-size: var(--app-font-size);
 }
+
+/* Botón de cerrar sesión en header - siempre visible en blanco */
+ion-header ion-toolbar ion-buttons[slot="end"] ion-button ion-icon {
+  color: white !important;
+  font-size: 28px !important;
+  opacity: 1 !important;
+}
+
+ion-header ion-toolbar ion-buttons[slot="end"] ion-button {
+  --color: white !important;
+  opacity: 1 !important;
+}

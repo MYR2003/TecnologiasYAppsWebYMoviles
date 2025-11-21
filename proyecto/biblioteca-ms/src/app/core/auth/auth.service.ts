@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface UserSession {
-  idmedico: number;
+  idpersona: number;
   nombre: string;
   apellido: string;
   rut: string;
-  especialidad?: string;
   telefono?: string;
-  email?: string;
+  domicilio?: string;
+  sistemadesalud?: string;
 }
 
 @Injectable({

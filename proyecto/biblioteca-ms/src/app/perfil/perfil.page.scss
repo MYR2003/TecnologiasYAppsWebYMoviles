@@ -9,6 +9,16 @@
   min-height: 100%;
 }
 
+ion-header {
+  ion-button {
+    --color: white;
+    ion-icon {
+      color: white;
+      font-size: 24px;
+    }
+  }
+}
+
 .perfil-state {
   display: flex;
   flex-direction: column;

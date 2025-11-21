@@ -1,6 +1,6 @@
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { firstValueFrom } from 'rxjs';
 import { Alergia } from '../microservicios/alergia/alergia';
@@ -12,6 +12,7 @@ import { Persona } from '../microservicios/persona/persona';
 import { PersonaContacto } from '../microservicios/personaContacto/persona-contacto';
 import { TranslatePipe } from '../core/i18n/translate.pipe';
 import { ExamenAccesoService, SolicitudAcceso } from '../core/servicios/examen-acceso.service';
+import { AuthService } from '../core/auth/auth.service';
 
 interface PersonaRecord {
   idpersona: number;
@@ -84,6 +85,8 @@ export class PerfilPage implements OnInit {
     private readonly consultaService: Consulta,
     private readonly route: ActivatedRoute,
     private readonly examenAccesoService: ExamenAccesoService,
+    private readonly authService: AuthService,
+    private readonly router: Router,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -293,5 +296,10 @@ export class PerfilPage implements OnInit {
 
   getNombreSolicitante(solicitud: SolicitudAcceso): string {
     return `${solicitud.solicitante_nombre || ''} ${solicitud.solicitante_apellido || ''}`.trim();
+  }
+
+  async cerrarSesion(): Promise<void> {
+    this.authService.logout();
+    await this.router.navigate(['/login']);
   }
 }

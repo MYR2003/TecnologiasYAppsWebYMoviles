@@ -9,7 +9,8 @@ export class Persona {
   constructor(private http: HttpClient) {}
 
   async getPersona(): Promise<any[]> {
-    return await firstValueFrom(this.http.get<any[]>('http://localhost:3016'))
+    const response = await firstValueFrom(this.http.get<any>('http://localhost:3016?limit=10000'));
+    return response.data || [];
   }
 
 }
