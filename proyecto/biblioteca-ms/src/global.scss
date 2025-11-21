@@ -41,6 +41,21 @@ body:not(.dark) .perfil {
 body.dark .no-examenes-text {
 	color: #e5e7eb !important;
 }
+
+/* Botón de cerrar sesión - fondo blanco y letras azules */
+.logout-button {
+	--background: #ffffff !important;
+	--color: #0369a1 !important;
+	--border-color: #0369a1 !important;
+	--border-width: 2px !important;
+	--border-style: solid !important;
+}
+
+.logout-button:hover {
+	--background: #f0f9ff !important;
+	--color: #0369a1 !important;
+}
+
 /* Dashboards: tarjetas modo claro/oscuro forzadas */
 body:not(.dark) ion-card.dashboards-card {
 	background: #ffffff !important;
