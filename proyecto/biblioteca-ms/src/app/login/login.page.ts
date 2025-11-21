@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
@@ -15,7 +15,7 @@ import { Persona } from '../microservicios/persona/persona';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
   rut = '';
   apellido = '';
   loading = false;
@@ -25,7 +25,14 @@ export class LoginPage {
     private readonly personaService: Persona,
     private readonly authService: AuthService,
     private readonly router: Router
-  ) {
+  ) {}
+
+  ngOnInit(): void {
+    // Limpiar campos al inicializar
+    this.rut = '';
+    this.apellido = '';
+    this.error = null;
+    
     // Si ya está autenticado, redirigir
     if (this.authService.isAuthenticated) {
       this.router.navigate(['/']);

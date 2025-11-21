@@ -299,7 +299,19 @@ export class PerfilPage implements OnInit {
   }
 
   async cerrarSesion(): Promise<void> {
+    // Limpiar completamente la sesión
     this.authService.logout();
-    await this.router.navigate(['/login']);
+    
+    // Limpiar todos los datos del componente
+    this.persona = undefined;
+    this.contactoPrincipal = undefined;
+    this.contactosSecundarios = [];
+    this.alergias = [];
+    this.fichaMedica = undefined;
+    this.consultasRecientes = [];
+    this.solicitudesPendientes = [];
+    
+    // Navegar al login
+    await this.router.navigate(['/login'], { replaceUrl: true });
   }
 }
