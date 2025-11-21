@@ -195,6 +195,7 @@ export const TRANSLATIONS: Translations = {
     'profile.sections.allergies': 'Alergias',
     'profile.actions.edit': 'Editar',
     'profile.actions.viewDashboards': 'Ver Dashboards',
+    'profile.actions.logout': 'CERRAR SESIÓN',
   },
   en: {
     'menu.title': 'Menu',
@@ -342,6 +343,7 @@ export const TRANSLATIONS: Translations = {
     'profile.sections.allergies': 'Allergies',
     'profile.actions.edit': 'Edit',
     'profile.actions.viewDashboards': 'View Dashboards',
+    'profile.actions.logout': 'LOG OUT',
   },
   zh: {
     'menu.title': '菜单',
@@ -457,6 +459,9 @@ export const TRANSLATIONS: Translations = {
     'profile.nav.exams': '检查',
     'profile.nav.dashboards': '仪表板',
     'profile.nav.profile': '个人资料',
+
+    'profile.pageTitle': '患者资料',
+    'profile.actions.logout': '退出登录',
   },
   hi: {
     'menu.title': 'मेनू',
@@ -572,6 +577,9 @@ export const TRANSLATIONS: Translations = {
     'profile.nav.exams': 'परीक्षण',
     'profile.nav.dashboards': 'डैशबोर्ड',
     'profile.nav.profile': 'प्रोफ़ाइल',
+
+    'profile.pageTitle': 'रोगी प्रोफ़ाइल',
+    'profile.actions.logout': 'लॉग आउट करें',
   },
   ar: {
     'menu.title': 'القائمة',
@@ -687,6 +695,9 @@ export const TRANSLATIONS: Translations = {
     'profile.nav.exams': 'الفحوصات',
     'profile.nav.dashboards': 'لوحات المعلومات',
     'profile.nav.profile': 'الملف الشخصي',
+
+    'profile.pageTitle': 'ملف المريض',
+    'profile.actions.logout': 'تسجيل الخروج',
   },
   bn: {
     'menu.title': 'মেনু',
@@ -802,6 +813,9 @@ export const TRANSLATIONS: Translations = {
     'profile.nav.exams': 'পরীক্ষা',
     'profile.nav.dashboards': 'ড্যাশবোর্ড',
     'profile.nav.profile': 'প্রোফাইল',
+
+    'profile.pageTitle': 'রোগীর প্রোফাইল',
+    'profile.actions.logout': 'লগ আউট করুন',
   },
   pt: {
     'menu.title': 'Menu',
@@ -917,6 +931,9 @@ export const TRANSLATIONS: Translations = {
     'profile.nav.exams': 'Exames',
     'profile.nav.dashboards': 'Painéis',
     'profile.nav.profile': 'Perfil',
+
+    'profile.pageTitle': 'Perfil do Paciente',
+    'profile.actions.logout': 'SAIR',
   },
   ru: {
     'menu.title': 'Меню',
@@ -1032,6 +1049,9 @@ export const TRANSLATIONS: Translations = {
     'profile.nav.exams': 'Анализы',
     'profile.nav.dashboards': 'Панели',
     'profile.nav.profile': 'Профиль',
+
+    'profile.pageTitle': 'Профиль пациента',
+    'profile.actions.logout': 'ВЫЙТИ',
   },
   ja: {
     'menu.title': 'メニュー',
@@ -1147,6 +1167,9 @@ export const TRANSLATIONS: Translations = {
     'profile.nav.exams': '検査',
     'profile.nav.dashboards': 'ダッシュボード',
     'profile.nav.profile': 'プロフィール',
+
+    'profile.pageTitle': '患者プロフィール',
+    'profile.actions.logout': 'ログアウト',
   },
   de: {
     'menu.title': 'Menü',
@@ -1262,6 +1285,9 @@ export const TRANSLATIONS: Translations = {
     'profile.nav.exams': 'Untersuchungen',
     'profile.nav.dashboards': 'Dashboards',
     'profile.nav.profile': 'Profil',
+
+    'profile.pageTitle': 'Patientenprofil',
+    'profile.actions.logout': 'ABMELDEN',
   },
   fr: {
     'menu.title': 'Menu',
@@ -1377,6 +1403,9 @@ export const TRANSLATIONS: Translations = {
     'profile.nav.exams': 'Examens',
     'profile.nav.dashboards': 'Tableaux de bord',
     'profile.nav.profile': 'Profil',
+
+    'profile.pageTitle': 'Profil du Patient',
+    'profile.actions.logout': 'SE DÉCONNECTER',
   },
   it: {
     'menu.title': 'Menu',
@@ -1492,6 +1521,9 @@ export const TRANSLATIONS: Translations = {
     'profile.nav.exams': 'Esami',
     'profile.nav.dashboards': 'Dashboard',
     'profile.nav.profile': 'Profilo',
+
+    'profile.pageTitle': 'Profilo Paziente',
+    'profile.actions.logout': 'ESCI',
   },
   ko: {
     'menu.title': '메뉴',
@@ -1607,6 +1639,9 @@ export const TRANSLATIONS: Translations = {
     'profile.nav.exams': '검사',
     'profile.nav.dashboards': '대시보드',
     'profile.nav.profile': '프로필',
+
+    'profile.pageTitle': '환자 프로필',
+    'profile.actions.logout': '로그아웃',
   },
   tr: {
     'menu.title': 'Menü',
@@ -1722,6 +1757,9 @@ export const TRANSLATIONS: Translations = {
     'profile.nav.exams': 'Tetkikler',
     'profile.nav.dashboards': 'Panolar',
     'profile.nav.profile': 'Profil',
+
+    'profile.pageTitle': 'Hasta Profili',
+    'profile.actions.logout': 'ÇIKIŞ YAP',
   },
   id: {
     'menu.title': 'Menu',
@@ -1837,5 +1875,8 @@ export const TRANSLATIONS: Translations = {
     'profile.nav.exams': 'Pemeriksaan',
     'profile.nav.dashboards': 'Dasbor',
     'profile.nav.profile': 'Profil',
+
+    'profile.pageTitle': 'Profil Pasien',
+    'profile.actions.logout': 'KELUAR',
   },
 };
