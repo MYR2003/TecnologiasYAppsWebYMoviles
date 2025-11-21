@@ -238,7 +238,6 @@ ALTER SEQUENCE especialidad_idespecialidad_seq OWNED BY especialidad.idespeciali
 
 CREATE TABLE examen (
     idexamen integer NOT NULL,
-    idtipoexamen integer NOT NULL,
     examen character varying(255)
 );
 
@@ -1140,15 +1139,6 @@ ALTER TABLE ONLY recetaconsulta
     ADD CONSTRAINT fk_receta FOREIGN KEY (idreceta) REFERENCES receta(idreceta);
 
 
---
--- Name: examen fk_tipoexamen; Type: FK CONSTRAINT; Schema: public; Owner: myr
---
-
-ALTER TABLE ONLY examen
-    ADD CONSTRAINT fk_tipoexamen FOREIGN KEY (idtipoexamen) REFERENCES tipoexamen(idtipoexamen);
-
-
---
 -- Name: medico medico_idespecialidad_fkey; Type: FK CONSTRAINT; Schema: public; Owner: myr
 --
 

@@ -72,7 +72,7 @@ app.post('/subir', upload.single('file'), async (req,res) => {
             return res.status(400).json({error: 'No se proporcionó un archivo'});
         }
 
-        const {idpersona, idtipoexamen, nombre_examen} = req.body;
+        const {idpersona, nombre_examen} = req.body;
         
         if (!idpersona) {
             return res.status(400).json({error: 'idpersona es requerido'});
@@ -84,12 +84,11 @@ app.post('/subir', upload.single('file'), async (req,res) => {
         const dataUri = `data:${mimeType};base64,${base64File}`;
 
         const query = `
-            INSERT INTO examen(idtipoexamen, examen, idpersona, imagen, fecha_subida) 
-            VALUES($1, $2, $3, $4, NOW()) 
+            INSERT INTO examen(examen, idpersona, imagen, fecha_subida) 
+            VALUES($1, $2, $3, NOW()) 
             RETURNING *
         `;
         const values = [
-            idtipoexamen || 1, 
             nombre_examen || `Examen ${req.file.originalname}`,
             idpersona, 
             dataUri

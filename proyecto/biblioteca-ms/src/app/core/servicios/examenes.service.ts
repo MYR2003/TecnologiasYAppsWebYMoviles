@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 export interface Examen {
   idexamen: number;
   idpersona: number;
-  idtipoexamen: number;
   examen: string;
   fecha_subida: string;
   imagen: string; // Data URI (base64)
@@ -29,11 +28,10 @@ export class ExamenesService {
 
   constructor(private http: HttpClient) {}
 
-  subirImagen(file: File, idPersona: number, idTipoExamen: number = 1): Observable<Examen> {
+  subirImagen(file: File, idPersona: number): Observable<Examen> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('idpersona', idPersona.toString());
-    formData.append('idtipoexamen', idTipoExamen.toString());
     formData.append('nombre_examen', file.name);
     return this.http.post<Examen>(`${this.apiUrl}/subir`, formData);
   }
