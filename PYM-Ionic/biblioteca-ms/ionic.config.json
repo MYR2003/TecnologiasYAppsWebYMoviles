@@ -1,7 +1,7 @@
 {
-  "name": "biblioteca-ms",
+  "name": "PYM",
   "integrations": {
     "capacitor": {}
   },
-  "type": "angular-standalone"
+  "type": "angular"
 }
