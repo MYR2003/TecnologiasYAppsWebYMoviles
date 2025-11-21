@@ -44,6 +44,8 @@ class StreamService {
           final data = jsonDecode(utf8.decode(res.bodyBytes));
           if (data is List) {
             yield data;
+          } else if (data is Map && data['data'] is List) {
+            yield (data['data'] as List);
           } else {
             print('La respuesta no es una lista en $uri');
             yield [];
