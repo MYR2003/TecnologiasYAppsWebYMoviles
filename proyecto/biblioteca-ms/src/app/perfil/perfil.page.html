@@ -6,7 +6,7 @@
     <ion-title>{{ 'profile.pageTitle' | translate }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cerrarSesion()" shape="round" fill="outline" color="light">
-        CERRAR SESIÓN
+        {{ 'profile.actions.logout' | translate }}
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -68,7 +68,7 @@
         <ion-card-header>
           <ion-card-title>
             <ion-icon name="medical-outline"></ion-icon>
-            Solicitudes de Acceso a Exámenes
+            {{ 'profile.sections.examRequests' | translate }}
             <ion-badge color="danger">{{ solicitudesPendientes.length }}</ion-badge>
           </ion-card-title>
         </ion-card-header>
@@ -77,8 +77,8 @@
             <ion-item *ngFor="let solicitud of solicitudesPendientes" class="solicitud-item">
               <ion-label>
                 <h3>{{ solicitud.nombre_examen }}</h3>
-                <p>Solicitante: <strong>{{ getNombreSolicitante(solicitud) }}</strong></p>
-                <p>Fecha: {{ solicitud.fecha_solicitud | date:'dd/MM/yyyy HH:mm' }}</p>
+                <p>{{ 'profile.requests.requester' | translate }} <strong>{{ getNombreSolicitante(solicitud) }}</strong></p>
+                <p>{{ 'profile.requests.date' | translate }} {{ solicitud.fecha_solicitud | date:'dd/MM/yyyy HH:mm' }}</p>
               </ion-label>
               <div slot="end" class="solicitud-actions">
                 <ion-button 
@@ -87,7 +87,7 @@
                   (click)="responderSolicitud(solicitud, 'aprobado')"
                   [disabled]="loadingSolicitudes">
                   <ion-icon name="checkmark-circle" slot="start"></ion-icon>
-                  Aprobar
+                  {{ 'profile.requests.approve' | translate }}
                 </ion-button>
                 <ion-button 
                   color="danger" 
@@ -95,7 +95,7 @@
                   (click)="responderSolicitud(solicitud, 'rechazado')"
                   [disabled]="loadingSolicitudes">
                   <ion-icon name="close-circle" slot="start"></ion-icon>
-                  Rechazar
+                  {{ 'profile.requests.reject' | translate }}
                 </ion-button>
               </div>
             </ion-item>

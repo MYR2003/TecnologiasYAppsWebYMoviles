@@ -47,7 +47,7 @@ export class ExamenesPage {
 
   cargarExamenes() {
     if (!this.idPersona) {
-      this.error = 'No se pudo obtener el ID del usuario';
+      this.error = 'exams.errors.noUserId';
       return;
     }
     
@@ -60,7 +60,7 @@ export class ExamenesPage {
         this.loading = false;
       },
       error: (err) => {
-        this.error = 'Error al cargar exámenes';
+        this.error = 'exams.loadError';
         this.loading = false;
         console.error(err);
       }
@@ -73,7 +73,7 @@ export class ExamenesPage {
       // Validar tipo de archivo
       const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
       if (!allowedTypes.includes(file.type)) {
-        this.error = 'Solo se permiten archivos JPG, PNG o PDF';
+        this.error = 'exams.errors.invalidFileType';
         this.selectedFile = null;
         return;
       }
@@ -81,7 +81,7 @@ export class ExamenesPage {
       // Validar tamaño (50MB máximo)
       const maxSize = 50 * 1024 * 1024;
       if (file.size > maxSize) {
-        this.error = 'El archivo es demasiado grande. Máximo 50MB';
+        this.error = 'exams.errors.fileTooLarge';
         this.selectedFile = null;
         return;
       }
@@ -94,12 +94,12 @@ export class ExamenesPage {
   subirImagen() {
     this.enableStatusMessages();
     if (!this.selectedFile) {
-      this.error = 'No se ha seleccionado ningún archivo';
+      this.error = 'exams.errors.noFileSelected';
       return;
     }
 
     if (!this.idPersona) {
-      this.error = 'No se pudo obtener el ID del usuario';
+      this.error = 'exams.errors.noUserId';
       return;
     }
 
@@ -120,7 +120,7 @@ export class ExamenesPage {
         }
       },
       error: (err) => {
-        this.error = 'Error al subir el archivo';
+        this.error = 'exams.uploadError';
         this.loading = false;
         console.error(err);
       }
@@ -139,7 +139,7 @@ export class ExamenesPage {
         this.loading = false;
       },
       error: (err) => {
-        this.error = 'Error al eliminar el examen';
+        this.error = 'exams.deleteError';
         this.loading = false;
         console.error(err);
       }

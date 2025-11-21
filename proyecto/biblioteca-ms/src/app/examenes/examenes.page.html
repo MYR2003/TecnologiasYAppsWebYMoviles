@@ -15,31 +15,31 @@
   </ion-grid>
   
   <div class="files">
-    <label for="fileInput">Seleccionar archivo (JPG, PNG o PDF)</label>
+    <label for="fileInput">{{ 'exams.selectFileLabel' | translate }}</label>
     <input
       id="fileInput"
       type="file"
       accept="image/jpeg,image/png,image/jpg,application/pdf"
       (change)="onFileChange($event)"
-      title="Selecciona un archivo"
+      [title]="'exams.selectFileTitle' | translate"
     />
     <ion-button (click)="subirImagen()" [disabled]="!selectedFile || loading">
-      Subir Examen
+      {{ 'exams.uploadButton' | translate }}
     </ion-button>
   </div>
 
   <ion-spinner *ngIf="loading"></ion-spinner>
-  <ion-text color="danger" *ngIf="showStatusMessages && error">{{ error }}</ion-text>
+  <ion-text color="danger" *ngIf="showStatusMessages && error">{{ error | translate }}</ion-text>
   <ion-text class="no-examenes-text" *ngIf="showStatusMessages && examenes.length === 0 && !loading">
-    No hay exámenes disponibles
+    {{ 'exams.noExamsAvailable' | translate }}
   </ion-text>
 
   <ion-list *ngIf="examenes.length > 0">
     <ion-item *ngFor="let examen of examenes">
       <ion-label>
         <h2>{{ examen.examen }}</h2>
-        <p>Fecha: {{ examen.fecha_subida | date:'dd/MM/yyyy HH:mm' }}</p>
-        <p>ID Examen: {{ examen.idexamen }}</p>
+        <p>{{ 'exams.dateLabel' | translate }} {{ examen.fecha_subida | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p>{{ 'exams.idLabel' | translate }} {{ examen.idexamen }}</p>
       </ion-label>
       
       <!-- Mostrar vista previa si es imagen -->
