@@ -6,6 +6,7 @@ import { ExamenesService, Examen } from '../core/servicios/examenes.service';
 import { FormsModule } from '@angular/forms';
 import { TranslationService } from '../core/i18n/translation.service';
 import { TranslatePipe } from '../core/i18n/translate.pipe';
+import { AuthService } from '../core/auth/auth.service';
 
 @Component({
   selector: 'app-examenes',
@@ -20,21 +21,36 @@ export class ExamenesPage {
   error = '';
   empty = false;
   selectedFile: File | null = null;
-  idPersona = 1; // TODO: Obtener del servicio de autenticación
+  idPersona: number | null = null;
   showStatusMessages = false;
 
   constructor(
     private examenesService: ExamenesService, 
     private router: Router, 
-    private readonly translation: TranslationService
+    private readonly translation: TranslationService,
+    private readonly authService: AuthService
   ) {}
 
   ngOnInit() {
+    // Obtener el ID del usuario autenticado
+    const currentUser = this.authService.currentUserValue;
+    if (!currentUser) {
+      this.error = 'No hay usuario autenticado';
+      this.router.navigate(['/login']);
+      return;
+    }
+    
+    this.idPersona = currentUser.idpersona;
     this.selectedFile = null;
     this.cargarExamenes();
   }
 
   cargarExamenes() {
+    if (!this.idPersona) {
+      this.error = 'No se pudo obtener el ID del usuario';
+      return;
+    }
+    
     this.loading = true;
     this.error = '';
     this.examenesService.getExamenesPorPersona(this.idPersona).subscribe({
@@ -79,6 +95,11 @@ export class ExamenesPage {
     this.enableStatusMessages();
     if (!this.selectedFile) {
       this.error = 'No se ha seleccionado ningún archivo';
+      return;
+    }
+
+    if (!this.idPersona) {
+      this.error = 'No se pudo obtener el ID del usuario';
       return;
     }
 
