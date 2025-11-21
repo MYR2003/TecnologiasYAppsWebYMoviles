@@ -14,8 +14,30 @@ client.connect();
 
 app.get('/', async (req,res) => {
     try {
-        const temp = await client.query('SELECT idpersona, nombre, apellido, rut, fechanacimiento, sistemadesalud, domicilio, telefono FROM persona ORDER BY idpersona');
-        res.json(temp.rows)
+        const limitParam = Number.parseInt(req.query.limit, 10);
+        const offsetParam = Number.parseInt(req.query.offset, 10);
+
+        const limit = Number.isFinite(limitParam) && limitParam > 0 ? Math.min(limitParam, 100) : 20;
+        const offset = Number.isFinite(offsetParam) && offsetParam >= 0 ? offsetParam : 0;
+
+        const totalResult = await client.query('SELECT COUNT(*)::int AS count FROM persona');
+        const total = totalResult.rows?.[0]?.count ?? 0;
+
+        const temp = await client.query(
+            'SELECT idpersona, nombre, apellido, rut, fechanacimiento, sistemadesalud, domicilio, telefono FROM persona ORDER BY idpersona LIMIT $1 OFFSET $2',
+            [limit, offset]
+        );
+
+        const data = temp.rows ?? [];
+        const hasMore = offset + data.length < total;
+
+        res.json({
+            data,
+            total,
+            limit,
+            offset,
+            hasMore
+        });
     } catch (error) {
         console.error('Error en GET:', error);
         res.status(500).json({error: error.message})

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../servicios/stream.dart';
+import '../servicios/api.dart';
 import '../modelos/paciente.dart';
 import 'paciente_detalle.dart';
 import 'paciente_form.dart';
@@ -12,9 +12,20 @@ class PacientesView extends StatefulWidget {
 }
 
 class _PacientesViewState extends State<PacientesView> {
-  final StreamService _streamService = StreamService();
+  final ApiService _apiService = ApiService();
   final TextEditingController _searchController = TextEditingController();
   final ValueNotifier<String> _searchQueryNotifier = ValueNotifier<String>('');
+  late Future<Map<String, dynamic>> _futurePacientes;
+
+  int _limit = 20;
+  int _offset = 0;
+  int _total = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _futurePacientes = _fetchPacientes();
+  }
 
   @override
   void dispose() {
@@ -23,58 +34,54 @@ class _PacientesViewState extends State<PacientesView> {
     super.dispose();
   }
 
-  List<Map<String, dynamic>> _filtrarPacientes(List<dynamic> pacientes, String query) {
+  List<Map<String, dynamic>> _filtrarPacientes(
+      List<dynamic> pacientes, String query) {
     if (query.isEmpty) {
       return pacientes.cast<Map<String, dynamic>>();
     }
 
     final queryLower = query.toLowerCase().trim();
-    final palabrasBuscadas = queryLower.split(' ').where((p) => p.isNotEmpty).toList();
-    
-    // Filtrar pacientes que coincidan
+    final palabrasBuscadas =
+        queryLower.split(' ').where((p) => p.isNotEmpty).toList();
+
     final resultados = pacientes.where((p) {
       final paciente = p as Map<String, dynamic>;
       final nombre = (paciente['nombre'] ?? '').toString().toLowerCase();
       final apellido = (paciente['apellido'] ?? '').toString().toLowerCase();
       final rut = (paciente['rut'] ?? '').toString().toLowerCase();
-      
-      // Buscar en RUT directamente (una sola palabra)
-      if (palabrasBuscadas.length == 1 && rut.contains(queryLower)) return true;
-      
-      // Si busca múltiples palabras, TODAS deben estar en nombre o apellido
-      if (palabrasBuscadas.length > 1) {
-        // Verificar que todas las palabras estén en el nombre completo
-        return palabrasBuscadas.every((palabra) => 
-            nombre.contains(palabra) || apellido.contains(palabra));
+
+      if (palabrasBuscadas.length == 1 && rut.contains(queryLower)) {
+        return true;
       }
-      
-      // Si busca una sola palabra, buscar en nombre, apellido o RUT
-      return nombre.contains(queryLower) || 
-             apellido.contains(queryLower) || 
-             rut.contains(queryLower);
+
+      if (palabrasBuscadas.length > 1) {
+        return palabrasBuscadas
+            .every((palabra) => nombre.contains(palabra) || apellido.contains(palabra));
+      }
+
+      return nombre.contains(queryLower) ||
+          apellido.contains(queryLower) ||
+          rut.contains(queryLower);
     }).cast<Map<String, dynamic>>().toList();
-    
-    // Ordenar resultados: prioridad a coincidencias exactas en orden
+
     resultados.sort((a, b) {
       final nombreA = (a['nombre'] ?? '').toString().toLowerCase();
       final apellidoA = (a['apellido'] ?? '').toString().toLowerCase();
       final nombreCompletoA = '$nombreA $apellidoA';
-      
+
       final nombreB = (b['nombre'] ?? '').toString().toLowerCase();
       final apellidoB = (b['apellido'] ?? '').toString().toLowerCase();
       final nombreCompletoB = '$nombreB $apellidoB';
-      
-      // Coincidencia exacta con el orden tiene prioridad máxima
+
       final exactaA = nombreCompletoA.contains(queryLower);
       final exactaB = nombreCompletoB.contains(queryLower);
-      
+
       if (exactaA && !exactaB) return -1;
       if (!exactaA && exactaB) return 1;
-      
-      // Si ambos o ninguno son exactos, orden alfabético
+
       return nombreCompletoA.compareTo(nombreCompletoB);
     });
-    
+
     return resultados;
   }
 
@@ -86,10 +93,24 @@ class _PacientesViewState extends State<PacientesView> {
       ),
     );
 
-    // Si se hizo algún cambio, refrescar la lista
     if (result == true && mounted) {
-      setState(() {});
+      setState(() {
+        _futurePacientes = _fetchPacientes();
+      });
     }
+  }
+
+  Future<Map<String, dynamic>> _fetchPacientes() {
+    return _apiService.getPacientesPaginated(limit: _limit, offset: _offset);
+  }
+
+  void _irAPagina(int pagina) {
+    final totalPaginas = _total == 0 ? 1 : (_total + _limit - 1) ~/ _limit;
+    final page = pagina.clamp(1, totalPaginas == 0 ? 1 : totalPaginas);
+    setState(() {
+      _offset = (page - 1) * _limit;
+      _futurePacientes = _fetchPacientes();
+    });
   }
 
   @override
@@ -104,16 +125,6 @@ class _PacientesViewState extends State<PacientesView> {
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _navegarAFormulario(),
-        backgroundColor: const Color(0xFF0EA5E9),
-        icon: const Icon(Icons.person_add),
-        label: const Text(
-          'Nuevo',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        elevation: 6,
-      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -123,8 +134,8 @@ class _PacientesViewState extends State<PacientesView> {
           ),
         ),
         child: SafeArea(
-          child: StreamBuilder<List<dynamic>>(
-            stream: _streamService.getDataStream(port: 3016),
+          child: FutureBuilder<Map<String, dynamic>>(
+            future: _futurePacientes,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
@@ -142,14 +153,20 @@ class _PacientesViewState extends State<PacientesView> {
                 );
               }
 
-              final pacientes = snapshot.data ?? [];
+              final resp = snapshot.data ?? {};
+              final pacientes = (resp['data'] as List<dynamic>? ?? []);
+              _total = (resp['total'] as int?) ?? pacientes.length;
+              _limit = (resp['limit'] as int?) ?? _limit;
+              _offset = (resp['offset'] as int?) ?? _offset;
+              final totalPaginas = _total == 0 ? 1 : (_total + _limit - 1) ~/ _limit;
+              final paginaActual = _total == 0 ? 1 : (_offset ~/ _limit) + 1;
 
               if (pacientes.isEmpty) {
                 return const Center(
                   child: _FeedbackCard(
                     icon: Icons.search_off,
-                    title: 'Aún no registras pacientes',
-                    message: 'Cuando se agreguen pacientes aparecerán aquí.',
+                    title: 'Aun no registras pacientes',
+                    message: 'Cuando se agreguen pacientes apareceran aqui.',
                   ),
                 );
               }
@@ -159,9 +176,8 @@ class _PacientesViewState extends State<PacientesView> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-                    child: _SummaryHeader(total: pacientes.length),
+                    child: _SummaryHeader(total: _total),
                   ),
-                  // Buscador
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     child: _SearchBar(
@@ -171,22 +187,47 @@ class _PacientesViewState extends State<PacientesView> {
                       },
                     ),
                   ),
-                  // Lista con ValueListenableBuilder
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: () => _navegarAFormulario(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: const Color(0xFF0EA5E9),
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              side: const BorderSide(color: Color(0xFF0EA5E9), width: 1.5),
+                            ),
+                            elevation: 2,
+                          ),
+                          icon: const Icon(Icons.person_add),
+                          label: const Text(
+                            'Nuevo paciente',
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Expanded(
                     child: ValueListenableBuilder<String>(
                       valueListenable: _searchQueryNotifier,
                       builder: (context, searchQuery, _) {
-                        final pacientesFiltrados = _filtrarPacientes(pacientes, searchQuery);
-                        
+                        final pacientesFiltrados =
+                            _filtrarPacientes(pacientes, searchQuery);
+
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Resultados de búsqueda
                             if (searchQuery.isNotEmpty)
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 20),
                                 child: Text(
-                                  '${pacientesFiltrados.length} resultado(s) encontrado(s)',
+                                  '${pacientesFiltrados.length} resultado(s) en esta pagina',
                                   style: const TextStyle(
                                     color: Colors.white70,
                                     fontSize: 14,
@@ -224,7 +265,7 @@ class _PacientesViewState extends State<PacientesView> {
                                               ),
                                               const SizedBox(height: 16),
                                               Text(
-                                                'No se encontraron pacientes',
+                                                'No se encontraron pacientes en esta pagina',
                                                 style: TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
@@ -233,7 +274,7 @@ class _PacientesViewState extends State<PacientesView> {
                                               ),
                                               const SizedBox(height: 8),
                                               Text(
-                                                'Intenta con otro término de búsqueda',
+                                                'Intenta con otro termino de busqueda',
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.grey[500],
@@ -243,29 +284,49 @@ class _PacientesViewState extends State<PacientesView> {
                                           ),
                                         ),
                                       )
-                                    : ListView.separated(
-                                        padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
-                                        itemCount: pacientesFiltrados.length,
-                                        separatorBuilder: (_, __) => const SizedBox(height: 18),
-                                        itemBuilder: (context, index) {
-                                          final paciente = pacientesFiltrados[index];
-                                          return _PacienteCard(
-                                            paciente: paciente,
-                                            onTap: () async {
-                                              final result = await Navigator.push<bool>(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      DetallePacienteScreen(paciente: paciente),
-                                                ),
-                                              );
-                                              // Si se editó o eliminó, refrescar
-                                              if (result == true && mounted) {
-                                                setState(() {});
-                                              }
-                                            },
-                                          );
-                                        },
+                                    : Column(
+                                        children: [
+                                          Expanded(
+                                            child: ListView.separated(
+                                              padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
+                                              itemCount: pacientesFiltrados.length,
+                                              separatorBuilder: (_, __) =>
+                                                  const SizedBox(height: 18),
+                                              itemBuilder: (context, index) {
+                                                final paciente = pacientesFiltrados[index];
+                                                return _PacienteCard(
+                                                  paciente: paciente,
+                                                  onTap: () async {
+                                                    final result = await Navigator.push<bool>(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            DetallePacienteScreen(
+                                                                paciente: paciente),
+                                                      ),
+                                                    );
+                                                    if (result == true && mounted) {
+                                                      setState(() {
+                                                        _futurePacientes = _fetchPacientes();
+                                                      });
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                                            child: _PaginationBar(
+                                              currentPage: paginaActual,
+                                              totalPages: totalPaginas,
+                                              onFirst: () => _irAPagina(1),
+                                              onPrev: () => _irAPagina(paginaActual - 1),
+                                              onNext: () => _irAPagina(paginaActual + 1),
+                                              onLast: () => _irAPagina(totalPaginas),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                               ),
                             ),
@@ -357,7 +418,8 @@ class _PacienteCard extends StatelessWidget {
 
   String get _rut => (paciente['rut'] ?? 'Sin RUT').toString();
 
-  String get _sistemaSalud => (paciente['sistemadesalud'] ?? 'No especificado').toString();
+  String get _sistemaSalud =>
+      (paciente['sistemadesalud'] ?? 'No especificado').toString();
 
   @override
   Widget build(BuildContext context) {
@@ -402,8 +464,7 @@ class _PacienteCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Icon(Icons.chevron_right,
-                          color: Color(0xFF0EA5E9)),
+                      const Icon(Icons.chevron_right, color: Color(0xFF0EA5E9)),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -418,7 +479,7 @@ class _PacienteCard extends StatelessWidget {
                       ),
                       _InfoChip(
                         icon: Icons.local_hospital_outlined,
-                        label: 'Previsión',
+                        label: 'Prevision',
                         value: _sistemaSalud,
                       ),
                     ],
@@ -440,20 +501,17 @@ class _Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Extraer iniciales del formato "Nombre Apellido"
     String iniciales = 'PY';
-    
+
     if (nombreCompleto.isNotEmpty) {
       final palabras = nombreCompleto.trim().split(RegExp(r"\s+"));
       if (palabras.length >= 2) {
-        // Primera letra del nombre y primera del apellido
         iniciales = '${palabras[0][0]}${palabras[1][0]}'.toUpperCase();
       } else if (palabras.length == 1 && palabras[0].isNotEmpty) {
-        // Solo una palabra, tomar primera letra
         iniciales = palabras[0][0].toUpperCase();
       }
     }
-    
+
     return Container(
       height: 58,
       width: 58,
@@ -503,7 +561,7 @@ class _InfoChip extends StatelessWidget {
           Icon(icon, color: const Color(0xFF0284C7), size: 18),
           const SizedBox(width: 8),
           Text(
-            '$label · $value',
+            '$label - $value',
             style: const TextStyle(
               color: Color(0xFF0F172A),
               fontWeight: FontWeight.w600,
@@ -618,6 +676,50 @@ class _FeedbackCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _PaginationBar extends StatelessWidget {
+  const _PaginationBar({
+    required this.currentPage,
+    required this.totalPages,
+    required this.onFirst,
+    required this.onPrev,
+    required this.onNext,
+    required this.onLast,
+  });
+
+  final int currentPage;
+  final int totalPages;
+  final VoidCallback onFirst;
+  final VoidCallback onPrev;
+  final VoidCallback onNext;
+  final VoidCallback onLast;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          icon: const Icon(Icons.first_page),
+          onPressed: currentPage > 1 ? onFirst : null,
+        ),
+        IconButton(
+          icon: const Icon(Icons.chevron_left),
+          onPressed: currentPage > 1 ? onPrev : null,
+        ),
+        Text('Pagina $currentPage de $totalPages'),
+        IconButton(
+          icon: const Icon(Icons.chevron_right),
+          onPressed: currentPage < totalPages ? onNext : null,
+        ),
+        IconButton(
+          icon: const Icon(Icons.last_page),
+          onPressed: currentPage < totalPages ? onLast : null,
+        ),
+      ],
     );
   }
 }
