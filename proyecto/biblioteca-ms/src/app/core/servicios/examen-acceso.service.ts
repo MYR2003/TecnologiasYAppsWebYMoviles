@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -18,7 +18,7 @@ export interface SolicitudAcceso {
 
 @Injectable({ providedIn: 'root' })
 export class ExamenAccesoService {
-  private apiUrl = 'http://localhost:3011';
+  private apiUrl = 'http://localhost:3057';
 
   constructor(private http: HttpClient) {}
 
@@ -32,7 +32,7 @@ export class ExamenAccesoService {
     return this.http.put<SolicitudAcceso>(`${this.apiUrl}/${id}`, { estado });
   }
 
-  // Solicitar acceso a un examen (usado por médico)
+  // Solicitar acceso a un examen (usado por mÃ©dico)
   solicitarAcceso(examenId: number, medicoId: number): Observable<SolicitudAcceso> {
     return this.http.post<SolicitudAcceso>(this.apiUrl, {
       examen_id: examenId,
@@ -54,8 +54,9 @@ export class ExamenAccesoService {
     );
   }
 
-  // Obtener solicitudes de un médico
+  // Obtener solicitudes de un mÃ©dico
   getSolicitudesMedico(idMedico: number): Observable<SolicitudAcceso[]> {
     return this.http.get<SolicitudAcceso[]>(`${this.apiUrl}/medico/${idMedico}`);
   }
 }
+

@@ -1,9 +1,9 @@
-const express = require('express');
+﻿const express = require('express');
 const cors = require('cors');
 const {client} = require('./config');
 
 const app = express();
-const port = 3011;
+const port = 3058;
 app.use(cors());
 
 client.connect();

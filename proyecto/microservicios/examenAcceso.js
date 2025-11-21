@@ -1,9 +1,9 @@
-const express = require('express');
+﻿const express = require('express');
 const cors = require('cors');
 const {client} = require('./config');
 
 const app = express();
-const port = 3011;
+const port = 3057;
 app.use(cors());
 app.use(express.json());
 
@@ -56,7 +56,7 @@ app.get('/paciente/:idpaciente/pendientes', async (req,res) => {
     }
 });
 
-// GET solicitudes por médico
+// GET solicitudes por mÃ©dico
 app.get('/medico/:idmedico', async (req,res) => {
     try {
         const {idmedico} = req.params;
@@ -76,11 +76,11 @@ app.get('/medico/:idmedico', async (req,res) => {
         res.json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error: 'Error al obtener solicitudes del médico'});
+        res.status(500).json({error: 'Error al obtener solicitudes del mÃ©dico'});
     }
 });
 
-// GET verificar si un médico tiene acceso aprobado a un examen
+// GET verificar si un mÃ©dico tiene acceso aprobado a un examen
 app.get('/verificar/:examenId/:medicoId', async (req,res) => {
     try {
         const {examenId, medicoId} = req.params;
@@ -168,7 +168,7 @@ app.put('/:id', async (req,res) => {
         const {estado} = req.body;
         
         if (!['aprobado', 'rechazado'].includes(estado)) {
-            return res.status(400).json({error: 'Estado inválido. Debe ser "aprobado" o "rechazado"'});
+            return res.status(400).json({error: 'Estado invÃ¡lido. Debe ser "aprobado" o "rechazado"'});
         }
 
         const query = `
@@ -211,3 +211,4 @@ app.delete('/:id', async (req,res) => {
 app.listen(port, () => {
     console.log(`microservicio examen_accesos abierto en el puerto ${port}`)
 });
+
