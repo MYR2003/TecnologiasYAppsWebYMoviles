@@ -11,11 +11,20 @@
 
 ion-header {
   ion-button {
-    --color: white;
     ion-icon {
       color: white;
       font-size: 24px;
     }
+  }
+  
+  ion-menu-button {
+    --color: white;
+  }
+  
+  .logout-button .logout-text {
+    color: #03a9f4 !important;
+    font-weight: 600;
+    display: inline-block;
   }
 }
 

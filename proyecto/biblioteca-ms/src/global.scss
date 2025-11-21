@@ -43,17 +43,20 @@ body.dark .no-examenes-text {
 }
 
 /* Botón de cerrar sesión - fondo blanco y letras azules */
-.logout-button {
+ion-header ion-buttons ion-button.logout-button {
 	--background: #ffffff !important;
-	--color: #0369a1 !important;
-	--border-color: #0369a1 !important;
+	--background-activated: #f0f9ff !important;
+	--background-focused: #f0f9ff !important;
+	--background-hover: #f0f9ff !important;
+	--color: #03a9f4 !important;
+	--color-activated: #0288d1 !important;
+	--color-focused: #0288d1 !important;
+	--color-hover: #0288d1 !important;
+	--border-color: #03a9f4 !important;
 	--border-width: 2px !important;
 	--border-style: solid !important;
-}
-
-.logout-button:hover {
-	--background: #f0f9ff !important;
-	--color: #0369a1 !important;
+	--box-shadow: 0 2px 4px rgba(3, 169, 244, 0.2) !important;
+	font-weight: 600 !important;
 }
 
 /* Dashboards: tarjetas modo claro/oscuro forzadas */

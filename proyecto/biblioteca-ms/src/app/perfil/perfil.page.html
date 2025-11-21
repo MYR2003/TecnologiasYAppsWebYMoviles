@@ -5,8 +5,8 @@
     </ion-buttons>
     <ion-title>{{ 'profile.pageTitle' | translate }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="cerrarSesion()" shape="round" fill="solid" color="light" class="logout-button">
-        {{ 'profile.actions.logout' | translate }}
+      <ion-button (click)="cerrarSesion()" shape="round" fill="solid" class="logout-button">
+        <span class="logout-text">{{ 'profile.actions.logout' | translate }}</span>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
