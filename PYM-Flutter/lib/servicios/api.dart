@@ -446,7 +446,7 @@ class ApiService {
     int examenId,
     int medicoId,
   ) async {
-    final Uri url = Uri.parse('$_baseHost:3011/');
+    final Uri url = Uri.parse('$_baseHost:3057/');
     print('POST solicitud acceso -> $url');
     print('Datos: examenId=$examenId, medicoId=$medicoId');
 
@@ -488,7 +488,7 @@ class ApiService {
     int examenId,
     int medicoId,
   ) async {
-    final Uri url = Uri.parse('$_baseHost:3011/estado/$examenId/$medicoId');
+    final Uri url = Uri.parse('$_baseHost:3057/estado/$examenId/$medicoId');
     print('GET estado acceso -> $url');
 
     try {
@@ -514,7 +514,7 @@ class ApiService {
     int examenId,
     int medicoId,
   ) async {
-    final Uri url = Uri.parse('$_baseHost:3011/verificar/$examenId/$medicoId');
+    final Uri url = Uri.parse('$_baseHost:3057/verificar/$examenId/$medicoId');
     print('GET verificar acceso -> $url');
 
     try {

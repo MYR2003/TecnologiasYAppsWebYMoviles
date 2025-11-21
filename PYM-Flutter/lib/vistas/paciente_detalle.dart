@@ -520,7 +520,15 @@ class _ExamenRow extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: Colors.grey),
+            const SizedBox(width: 12),
+            TextButton.icon(
+              onPressed: onTap,
+              icon: const Icon(Icons.visibility, size: 18),
+              label: const Text('Ver / solicitar'),
+              style: TextButton.styleFrom(
+                foregroundColor: const Color(0xFF0EA5E9),
+              ),
+            ),
           ],
         ),
       ),
