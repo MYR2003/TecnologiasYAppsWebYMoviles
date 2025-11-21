@@ -76,7 +76,7 @@ export class LoginPage implements OnInit {
           sistemadesalud: personaEncontrada.sistemadesalud ?? '',
         });
 
-        await this.router.navigate(['/']);
+        await this.router.navigate(['/examenes']);
       } else {
         this.error = 'login.errors.invalidCredentials';
       }
