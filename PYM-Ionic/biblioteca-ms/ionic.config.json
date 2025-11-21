@@ -1,7 +1,0 @@
-{
-  "name": "PYM",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}
