@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '../core/i18n/translate.pipe';
 import { TranslationService } from '../core/i18n/translation.service';
+import { AuthService } from '../core/auth/auth.service';
 
 @Component({
   selector: 'app-registrar-persona',
@@ -26,7 +27,12 @@ export class RegistrarPersonaPage {
   error = '';
   success = false;
 
-  constructor(private personasService: PersonasService, private router: Router, private readonly translation: TranslationService) {}
+  constructor(
+    private personasService: PersonasService,
+    private router: Router,
+    private readonly translation: TranslationService,
+    private authService: AuthService
+  ) {}
 
   salir() {
     this.router.navigate(['/examenes']);
@@ -68,5 +74,10 @@ export class RegistrarPersonaPage {
         this.loading = false;
       }
     });
+  }
+
+  async cerrarSesion(): Promise<void> {
+    this.authService.logout();
+    await this.router.navigate(['/login'], { replaceUrl: true });
   }
 }

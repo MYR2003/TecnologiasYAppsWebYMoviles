@@ -4,6 +4,11 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>{{ 'exams.pageTitle' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarSesion()" shape="round" fill="solid" class="logout-button">
+        <span class="logout-text">{{ 'profile.actions.logout' | translate }}</span>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -23,7 +28,10 @@
       (change)="onFileChange($event)"
       [title]="'exams.selectFileTitle' | translate"
     />
-    <ion-button (click)="subirImagen()" [disabled]="!selectedFile || loading">
+  </div>
+  
+  <div class="upload-button-container">
+    <ion-button expand="block" (click)="subirImagen()" [disabled]="!selectedFile || loading">
       {{ 'exams.uploadButton' | translate }}
     </ion-button>
   </div>

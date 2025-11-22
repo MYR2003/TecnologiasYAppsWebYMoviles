@@ -6,6 +6,11 @@
       </ion-button>
     </ion-buttons>
     <ion-title>{{ 'person.pageTitle' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarSesion()" shape="round" fill="solid" class="logout-button">
+        <span class="logout-text">{{ 'profile.actions.logout' | translate }}</span>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

@@ -4,6 +4,11 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>{{ 'dashboards.pageTitle' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarSesion()" shape="round" fill="solid" class="logout-button">
+        <span class="logout-text">{{ 'profile.actions.logout' | translate }}</span>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -29,32 +34,74 @@
 
   <!-- Estado normal -->
   <ng-container *ngIf="!loading && !error && !empty">
-    <ion-card class="dashboards-card">
-      <ion-card-header class="dashboards-card-header">
-        <ion-card-title>{{ 'dashboards.historicalMetrics' | translate }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content class="dashboards-card-content">
-        <div class="metricas-flex">
-          <div class="metrica-box">
-            <div class="metrica-label">{{ 'dashboards.totalExams' | translate }}</div>
-            <div class="metrica-valor">{{ totalExamenes }}</div>
-            <div class="tendencia tendencia-positive">
-              <ion-icon name="trending-up-outline"></ion-icon>
-              <span>{{ 'dashboards.trendComparison' | translate:{ percent: tendenciaExamenes } }}</span>
+    <!-- Grid de métricas principales -->
+    <div class="metrics-grid">
+      <ion-card class="metric-card metric-primary">
+        <ion-card-content>
+          <div class="metric-icon">
+            <ion-icon name="people-outline"></ion-icon>
+          </div>
+          <div class="metric-info">
+            <div class="metric-label">{{ 'dashboards.totalPatients' | translate }}</div>
+            <div class="metric-value">{{ totalPersonas }}</div>
+            <div class="metric-change positive">
+              <ion-icon name="trending-up"></ion-icon>
+              <span>+{{ tendenciaPersonas }}%</span>
             </div>
           </div>
-          <div class="metrica-box">
-            <div class="metrica-label">{{ 'dashboards.totalPeople' | translate }}</div>
-            <div class="metrica-valor">{{ totalPersonas }}</div>
-            <div class="tendencia tendencia-positive">
-              <ion-icon name="trending-up-outline"></ion-icon>
-              <span>{{ 'dashboards.trendComparison' | translate:{ percent: tendenciaPersonas } }}</span>
-            </div>
-          </div>
-        </div>
-      </ion-card-content>
-    </ion-card>
+        </ion-card-content>
+      </ion-card>
 
+      <ion-card class="metric-card metric-success">
+        <ion-card-content>
+          <div class="metric-icon">
+            <ion-icon name="medkit-outline"></ion-icon>
+          </div>
+          <div class="metric-info">
+            <div class="metric-label">{{ 'dashboards.totalConsultations' | translate }}</div>
+            <div class="metric-value">{{ totalConsultas }}</div>
+            <div class="metric-change positive">
+              <ion-icon name="trending-up"></ion-icon>
+              <span>+8.5%</span>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="metric-card metric-warning">
+        <ion-card-content>
+          <div class="metric-icon">
+            <ion-icon name="document-text-outline"></ion-icon>
+          </div>
+          <div class="metric-info">
+            <div class="metric-label">{{ 'dashboards.totalExams' | translate }}</div>
+            <div class="metric-value">{{ totalExamenes }}</div>
+            <div class="metric-change positive">
+              <ion-icon name="trending-up"></ion-icon>
+              <span>+{{ tendenciaExamenes }}%</span>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="metric-card metric-info">
+        <ion-card-content>
+          <div class="metric-icon">
+            <ion-icon name="time-outline"></ion-icon>
+          </div>
+          <div class="metric-info">
+            <div class="metric-label">{{ 'dashboards.avgResponseTime' | translate }}</div>
+            <div class="metric-value">2.4h</div>
+            <div class="metric-change negative">
+              <ion-icon name="trending-down"></ion-icon>
+              <span>-3.2%</span>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Gráfico de tendencias -->
     <ion-card class="dashboards-card">
       <ion-card-header class="dashboards-card-header">
         <ion-card-title>{{ 'dashboards.examsByPeriod' | translate:{ period: periodLabel } }}
@@ -116,51 +163,141 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- Lista simple para mostrar las consultas obtenidas -->
-    <ion-card class="dashboards-card consultas-card">
-      <ion-card-header class="dashboards-card-header">
-        <ion-card-title>{{ consultasHeader }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content class="dashboards-card-content">
-        <ion-list *ngIf="consultas.length > 0; else noConsultas">
-          <ion-item *ngFor="let c of consultas; index as i">
-            <ion-label>
-              <h2>{{ 'cards.consultation.title' | translate }} #{{ c.idconsulta }}</h2>
-              <p><strong>{{ 'exams.dateLabel' | translate }}:</strong> {{ c.fecha | date:'short' }}</p>
-              <p *ngIf="c.motivo"><strong>{{ 'cards.consultation.motive' | translate }}:</strong> {{ c.motivo }}</p>
-              <p *ngIf="c.duracionminutos"><strong>{{ 'cards.consultation.durationLabel' | translate }}:</strong> {{ 'cards.consultation.durationValue' | translate:{ minutes: c.duracionminutos } }}</p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-        <ng-template #noConsultas>
-          <ion-text color="medium">{{ 'dashboards.consultationsEmpty' | translate }}</ion-text>
-        </ng-template>
-      </ion-card-content>
-    </ion-card>
+    <!-- Grid de estadísticas adicionales -->
+    <div class="stats-grid">
+      <!-- Distribución por especialidades -->
+      <ion-card class="stats-card">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="pulse-outline"></ion-icon>
+            {{ 'dashboards.specialties' | translate }}
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="progress-list">
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>Cardiología</span>
+                <span class="progress-value">245</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>Pediatría</span>
+                <span class="progress-value">198</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 68%"></div>
+              </div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>Traumatología</span>
+                <span class="progress-value">156</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 54%"></div>
+              </div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label">
+                <span>Medicina General</span>
+                <span class="progress-value">289</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+              </div>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
 
-    <!-- Controles de paginación -->
-    <ion-card *ngIf="totalPages > 1" class="dashboards-card pagination-card">
-      <ion-card-content class="dashboards-card-content pagination-content">
-        <ion-button 
-          fill="clear" 
-          [disabled]="!hasPreviousPage || loadingMore" 
-          (click)="goToPreviousPage()"
-          class="pagination-button">
-          <span class="arrow-icon">←</span>
-        </ion-button>
-        
-        <ion-text class="pagination-info">
-          {{ 'dashboards.paginationInfo' | translate:{ current: currentPage, total: totalPages } }}
-        </ion-text>
-        
-        <ion-button 
-          fill="clear" 
-          [disabled]="!hasNextPage || loadingMore" 
-          (click)="goToNextPage()"
-          class="pagination-button">
-          <span class="arrow-icon">→</span>
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
+      <!-- Alertas y notificaciones -->
+      <ion-card class="stats-card">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="notifications-outline"></ion-icon>
+            {{ 'dashboards.recentAlerts' | translate }}
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="alert-list">
+            <div class="alert-item alert-warning">
+              <ion-icon name="warning-outline"></ion-icon>
+              <div class="alert-content">
+                <div class="alert-title">Exámenes pendientes</div>
+                <div class="alert-desc">15 exámenes sin revisar</div>
+              </div>
+            </div>
+            <div class="alert-item alert-info">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <div class="alert-content">
+                <div class="alert-title">Consultas del día</div>
+                <div class="alert-desc">23 consultas programadas</div>
+              </div>
+            </div>
+            <div class="alert-item alert-success">
+              <ion-icon name="checkmark-circle-outline"></ion-icon>
+              <div class="alert-content">
+                <div class="alert-title">Fichas actualizadas</div>
+                <div class="alert-desc">+12 fichas completadas hoy</div>
+              </div>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Métricas de rendimiento -->
+    <div class="performance-grid">
+      <ion-card class="performance-card">
+        <ion-card-content>
+          <div class="circular-progress">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="45" class="progress-bg"></circle>
+              <circle cx="50" cy="50" r="45" class="progress-circle" [style.stroke-dashoffset]="282 - (282 * 0.72)"></circle>
+            </svg>
+            <div class="progress-text">
+              <span class="progress-percent">72%</span>
+              <span class="progress-label">Satisfacción</span>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="performance-card">
+        <ion-card-content>
+          <div class="circular-progress">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="45" class="progress-bg"></circle>
+              <circle cx="50" cy="50" r="45" class="progress-circle" [style.stroke-dashoffset]="282 - (282 * 0.89)"></circle>
+            </svg>
+            <div class="progress-text">
+              <span class="progress-percent">89%</span>
+              <span class="progress-label">Atención</span>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="performance-card">
+        <ion-card-content>
+          <div class="circular-progress">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="45" class="progress-bg"></circle>
+              <circle cx="50" cy="50" r="45" class="progress-circle" [style.stroke-dashoffset]="282 - (282 * 0.65)"></circle>
+            </svg>
+            <div class="progress-text">
+              <span class="progress-percent">65%</span>
+              <span class="progress-label">Eficiencia</span>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
   </ng-container>
 </ion-content>

@@ -1,0 +1,72 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ 'profile.nav.consultations' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarSesion()" shape="round" fill="solid" class="logout-button">
+        <span class="logout-text">{{ 'profile.actions.logout' | translate }}</span>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{ 'profile.nav.consultations' | translate }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Card de Consultas -->
+  <ion-card class="consultas-card" style="--background: #ffffff; background: #ffffff;" [attr.data-dark-bg]="'#1e293b'">
+    <ion-card-header>
+      <ion-card-title>{{ totalConsultas }} {{ 'profile.nav.consultations' | translate }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngIf="consultas.length > 0; else noConsultas">
+        <ion-item *ngFor="let c of consultas">
+          <ion-label>
+            <h2>{{ 'cards.consultation.title' | translate }} #{{ c.idconsulta }}</h2>
+            <p><strong>{{ 'exams.dateLabel' | translate }}</strong> {{ c.fecha | date:'short' }}</p>
+            <p *ngIf="c.motivo"><strong>{{ 'cards.consultation.motive' | translate }}:</strong> {{ c.motivo }}</p>
+            <p *ngIf="c.duracionminutos"><strong>{{ 'cards.consultation.durationLabel' | translate }}:</strong> {{ 'cards.consultation.durationValue' | translate:{ minutes: c.duracionminutos } }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <ng-template #noConsultas>
+        <ion-text color="medium">
+          <p class="ion-text-center">{{ 'dashboards.consultationsEmpty' | translate }}</p>
+        </ion-text>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Controles de paginación -->
+  <ion-card *ngIf="totalPages > 1" class="pagination-card" style="--background: #ffffff; background: #ffffff;" [attr.data-dark-bg]="'#1e293b'">
+    <ion-card-content class="pagination-content">
+      <ion-button 
+        fill="clear" 
+        [disabled]="!hasPreviousPage || loadingMore" 
+        (click)="goToPreviousPage()"
+        class="pagination-button">
+        <span class="arrow-icon">←</span>
+      </ion-button>
+      
+      <ion-text class="pagination-info">
+        {{ 'dashboards.paginationInfo' | translate:{ current: currentPage, total: totalPages } }}
+      </ion-text>
+      
+      <ion-button 
+        fill="clear" 
+        [disabled]="!hasNextPage || loadingMore" 
+        (click)="goToNextPage()"
+        class="pagination-button">
+        <span class="arrow-icon">→</span>
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <app-footer-nav></app-footer-nav>
+</ion-content>

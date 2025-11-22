@@ -43,7 +43,7 @@ body.dark .footer-nav {
   gap: 6px;
   padding: 8px 4px;
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.85) !important;
   font-size: 0.78rem;
   font-weight: 600;
   text-transform: none;
@@ -51,9 +51,18 @@ body.dark .footer-nav {
   transition: color 0.2s ease;
 }
 
+:host-context(body.dark) .footer-button {
+  color: rgba(15, 23, 42, 0.7) !important;
+}
+
 .footer-button:hover,
 .footer-button.active {
-  color: #ffffff;
+  color: #ffffff !important;
+}
+
+:host-context(body.dark) .footer-button:hover,
+:host-context(body.dark) .footer-button.active {
+  color: #0369a1 !important;
 }
 
 .footer-button .icon {
@@ -63,6 +72,7 @@ body.dark .footer-nav {
   font-size: 1.7rem;
   margin: 0;
   line-height: 1;
+  color: inherit;
 }
 
 .footer-button .text-glyph {
@@ -70,6 +80,7 @@ body.dark .footer-nav {
   display: block;
   width: 100%;
   text-align: center;
+  color: inherit;
 }
 
 .footer-button .label {
@@ -81,9 +92,32 @@ body.dark .footer-nav {
   line-height: 1.2;
   letter-spacing: 0.015em;
   text-transform: none;
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+:host-context(body.dark) .footer-button .label {
+  color: rgba(15, 23, 42, 0.7) !important;
 }
 
 .footer-button.active .icon,
 .footer-button.active .text-glyph {
-  color: #ffffff;
+  color: #ffffff !important;
+}
+
+.footer-button.active .label {
+  color: #ffffff !important;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+:host-context(body.dark) .footer-button.active .icon,
+:host-context(body.dark) .footer-button.active .text-glyph {
+  color: #0369a1 !important;
+  filter: drop-shadow(0 0 8px rgba(3, 105, 161, 0.3));
+}
+
+:host-context(body.dark) .footer-button.active .label {
+  color: #0369a1 !important;
+  font-weight: 700;
+  text-shadow: 0 0 4px rgba(3, 105, 161, 0.2);
 }

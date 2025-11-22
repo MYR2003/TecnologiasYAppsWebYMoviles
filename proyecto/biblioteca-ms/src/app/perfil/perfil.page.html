@@ -28,7 +28,7 @@
   </ion-card>
 
   <ng-container *ngIf="!loading && !error">
-    <section class="profile-hero">
+    <section class="profile-header">
       <ion-card class="profile-header-card">
         <ion-card-content>
           <div class="profile-header">
@@ -64,7 +64,7 @@
 
     <!-- Sección de Solicitudes de Acceso a Exámenes -->
     <section class="cards-grid" *ngIf="solicitudesPendientes.length > 0">
-      <ion-card class="profile-card solicitudes-card">
+      <ion-card class="profile-card solicitudes-card" style="--background: #ffffff; background: #ffffff;" [attr.data-dark-bg]="'#1e293b'">
         <ion-card-header>
           <ion-card-title>
             <ion-icon name="medical-outline"></ion-icon>
@@ -105,7 +105,7 @@
     </section>
 
     <section class="cards-grid">
-      <ion-card class="profile-card">
+      <ion-card class="profile-card" style="--background: #ffffff; background: #ffffff;" [attr.data-dark-bg]="'#1e293b'">
         <ion-card-header>
           <ion-card-title>{{ 'profile.sections.personalData' | translate }}</ion-card-title>
         </ion-card-header>
@@ -143,7 +143,7 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="profile-card">
+      <ion-card class="profile-card" style="--background: #ffffff; background: #ffffff;" [attr.data-dark-bg]="'#1e293b'">
         <ion-card-header>
           <ion-card-title>{{ 'profile.sections.contacts' | translate }}</ion-card-title>
         </ion-card-header>
@@ -179,7 +179,7 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="profile-card">
+      <ion-card class="profile-card" style="--background: #ffffff; background: #ffffff;" [attr.data-dark-bg]="'#1e293b'">
         <ion-card-header>
           <ion-card-title>{{ 'profile.sections.healthRecord' | translate }}</ion-card-title>
         </ion-card-header>
@@ -204,45 +204,13 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="profile-card">
-        <ion-card-header>
-          <ion-card-title>{{ 'profile.sections.consultations' | translate }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <div class="consult-summary">
-            <div>
-              <span class="label">{{ 'profile.labels.totalConsultations' | translate }}</span>
-              <span class="value">{{ totalConsultas }}</span>
-            </div>
-            <div>
-              <span class="label">{{ 'profile.labels.lastConsultation' | translate }}</span>
-              <span class="value">{{ ultimaConsulta?.fecha ? (ultimaConsulta?.fecha | date:'short') : ('profile.labels.notAvailable' | translate) }}</span>
-            </div>
-          </div>
-          <ion-list lines="full" *ngIf="consultasRecientes.length > 0; else noConsultations">
-            <ion-item *ngFor="let consulta of consultasRecientes">
-              <ion-label>
-                <h3>{{ consulta.fecha | date:'mediumDate' }}</h3>
-                <p *ngIf="consulta.motivo">{{ consulta.motivo }}</p>
-                <p *ngIf="consulta.duracionminutos">
-                  {{ 'profile.labels.consultationDuration' | translate:{ minutes: consulta.duracionminutos } }}
-                </p>
-              </ion-label>
-            </ion-item>
-          </ion-list>
-          <ng-template #noConsultations>
-            <ion-text color="medium">{{ 'profile.messages.noConsultations' | translate }}</ion-text>
-          </ng-template>
-        </ion-card-content>
-      </ion-card>
-
-      <ion-card class="profile-card">
+      <ion-card class="profile-card" style="--background: #ffffff; background: #ffffff;" [attr.data-dark-bg]="'#1e293b'">
         <ion-card-header>
           <ion-card-title>{{ 'profile.sections.allergies' | translate }}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
           <div class="allergies" *ngIf="alergias.length > 0; else noAllergies">
-            <ion-chip *ngFor="let alergia of alergias" color="primary" outline="true">
+            <ion-chip *ngFor="let alergia of alergias">
               <ion-icon name="alert-circle-outline"></ion-icon>
               <ion-label>{{ alergia }}</ion-label>
             </ion-chip>
@@ -252,6 +220,118 @@
           </ng-template>
         </ion-card-content>
       </ion-card>
+
+      <ion-card class="profile-card benefits-card" style="--background: #ffffff; background: #ffffff;" [attr.data-dark-bg]="'#1e293b'">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="gift-outline"></ion-icon>
+            {{ 'profile.sections.benefits' | translate }}
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="benefits-grid">
+            <div *ngFor="let beneficio of beneficios" class="benefit-item">
+              <div class="benefit-day">{{ beneficio.dia }}</div>
+              <div class="benefit-content">
+                <div class="benefit-header">
+                  <ion-icon [name]="beneficio.icono"></ion-icon>
+                  <div>
+                    <h3>{{ beneficio.nombreLocal }}</h3>
+                    <p class="benefit-type">{{ beneficio.tipoLocal }}</p>
+                  </div>
+                </div>
+                <div class="benefit-discount">{{ beneficio.descuento }}</div>
+                <ion-button 
+                  expand="block" 
+                  size="small" 
+                  (click)="verDetalleBeneficio(beneficio)"
+                  class="benefit-button">
+                  {{ 'profile.benefits.viewButton' | translate }}
+                </ion-button>
+              </div>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
     </section>
   </ng-container>
+
+  <!-- Modal de detalle del beneficio -->
+  <ion-modal 
+    [isOpen]="mostrarDetalleBeneficio" 
+    (didDismiss)="cerrarDetalleBeneficio()"
+    [backdropDismiss]="true">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>{{ 'profile.benefits.detailTitle' | translate }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarDetalleBeneficio()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="benefit-modal-content">
+        <div *ngIf="beneficioSeleccionado" class="benefit-detail">
+          <div class="benefit-detail-header">
+            <ion-icon [name]="beneficioSeleccionado.icono" class="benefit-icon-large"></ion-icon>
+            <h1>{{ beneficioSeleccionado.nombreLocal }}</h1>
+            <p class="benefit-detail-type">{{ beneficioSeleccionado.tipoLocal }}</p>
+            <div class="benefit-detail-discount">{{ beneficioSeleccionado.descuento }}</div>
+          </div>
+
+          <ion-card class="benefit-detail-card">
+            <ion-card-content>
+              <div class="benefit-detail-section">
+                <h3>
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  {{ 'profile.benefits.description' | translate }}
+                </h3>
+                <p>{{ beneficioSeleccionado.descripcion }}</p>
+              </div>
+
+              <div class="benefit-detail-section">
+                <h3>
+                  <ion-icon name="calendar-outline"></ion-icon>
+                  {{ 'profile.benefits.validDay' | translate }}
+                </h3>
+                <p>{{ beneficioSeleccionado.dia }}</p>
+              </div>
+
+              <div class="benefit-detail-section">
+                <h3>
+                  <ion-icon name="location-outline"></ion-icon>
+                  {{ 'profile.benefits.address' | translate }}
+                </h3>
+                <p>{{ beneficioSeleccionado.direccion }}</p>
+              </div>
+
+              <div class="benefit-detail-section">
+                <h3>
+                  <ion-icon name="call-outline"></ion-icon>
+                  {{ 'profile.benefits.phone' | translate }}
+                </h3>
+                <p>{{ beneficioSeleccionado.telefono }}</p>
+              </div>
+
+              <div class="benefit-detail-section">
+                <h3>
+                  <ion-icon name="time-outline"></ion-icon>
+                  {{ 'profile.benefits.hours' | translate }}
+                </h3>
+                <p>{{ beneficioSeleccionado.horario }}</p>
+              </div>
+            </ion-card-content>
+          </ion-card>
+
+          <div class="benefit-detail-footer">
+            <ion-button expand="block" color="primary" (click)="cerrarDetalleBeneficio()">
+              {{ 'profile.benefits.closeButton' | translate }}
+            </ion-button>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

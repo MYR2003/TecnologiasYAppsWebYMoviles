@@ -1,5 +1,5 @@
 .landing {
-  --background: linear-gradient(180deg, #f5f7ff 0%, #ffffff 100%);
+  --background: linear-gradient(180deg, #e0f2fe 0%, #f0f9ff 50%, #ffffff 100%);
   display: flex;
   flex-direction: column;
   --padding-start: 20px;
@@ -18,23 +18,31 @@
 .hero__title {
   font-size: clamp(2rem, 4vw, 3.4rem);
   font-weight: 800;
-  color: #1f2937;
+  color: #0c3a4b;
   text-transform: none;
   line-height: 1.1;
+  text-shadow: 0 2px 8px rgba(3, 169, 244, 0.1);
 }
 
 .hero__subtitle {
   max-width: 640px;
   font-size: clamp(1rem, 2vw, 1.3rem);
-  color: #4b5563;
+  color: #134e4a;
   margin: 0 auto;
+  font-weight: 500;
 }
 
 .hero__cta {
   margin-top: 16px;
   padding: 0 32px;
-  border-radius: 999px;
-  box-shadow: 0 10px 30px rgba(56, 128, 255, 0.25);
+  border-radius: 12px;
+  box-shadow: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  --box-shadow: none;
+  --padding-start: 32px;
+  --padding-end: 32px;
 }
 
 .hero__visual {
@@ -45,25 +53,34 @@
 }
 
 .visual-card {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 16px;
-  padding: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+  border: 2px solid #bae6fd;
+  border-radius: 20px;
+  padding: 24px;
   min-width: 220px;
   max-width: 260px;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 12px 32px rgba(3, 169, 244, 0.15);
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: #1f2937;
+  color: #0c3a4b;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.visual-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(3, 169, 244, 0.25);
 }
 
 .visual-card strong {
   font-size: 1.1rem;
+  color: #0369a1;
+  font-weight: 700;
 }
 
 .visual-card span {
   font-size: 0.95rem;
-  color: #4b5563;
+  color: #0e7490;
 }
 
 .highlights {
@@ -74,34 +91,45 @@
 }
 
 .highlight {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+  border: 2px solid #bae6fd;
+  border-radius: 20px;
   padding: 24px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+  box-shadow: 0 10px 30px rgba(3, 169, 244, 0.12);
   text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.highlight:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(3, 169, 244, 0.22);
 }
 
 .highlight h3 {
   font-size: 1.25rem;
   margin-bottom: 8px;
-  color: #1f2937;
+  color: #0369a1;
+  font-weight: 700;
 }
 
 .highlight p {
-  color: #4b5563;
+  color: #0e7490;
   margin: 0;
+  font-weight: 500;
 }
 
 .privacy-note {
-  background: rgba(37, 99, 235, 0.08);
-  border-radius: 16px;
-  padding: 24px;
+  background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+  border: 2px solid #7dd3fc;
+  border-radius: 20px;
+  padding: 28px;
   margin: 0 0 60px;
-  color: #1f2937;
+  color: #0c3a4b;
   font-size: 0.95rem;
   line-height: 1.6;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 12px 32px rgba(3, 169, 244, 0.15);
   text-align: center;
+  font-weight: 500;
 }
 
 @media (min-width: 992px) {

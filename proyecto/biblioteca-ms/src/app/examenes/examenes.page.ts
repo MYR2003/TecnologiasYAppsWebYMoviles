@@ -151,4 +151,9 @@ export class ExamenesPage {
       this.showStatusMessages = true;
     }
   }
+
+  async cerrarSesion(): Promise<void> {
+    this.authService.logout();
+    await this.router.navigate(['/login'], { replaceUrl: true });
+  }
 }

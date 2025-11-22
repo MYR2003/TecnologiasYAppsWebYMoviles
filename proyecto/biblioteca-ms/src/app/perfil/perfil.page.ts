@@ -6,7 +6,6 @@ import { firstValueFrom } from 'rxjs';
 import { Alergia } from '../microservicios/alergia/alergia';
 import { AlergiaPersona } from '../microservicios/alergiaPersona/alergia-persona';
 import { ContactoEmergencia } from '../microservicios/contactoEmergencia/contacto-emergencia';
-import { Consulta } from '../microservicios/consulta/consulta';
 import { FichaMedica } from '../microservicios/fichaMedica/ficha-medica';
 import { Persona } from '../microservicios/persona/persona';
 import { PersonaContacto } from '../microservicios/personaContacto/persona-contacto';
@@ -36,19 +35,23 @@ interface ContactoDetalle {
   esPrincipal: boolean;
 }
 
-interface ConsultaResumen {
-  idconsulta: number;
-  fecha: string;
-  motivo?: string;
-  observaciones?: string;
-  duracionminutos?: number;
-}
-
 interface FichaMedicaRecord {
   idfichamedica: number;
   altura?: number;
   peso?: number;
   presion?: number;
+}
+
+interface Beneficio {
+  dia: string;
+  nombreLocal: string;
+  tipoLocal: string;
+  descuento: string;
+  descripcion: string;
+  direccion: string;
+  telefono: string;
+  horario: string;
+  icono: string;
 }
 
 @Component({
@@ -67,13 +70,15 @@ export class PerfilPage implements OnInit {
   contactosSecundarios: ContactoDetalle[] = [];
   alergias: string[] = [];
   fichaMedica?: FichaMedicaRecord;
-  consultasRecientes: ConsultaResumen[] = [];
-  totalConsultas = 0;
-  ultimaConsulta?: ConsultaResumen;
   
   // Nuevas propiedades para solicitudes de acceso
   solicitudesPendientes: SolicitudAcceso[] = [];
   loadingSolicitudes = false;
+
+  // Propiedades para beneficios
+  beneficios: Beneficio[] = [];
+  beneficioSeleccionado: Beneficio | null = null;
+  mostrarDetalleBeneficio = false;
 
   constructor(
     private readonly personaService: Persona,
@@ -82,7 +87,6 @@ export class PerfilPage implements OnInit {
     private readonly alergiaPersonaService: AlergiaPersona,
     private readonly alergiaService: Alergia,
     private readonly fichaMedicaService: FichaMedica,
-    private readonly consultaService: Consulta,
     private readonly route: ActivatedRoute,
     private readonly examenAccesoService: ExamenAccesoService,
     private readonly authService: AuthService,
@@ -92,6 +96,7 @@ export class PerfilPage implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.loadProfile();
     await this.cargarSolicitudesPendientes();
+    this.inicializarBeneficios();
   }
 
   get personaIniciales(): string {
@@ -142,18 +147,17 @@ export class PerfilPage implements OnInit {
       
       this.persona = persona;
 
-      const [personaContactos, contactosEmergencia, alergiasPersona, alergiasCatalogo, fichas, consultaResponse] = await Promise.all([
+      const [personaContactos, contactosEmergencia, alergiasPersona, alergiasCatalogo, fichas] = await Promise.all([
         this.personaContactoService.getPersonaContacto(),
         this.contactoEmergenciaService.getContactoEmergencia(),
         this.alergiaPersonaService.getAlergiaPersona(),
         this.alergiaService.getAlergia(),
         this.fichaMedicaService.getFichaMedica(),
-        firstValueFrom(this.consultaService.getConsulta(200, 0)),
       ]);
 
       this.prepararContactos(personaContactos ?? [], contactosEmergencia ?? []);
       this.prepararAlergias(alergiasPersona ?? [], alergiasCatalogo ?? []);
-      this.prepararConsultas((consultaResponse?.data ?? []), fichas ?? []);
+      this.prepararFichaMedica(fichas ?? []);
     } catch (err) {
       console.error('Error al cargar el perfil del paciente', err);
       this.error = 'profile.messages.genericError';
@@ -203,38 +207,20 @@ export class PerfilPage implements OnInit {
       .map((nombre) => this.normalizarTexto(nombre) ?? nombre);
   }
 
-  private prepararConsultas(consultas: any[], fichas: any[]): void {
+  private prepararFichaMedica(fichas: any[]): void {
     if (!this.persona) {
+      this.fichaMedica = undefined;
       return;
     }
+
+    if (fichas.length === 0) {
+      this.fichaMedica = undefined;
+      return;
+    }
+
     const personaId = Number(this.persona.idpersona);
-    const propias = consultas
-      .filter((consulta) => Number(consulta.idpersona) === personaId)
-      .map<ConsultaResumen>((consulta) => ({
-        idconsulta: Number(consulta.idconsulta),
-        fecha: consulta.fecha,
-        motivo: this.normalizarTexto(consulta.motivo),
-        observaciones: this.normalizarTexto(consulta.observaciones),
-        duracionminutos: consulta.duracionminutos !== undefined ? Number(consulta.duracionminutos) : undefined,
-      }))
-      .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
-
-    this.totalConsultas = propias.length;
-    this.consultasRecientes = propias.slice(0, 3);
-    this.ultimaConsulta = propias[0];
-
-    if (consultas.length === 0) {
-      this.fichaMedica = undefined;
-      return;
-    }
-
-    const consultaConFicha = consultas.find((consulta) => Number(consulta.idpersona) === personaId && consulta.idfichamedica);
-    if (!consultaConFicha) {
-      this.fichaMedica = undefined;
-      return;
-    }
-
-    const ficha = fichas.find((registro) => Number(registro.idfichamedica) === Number(consultaConFicha.idfichamedica));
+    const ficha = fichas.find((f) => Number(f.idpersona) === personaId);
+    
     if (ficha) {
       this.fichaMedica = {
         idfichamedica: Number(ficha.idfichamedica),
@@ -321,10 +307,101 @@ export class PerfilPage implements OnInit {
     this.contactosSecundarios = [];
     this.alergias = [];
     this.fichaMedica = undefined;
-    this.consultasRecientes = [];
     this.solicitudesPendientes = [];
     
     // Navegar al login
     await this.router.navigate(['/login'], { replaceUrl: true });
+  }
+
+  inicializarBeneficios(): void {
+    this.beneficios = [
+      {
+        dia: 'Lunes',
+        nombreLocal: 'Farmacia SaludPlus',
+        tipoLocal: 'Farmacia',
+        descuento: '20% de descuento',
+        descripcion: 'Obtén un 20% de descuento en todos los medicamentos genéricos y productos de cuidado personal. Válido presentando tu credencial de paciente.',
+        direccion: 'Av. Principal 1234, Centro',
+        telefono: '+56 2 2345 6789',
+        horario: 'Lunes a Viernes: 8:00 - 20:00, Sábados: 9:00 - 14:00',
+        icono: 'medical'
+      },
+      {
+        dia: 'Martes',
+        nombreLocal: 'Óptica VisiónClara',
+        tipoLocal: 'Óptica',
+        descuento: '15% de descuento',
+        descripcion: 'Descuento del 15% en lentes recetados, monturas de marca y exámenes de vista. Incluye servicio de ajuste gratuito.',
+        direccion: 'Calle Comercio 567, Local 12',
+        telefono: '+56 2 3456 7890',
+        horario: 'Lunes a Sábado: 10:00 - 19:00',
+        icono: 'eye'
+      },
+      {
+        dia: 'Miércoles',
+        nombreLocal: 'Centro de Kinesiología MoviBien',
+        tipoLocal: 'Centro de Rehabilitación',
+        descuento: '25% de descuento',
+        descripcion: 'Obtén 25% de descuento en sesiones de kinesiología, fisioterapia y rehabilitación física. Profesionales certificados con equipamiento moderno.',
+        direccion: 'Av. Salud 890, Piso 3',
+        telefono: '+56 2 4567 8901',
+        horario: 'Lunes a Viernes: 8:00 - 19:00, Sábados: 9:00 - 13:00',
+        icono: 'fitness'
+      },
+      {
+        dia: 'Jueves',
+        nombreLocal: 'Laboratorio Clínico AnálisisTotal',
+        tipoLocal: 'Laboratorio Clínico',
+        descuento: '30% de descuento',
+        descripcion: 'Descuento del 30% en exámenes de sangre, orina y otros análisis clínicos. Resultados en 24 horas. Sin necesidad de hora previa.',
+        direccion: 'Pasaje Los Médicos 234',
+        telefono: '+56 2 5678 9012',
+        horario: 'Lunes a Viernes: 7:00 - 18:00, Sábados: 8:00 - 12:00',
+        icono: 'flask'
+      },
+      {
+        dia: 'Viernes',
+        nombreLocal: 'Nutrición y Bienestar NutriVida',
+        tipoLocal: 'Centro de Nutrición',
+        descuento: '20% de descuento',
+        descripcion: 'Ahorra 20% en consultas nutricionales, planes alimenticios personalizados y seguimiento mensual con nutricionistas certificados.',
+        direccion: 'Calle Saludable 456, Oficina 201',
+        telefono: '+56 2 6789 0123',
+        horario: 'Lunes a Viernes: 9:00 - 18:00',
+        icono: 'nutrition'
+      },
+      {
+        dia: 'Sábado',
+        nombreLocal: 'Gimnasio FitSalud',
+        tipoLocal: 'Gimnasio',
+        descuento: '35% de descuento',
+        descripcion: 'Obtén 35% de descuento en membresías mensuales y trimestrales. Incluye acceso a clases grupales, máquinas cardiovasculares y zona de pesas.',
+        direccion: 'Av. Deportiva 789, Segundo Piso',
+        telefono: '+56 2 7890 1234',
+        horario: 'Lunes a Viernes: 6:00 - 22:00, Sábados y Domingos: 8:00 - 20:00',
+        icono: 'barbell'
+      },
+      {
+        dia: 'Domingo',
+        nombreLocal: 'Centro de Masajes RelaxMed',
+        tipoLocal: 'Centro de Terapias',
+        descuento: '25% de descuento',
+        descripcion: 'Disfruta de un 25% de descuento en masajes terapéuticos, descontracturantes y relajantes. Terapeutas profesionales en un ambiente tranquilo.',
+        direccion: 'Plaza Bienestar 321, Local 5',
+        telefono: '+56 2 8901 2345',
+        horario: 'Todos los días: 10:00 - 20:00',
+        icono: 'hand-left'
+      }
+    ];
+  }
+
+  verDetalleBeneficio(beneficio: Beneficio): void {
+    this.beneficioSeleccionado = beneficio;
+    this.mostrarDetalleBeneficio = true;
+  }
+
+  cerrarDetalleBeneficio(): void {
+    this.mostrarDetalleBeneficio = false;
+    this.beneficioSeleccionado = null;
   }
 }

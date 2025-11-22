@@ -1,3 +1,14 @@
+/* Forzar transparencia en todos los items del menú sidebar */
+ion-menu ion-list,
+ion-menu ion-list ion-item,
+ion-menu ion-list ion-item::part(native) {
+	background: transparent !important;
+	--background: transparent !important;
+	--background-hover: transparent !important;
+	--background-activated: transparent !important;
+	--background-focused: transparent !important;
+}
+
 /* Dashboards: color de textos en tarjetas */
 body:not(.dark) ion-card.dashboards-card,
 body:not(.dark) ion-card.dashboards-card * {
@@ -92,22 +103,37 @@ body.dark ion-card-content.dashboards-card-content {
 body.dark .no-examenes-text {
 	color: var(--ion-text-color) !important;
 }
-ion-list, .card, .tarjeta, .ion-card {
-	background: var(--ion-card-background) !important;
-}
 
 body:not(.dark) ion-list,
 body:not(.dark) .card,
-body:not(.dark) .tarjeta,
-body:not(.dark) .ion-card {
-	background: #f2f9ff !important;
+body:not(.dark) .tarjeta {
+	background: #ffffff !important;
 }
 
 body.dark ion-list,
 body.dark .card,
-body.dark .tarjeta,
-body.dark .ion-card {
+body.dark .tarjeta {
 	background: #052c3a !important;
+}
+
+// Forzar color único para TODAS las cards en modo oscuro
+body.dark ion-card {
+	--background: #0a3a4a !important;
+	background: #0a3a4a !important;
+	box-shadow: none !important;
+}
+
+// Forzar color blanco para TODAS las cards en modo claro (excepto profile-header-card)
+body:not(.dark) ion-card:not(.profile-header-card) {
+	--background: #ffffff !important;
+	background: #ffffff !important;
+	box-shadow: none !important;
+}
+
+// Permitir que profile-header-card mantenga su degradado
+.profile-header-card {
+	background: linear-gradient(120deg, #0f172a 0%, #045a8d 55%, #13a1d7 100%) !important;
+	box-shadow: 0 12px 32px rgba(3, 169, 244, 0.12) !important;
 }
 
 body, ion-app, ion-content {
@@ -145,11 +171,11 @@ body.dark ion-content .scroll-content {
 }
 
 
-ion-card, .card, .tarjeta, .ion-card {
+.card, .tarjeta {
 	background: var(--ion-card-background);
 	color: var(--ion-card-text);
 	border-radius: var(--ion-border-radius);
-	box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
+	box-shadow: none;
 	margin-bottom: 16px;
 	padding: 16px;
 	border: 1px solid #c9e7f8;
@@ -211,6 +237,21 @@ ion-toolbar {
 	transition: background 0.2s, color 0.2s;
 }
 
+/* Asegurar que el menú hamburguesa tenga el mismo color que el título */
+body:not(.dark) ion-header ion-toolbar ion-menu-button,
+body:not(.dark) ion-header ion-toolbar ion-menu-button::part(native),
+body:not(.dark) ion-header ion-toolbar ion-menu-button ion-icon {
+	color: var(--ion-color-primary-contrast) !important;
+	--color: var(--ion-color-primary-contrast) !important;
+}
+
+body.dark ion-header ion-toolbar ion-menu-button,
+body.dark ion-header ion-toolbar ion-menu-button::part(native),
+body.dark ion-header ion-toolbar ion-menu-button ion-icon {
+	color: var(--ion-color-primary-contrast) !important;
+	--color: var(--ion-color-primary-contrast) !important;
+}
+
 ion-router-outlet {
 	display: block;
 	padding-bottom: 80px;
@@ -220,6 +261,19 @@ ion-router-outlet {
 body.login-page ion-router-outlet {
 	padding-bottom: 0;
 }
+
+/* Estilo global para botones de cerrar sesión */
+.logout-button {
+	--background: white !important;
+	--color: #03a9f4 !important;
+}
+
+.logout-button .logout-text {
+	color: #03a9f4 !important;
+	font-weight: 600;
+	display: inline-block;
+}
+
 /*
  * App Global CSS
  * ----------------------------------------------------------------------------

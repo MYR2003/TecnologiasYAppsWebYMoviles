@@ -21,8 +21,8 @@ interface FooterNavItem {
 })
 export class FooterNavComponent {
   readonly navItems: FooterNavItem[] = [
-    { iconText: '🏠︎', label: 'profile.nav.home', url: '/', exact: true },
-    { iconText: '🗎', label: 'profile.nav.exams', url: '/examenes' },
+    { iconText: '🏠︎', label: 'profile.nav.home', url: '/examenes', exact: false },
+    { iconText: '🗎', label: 'profile.nav.consultations', url: '/consultas' },
     { iconText: 'ጸ', label: 'profile.nav.profile', url: '/perfil' },
   ];
 }

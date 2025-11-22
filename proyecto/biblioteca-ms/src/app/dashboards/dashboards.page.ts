@@ -2,11 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable, Subscription, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { Consulta } from '../microservicios/consulta/consulta';
 import { TranslationService } from '../core/i18n/translation.service';
 import { TranslatePipe } from '../core/i18n/translate.pipe';
+import { AuthService } from '../core/auth/auth.service';
 
 interface ChartPoint {
   index: number;
@@ -24,18 +25,10 @@ interface ChartPoint {
   styleUrls: ['./dashboards.page.scss']
 })
 export class DashboardsPage implements OnInit, OnDestroy {
-  consultas: any[] = [];
   // Estados para loading, error, empty y datos
   loading = true;
   error: string | null = null;
   empty = false;
-
-  // Variables para paginación
-  currentPage = 1;
-  pageSize = 10;
-  totalConsultas = 0;
-  totalPages = 0;
-  loadingMore = false;
 
   // Datos reactivos con Observable
   data$: Observable<any>;
@@ -43,6 +36,7 @@ export class DashboardsPage implements OnInit, OnDestroy {
   // Datos de ejemplo
   totalExamenes = 0;
   totalPersonas = 0;
+  totalConsultas = 0;
   tendenciaExamenes = 0;
   tendenciaPersonas = 0;
   periodo: 'semana' | 'mes' | 'anio' = 'semana';
@@ -60,11 +54,16 @@ export class DashboardsPage implements OnInit, OnDestroy {
   private selectedPointIndex: number | null = null;
   private readonly languageSubscription: Subscription;
 
-  constructor(private consulta: Consulta, private readonly translation: TranslationService) {
+  constructor(
+    private readonly translation: TranslationService,
+    private authService: AuthService,
+    private router: Router
+  ) {
     // Simula carga de datos con Observable (puedes cambiar delay o error para probar)
     this.data$ = of({
-  totalExamenes: 0,
+      totalExamenes: 0,
       totalPersonas: 14,
+      totalConsultas: 888,
       tendenciaExamenes: 8,
       tendenciaPersonas: 6,
       exPorDiaSemana: [5, 6, 7, 8, 10],
@@ -75,80 +74,14 @@ export class DashboardsPage implements OnInit, OnDestroy {
     this.languageSubscription = this.translation.languageChanges$.subscribe(() => {
       this.refreshLocalizedContent();
     });
-    this.loadData();
   }
 
   ngOnInit() {
-    this.loadConsultas();
+    this.loadData();
   }
 
   ngOnDestroy(): void {
     this.languageSubscription.unsubscribe();
-  }
-
-  loadConsultas() {
-    if (this.loadingMore) {
-      return;
-    }
-
-    this.loadingMore = true;
-    const offset = (this.currentPage - 1) * this.pageSize;
-    console.log('[Dashboards] Solicitar consultas', { pageSize: this.pageSize, offset: offset, page: this.currentPage });
-
-    this.consulta.getConsulta(this.pageSize, offset).subscribe({
-      next: (response) => {
-        console.log('[Dashboards] Respuesta consultas', response);
-        if (response.data && response.data.length > 0) {
-          // Decodificar los textos con problemas de encoding
-          this.consultas = response.data.map((c: any) => ({
-            ...c,
-            motivo: this.fixEncoding(c.motivo),
-            observaciones: this.fixEncoding(c.observaciones)
-          }));
-          this.totalConsultas = response.total;
-          this.totalPages = Math.ceil(this.totalConsultas / this.pageSize);
-          
-          console.log(`Mostrando página ${this.currentPage} de ${this.totalPages} (${this.consultas.length} consultas de ${this.totalConsultas} totales)`);
-        } else {
-          this.consultas = [];
-          this.totalConsultas = 0;
-          this.totalPages = 0;
-        }
-
-        this.loadingMore = false;
-      },
-      error: (err) => {
-        console.error('Error al cargar consultas:', err);
-        this.loadingMore = false;
-      }
-    });
-  }
-
-  goToPreviousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.loadConsultas();
-    }
-  }
-
-  goToNextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.loadConsultas();
-    }
-  }
-
-  get hasPreviousPage(): boolean {
-    return this.currentPage > 1;
-  }
-
-  get hasNextPage(): boolean {
-    return this.currentPage < this.totalPages;
-  }
-
-  onIonInfinite(event: any) {
-    // Ya no se usa el infinite scroll
-    event?.target?.complete();
   }
 
   loadData() {
@@ -157,9 +90,10 @@ export class DashboardsPage implements OnInit, OnDestroy {
     this.empty = false;
     this.data$.subscribe({
       next: (data) => {
-  const totalAnual = (data.exPorDiaAnio ?? []).reduce((acum: number, valor: number) => acum + valor, 0);
-  this.totalExamenes = totalAnual || data.totalExamenes || 0;
+        const totalAnual = (data.exPorDiaAnio ?? []).reduce((acum: number, valor: number) => acum + valor, 0);
+        this.totalExamenes = totalAnual || data.totalExamenes || 0;
         this.totalPersonas = data.totalPersonas;
+        this.totalConsultas = data.totalConsultas || 0;
         this.tendenciaExamenes = Math.abs(data.tendenciaExamenes);
         this.tendenciaPersonas = Math.abs(data.tendenciaPersonas);
         this.exPorDiaSemana = data.exPorDiaSemana;
@@ -198,48 +132,9 @@ export class DashboardsPage implements OnInit, OnDestroy {
     return this.translation.translate('dashboards.periodLabel.year');
   }
 
-  get consultasHeader(): string {
-    if (this.totalConsultas > 0 && this.consultas.length > 0) {
-      const start = (this.currentPage - 1) * this.pageSize + 1;
-      const end = start + this.consultas.length - 1;
-      return this.translation.translate('dashboards.consultationsRange', {
-        start,
-        end,
-        total: this.totalConsultas,
-      });
-    }
-    return this.translation.translate('dashboards.consultationsZero');
-  }
-
   onPeriodoChange() {
     this.selectedPointIndex = null;
     this.updateChartData();
-  }
-  
-  fixEncoding(text: string | null | undefined): string {
-    if (!text) return '';
-    
-    // Reemplazos directos para las palabras más comunes
-    let fixed = text;
-    fixed = fixed.replace(/RevisiÃƒÂ³n/g, 'Revisión');
-    fixed = fixed.replace(/RevisiÃ³n/g, 'Revisión');
-    fixed = fixed.replace(/revisiÃ³n/g, 'revisión');
-    fixed = fixed.replace(/operaciÃ³n/g, 'operación');
-    fixed = fixed.replace(/informaciÃ³n/g, 'información');
-    fixed = fixed.replace(/atenciÃ³n/g, 'atención');
-    fixed = fixed.replace(/DuraciÃ³n/g, 'Duración');
-    fixed = fixed.replace(/duraciÃ³n/g, 'duración');
-    fixed = fixed.replace(/examinaciÃ³n/g, 'examinación');
-    
-    // Reemplazos de caracteres individuales
-    fixed = fixed.replace(/Ã³/g, 'ó');
-    fixed = fixed.replace(/Ã©/g, 'é');
-    fixed = fixed.replace(/Ã¡/g, 'á');
-    fixed = fixed.replace(/Ã­/g, 'í');
-    fixed = fixed.replace(/Ãº/g, 'ú');
-    fixed = fixed.replace(/Ã±/g, 'ñ');
-    
-    return fixed;
   }
 
   selectPoint(point: ChartPoint) {
@@ -325,6 +220,11 @@ export class DashboardsPage implements OnInit, OnDestroy {
     if (updateChart) {
       this.updateChartData();
     }
+  }
+
+  async cerrarSesion(): Promise<void> {
+    this.authService.logout();
+    await this.router.navigate(['/login'], { replaceUrl: true });
   }
 
 }
