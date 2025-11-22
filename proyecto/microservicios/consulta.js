@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const cors = require('cors');
 const {client} = require('./config');
 
@@ -32,6 +32,7 @@ app.get('/', async (req, res) => {
                 c.*, 
                 p.nombre AS nombre_paciente, 
                 p.apellido AS apellido_paciente,
+                p.rut AS rut_paciente,
                 m.nombre AS nombre_medico,
                 m.apellido AS apellido_medico
             FROM consulta c
@@ -57,6 +58,8 @@ app.get('/', async (req, res) => {
             nombre_paciente: row.nombre_paciente && row.apellido_paciente
                 ? `${row.nombre_paciente} ${row.apellido_paciente}`
                 : row.nombre_paciente ?? null,
+            rut: row.rut_paciente ?? null,
+            rut_paciente: row.rut_paciente ?? null,
             medico: row.nombre_medico && row.apellido_medico
                 ? `${row.nombre_medico} ${row.apellido_medico}`
                 : row.nombre_medico ?? null,

@@ -14,9 +14,15 @@ class PacientesView extends StatefulWidget {
 class _PacientesViewState extends State<PacientesView> {
   final ApiService _apiService = ApiService();
   final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _minAgeController = TextEditingController();
+  final TextEditingController _maxAgeController = TextEditingController();
   final ValueNotifier<String> _searchQueryNotifier = ValueNotifier<String>('');
+  String _searchMode = 'general'; // general | nombre | prevision | rut
   late Future<Map<String, dynamic>> _futurePacientes;
+  Map<String, dynamic>? _lastResp;
 
+  static const int _defaultLimit = 20;
+  static const int _searchLimit = 10000;
   int _limit = 20;
   int _offset = 0;
   int _total = 0;
@@ -30,38 +36,77 @@ class _PacientesViewState extends State<PacientesView> {
   @override
   void dispose() {
     _searchController.dispose();
+    _minAgeController.dispose();
+    _maxAgeController.dispose();
     _searchQueryNotifier.dispose();
     super.dispose();
   }
 
   List<Map<String, dynamic>> _filtrarPacientes(
       List<dynamic> pacientes, String query) {
-    if (query.isEmpty) {
-      return pacientes.cast<Map<String, dynamic>>();
-    }
-
     final queryLower = query.toLowerCase().trim();
     final palabrasBuscadas =
         queryLower.split(' ').where((p) => p.isNotEmpty).toList();
+    final minAge = int.tryParse(_minAgeController.text.trim());
+    final maxAge = int.tryParse(_maxAgeController.text.trim());
+    final applyAge = minAge != null || maxAge != null;
 
     final resultados = pacientes.where((p) {
       final paciente = p as Map<String, dynamic>;
       final nombre = (paciente['nombre'] ?? '').toString().toLowerCase();
       final apellido = (paciente['apellido'] ?? '').toString().toLowerCase();
-      final rut = (paciente['rut'] ?? '').toString().toLowerCase();
+      final prevision =
+          (paciente['sistemadesalud'] ?? paciente['prevision'] ?? '')
+              .toString()
+              .toLowerCase();
+          final rut = (paciente['rut'] ?? '').toString().toLowerCase();
+          final fechaNac = paciente['fechanacimiento']?.toString();
 
-      if (palabrasBuscadas.length == 1 && rut.contains(queryLower)) {
-        return true;
+          int? _edad() {
+            if (fechaNac == null || fechaNac.trim().isEmpty || fechaNac.toLowerCase() == 'null') {
+              return null;
+            }
+            try {
+              final date = DateTime.parse(fechaNac.trim());
+              final now = DateTime.now();
+              var edad = now.year - date.year;
+              if (now.month < date.month || (now.month == date.month && now.day < date.day)) {
+                edad -= 1;
+              }
+              return edad;
+            } catch (_) {
+              return null;
+            }
+          }
+
+          final edad = _edad();
+
+      if (applyAge) {
+        if (edad == null || edad <= 0) return false;
+        if (minAge != null && edad < minAge) return false;
+        if (maxAge != null && edad > maxAge) return false;
       }
 
-      if (palabrasBuscadas.length > 1) {
-        return palabrasBuscadas
-            .every((palabra) => nombre.contains(palabra) || apellido.contains(palabra));
+      if (queryLower.isEmpty) return true;
+
+      bool matchNombre() {
+        if (palabrasBuscadas.length > 1) {
+          return palabrasBuscadas
+              .every((palabra) => nombre.contains(palabra) || apellido.contains(palabra));
+        }
+        return nombre.contains(queryLower) || apellido.contains(queryLower);
       }
 
-      return nombre.contains(queryLower) ||
-          apellido.contains(queryLower) ||
-          rut.contains(queryLower);
+      switch (_searchMode) {
+        case 'nombre':
+          return matchNombre();
+        case 'rut':
+          return rut.contains(queryLower);
+        case 'prevision':
+          return prevision.contains(queryLower);
+        default:
+          return matchNombre() || rut.contains(queryLower) || prevision.contains(queryLower);
+      }
     }).cast<Map<String, dynamic>>().toList();
 
     resultados.sort((a, b) {
@@ -113,6 +158,31 @@ class _PacientesViewState extends State<PacientesView> {
     });
   }
 
+  void _ensureFetchForFilters() {
+    final hasQuery = _searchController.text.trim().isNotEmpty;
+    final hasAge = _minAgeController.text.trim().isNotEmpty ||
+        _maxAgeController.text.trim().isNotEmpty;
+    final needWideFetch = hasQuery || hasAge;
+
+    if (needWideFetch) {
+      if (_limit != _searchLimit || _offset != 0) {
+        setState(() {
+          _limit = _searchLimit;
+          _offset = 0;
+          _futurePacientes = _fetchPacientes();
+        });
+      }
+    } else {
+      if (_limit != _defaultLimit) {
+        setState(() {
+          _limit = _defaultLimit;
+          _offset = 0;
+          _futurePacientes = _fetchPacientes();
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,12 +207,6 @@ class _PacientesViewState extends State<PacientesView> {
           child: FutureBuilder<Map<String, dynamic>>(
             future: _futurePacientes,
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(color: Colors.white),
-                );
-              }
-
               if (snapshot.hasError) {
                 return Center(
                   child: _FeedbackCard(
@@ -153,7 +217,16 @@ class _PacientesViewState extends State<PacientesView> {
                 );
               }
 
-              final resp = snapshot.data ?? {};
+              Map<String, dynamic>? respFromSnapshot = snapshot.data;
+              if (snapshot.hasData) {
+                _lastResp = snapshot.data;
+              }
+              final resp = respFromSnapshot ?? _lastResp ?? {};
+              if (resp.isEmpty && snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                );
+              }
               final pacientes = (resp['data'] as List<dynamic>? ?? []);
               _total = (resp['total'] as int?) ?? pacientes.length;
               _limit = (resp['limit'] as int?) ?? _limit;
@@ -180,11 +253,93 @@ class _PacientesViewState extends State<PacientesView> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    child: _SearchBar(
-                      controller: _searchController,
-                      onChanged: (value) {
-                        _searchQueryNotifier.value = value;
-                      },
+                    child: Column(
+                      children: [
+                        _SearchBar(
+                          controller: _searchController,
+                          onChanged: (value) {
+                            _searchQueryNotifier.value = value;
+                            _ensureFetchForFilters();
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        _PacienteFilters(
+                          active: _searchMode,
+                          onChanged: (mode) {
+                            setState(() {
+                              _searchMode = mode;
+                              _searchQueryNotifier.value = _searchController.text;
+                            });
+                            _ensureFetchForFilters();
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              'Edad:',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: TextField(
+                controller: _minAgeController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Mín.',
+                  fillColor: Colors.white,
+                  filled: true,
+                  isDense: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                  ),
+                ),
+                onChanged: (_) {
+                  _searchQueryNotifier.value = _searchController.text;
+                  _ensureFetchForFilters();
+                },
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: TextField(
+                controller: _maxAgeController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Máx.',
+                  fillColor: Colors.white,
+                  filled: true,
+                  isDense: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                  ),
+                ),
+                onChanged: (_) {
+                  _searchQueryNotifier.value = _searchController.text;
+                  _ensureFetchForFilters();
+                },
+              ),
+            ),
+            IconButton(
+              tooltip: 'Limpiar edad',
+              onPressed: () {
+                _minAgeController.clear();
+                _maxAgeController.clear();
+                _searchController.clear();
+                _searchQueryNotifier.value = '';
+                _ensureFetchForFilters();
+              },
+              icon: const Icon(Icons.clear, color: Colors.white),
+            ),
+          ],
+        ),
+                      ],
                     ),
                   ),
                   Padding(
@@ -603,7 +758,7 @@ class _SearchBar extends StatelessWidget {
             controller: controller,
             onChanged: onChanged,
             decoration: InputDecoration(
-              hintText: 'Buscar por RUT, nombre o apellido...',
+              hintText: 'Buscar por RUT, nombre o prevision...',
               hintStyle: TextStyle(color: Colors.grey[400]),
               prefixIcon: const Icon(Icons.search, color: Color(0xFF0EA5E9)),
               suffixIcon: value.text.isNotEmpty
@@ -629,6 +784,83 @@ class _SearchBar extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class _PacienteFilters extends StatelessWidget {
+  const _PacienteFilters({
+    required this.active,
+    required this.onChanged,
+  });
+
+  final String active;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _FilterChip(
+          label: 'General',
+          value: 'general',
+          active: active,
+          onChanged: onChanged,
+        ),
+        const SizedBox(width: 8),
+        _FilterChip(
+          label: 'Nombre',
+          value: 'nombre',
+          active: active,
+          onChanged: onChanged,
+        ),
+        const SizedBox(width: 8),
+        _FilterChip(
+          label: 'RUT',
+          value: 'rut',
+          active: active,
+          onChanged: onChanged,
+        ),
+        const SizedBox(width: 8),
+        _FilterChip(
+          label: 'Prevision',
+          value: 'prevision',
+          active: active,
+          onChanged: onChanged,
+        ),
+      ],
+    );
+  }
+}
+
+class _FilterChip extends StatelessWidget {
+  const _FilterChip({
+    required this.label,
+    required this.value,
+    required this.active,
+    required this.onChanged,
+  });
+
+  final String label;
+  final String value;
+  final String active;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final selected = active == value;
+    return ChoiceChip(
+      label: Text(label),
+      selected: selected,
+      onSelected: (_) => onChanged(value),
+      selectedColor: const Color(0xFF0EA5E9),
+      labelStyle: TextStyle(
+        color: selected ? Colors.white : const Color(0xFF0F172A),
+        fontWeight: FontWeight.w600,
+      ),
+      backgroundColor: Colors.white,
+      side: const BorderSide(color: Color(0xFF0EA5E9)),
     );
   }
 }

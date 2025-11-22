@@ -7,6 +7,7 @@ class Consulta {
   final String? motivo;
   final int? duracionminutos;
   final String? observaciones;
+  final String? rut;
   final String? nombrePaciente;
   final String? nombreMedico;
 
@@ -19,6 +20,7 @@ class Consulta {
     this.motivo,
     this.duracionminutos,
     this.observaciones,
+    this.rut,
     this.nombrePaciente,
     this.nombreMedico,
   });
@@ -42,6 +44,7 @@ class Consulta {
           ? json['duracionminutos'] as int
           : int.tryParse(json['duracionminutos']?.toString() ?? ''),
       observaciones: (json['observaciones'] ?? json['observacion'])?.toString(),
+      rut: (json['rut'] ?? json['rut_paciente'])?.toString(),
       nombrePaciente: (json['nombre_paciente'] ?? '').toString().isNotEmpty
           ? json['nombre_paciente'].toString()
           : null,
@@ -61,6 +64,7 @@ class Consulta {
       'motivo': motivo,
       'duracionminutos': duracionminutos,
       'observaciones': observaciones,
+      'rut': rut,
     };
   }
 }

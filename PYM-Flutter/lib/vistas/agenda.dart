@@ -22,6 +22,9 @@ class _AgendaViewState extends State<AgendaView> {
   late Future<Map<String, dynamic>> _futureConsultas;
   final TextEditingController _searchController = TextEditingController();
   final ValueNotifier<String> _searchQueryNotifier = ValueNotifier<String>('');
+  String _searchMode = 'general'; // general | nombre | rut | motivo
+  DateTime? _fromDate;
+  DateTime? _toDate;
 
   @override
   void initState() {
@@ -54,12 +57,41 @@ class _AgendaViewState extends State<AgendaView> {
   }
 
   List<Consulta> _filtrarConsultas(List<Consulta> consultas, String query) {
-    if (query.trim().isEmpty) return consultas;
     final q = query.toLowerCase().trim();
+    String _sanitizeRut(String value) =>
+        value.replaceAll(RegExp(r'[^0-9kK]'), '').toLowerCase();
     return consultas.where((c) {
-      return (c.nombrePaciente ?? '').toLowerCase().contains(q) ||
-          (c.nombreMedico ?? '').toLowerCase().contains(q) ||
-          (c.motivo ?? '').toLowerCase().contains(q);
+      DateTime? fecha;
+      try {
+        fecha = DateTime.parse(c.fecha);
+      } catch (_) {}
+
+      if (_fromDate != null && (fecha == null || fecha.isBefore(_fromDate!))) {
+        return false;
+      }
+      if (_toDate != null && (fecha == null || fecha.isAfter(_toDate!))) {
+        return false;
+      }
+
+      if (q.isEmpty) return true;
+
+      switch (_searchMode) {
+        case 'rut':
+          final rutVal = _sanitizeRut(c.rut ?? '');
+          final rutQuery = _sanitizeRut(q);
+          return rutVal.contains(rutQuery);
+        case 'motivo':
+          return (c.motivo ?? '').toLowerCase().contains(q);
+        case 'nombre':
+          final nombre = (c.nombrePaciente ?? '').toLowerCase();
+          return nombre.contains(q);
+        default:
+          final nombre = (c.nombrePaciente ?? '').toLowerCase();
+          final rutVal = _sanitizeRut(c.rut ?? '');
+          final rutQuery = _sanitizeRut(q);
+          final motivo = (c.motivo ?? '').toLowerCase();
+          return nombre.contains(q) || rutVal.contains(rutQuery) || motivo.contains(q);
+      }
     }).toList();
   }
 
@@ -243,9 +275,98 @@ class _AgendaViewState extends State<AgendaView> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    child: _SearchBar(
-                      controller: _searchController,
-                      onChanged: (value) => _searchQueryNotifier.value = value,
+                    child: Column(
+                      children: [
+                        _SearchBar(
+                          controller: _searchController,
+                          onChanged: (value) => _searchQueryNotifier.value = value,
+                        ),
+                        const SizedBox(height: 10),
+                        _SearchFilters(
+                          active: _searchMode,
+                          onChanged: (mode) {
+                            setState(() {
+                              _searchMode = mode;
+                              _searchQueryNotifier.value = _searchController.text;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  side: const BorderSide(color: Colors.white),
+                                ),
+                                onPressed: () async {
+                                  final picked = await showDatePicker(
+                                    context: context,
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2100),
+                                    initialDate: _fromDate ?? DateTime.now(),
+                                  );
+                                  if (picked != null) {
+                                    setState(() {
+                                      _fromDate = picked;
+                                      _searchQueryNotifier.value = _searchController.text;
+                                    });
+                                  }
+                                },
+                                icon: const Icon(Icons.date_range, size: 18, color: Color(0xFF0EA5E9)),
+                                label: Text(
+                                  _fromDate != null
+                                      ? 'Desde: ${_fromDate!.toLocal().toString().split(' ').first}'
+                                      : 'Fecha desde',
+                                  style: const TextStyle(color: Color(0xFF0F172A)),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  side: const BorderSide(color: Colors.white),
+                                ),
+                                onPressed: () async {
+                                  final picked = await showDatePicker(
+                                    context: context,
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2100),
+                                    initialDate: _toDate ?? DateTime.now(),
+                                  );
+                                  if (picked != null) {
+                                    setState(() {
+                                      _toDate = picked;
+                                      _searchQueryNotifier.value = _searchController.text;
+                                    });
+                                  }
+                                },
+                                icon: const Icon(Icons.date_range, size: 18, color: Color(0xFF0EA5E9)),
+                                label: Text(
+                                  _toDate != null
+                                      ? 'Hasta: ${_toDate!.toLocal().toString().split(' ').first}'
+                                      : 'Fecha hasta',
+                                  style: const TextStyle(color: Color(0xFF0F172A)),
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              tooltip: 'Limpiar rango',
+                              onPressed: () {
+                                setState(() {
+                                  _fromDate = null;
+                                  _toDate = null;
+                                  _searchQueryNotifier.value = _searchController.text;
+                                });
+                              },
+                              icon: const Icon(Icons.clear, color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                   Padding(
@@ -597,6 +718,83 @@ class _ConsultaChip extends StatelessWidget {
   }
 }
 
+class _SearchFilters extends StatelessWidget {
+  const _SearchFilters({
+    required this.active,
+    required this.onChanged,
+  });
+
+  final String active;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _FilterPill(
+          label: 'General',
+          value: 'general',
+          active: active,
+          onChanged: onChanged,
+        ),
+        const SizedBox(width: 8),
+        _FilterPill(
+          label: 'Nombre',
+          value: 'nombre',
+          active: active,
+          onChanged: onChanged,
+        ),
+        const SizedBox(width: 8),
+        _FilterPill(
+          label: 'RUT',
+          value: 'rut',
+          active: active,
+          onChanged: onChanged,
+        ),
+        const SizedBox(width: 8),
+        _FilterPill(
+          label: 'Motivo',
+          value: 'motivo',
+          active: active,
+          onChanged: onChanged,
+        ),
+      ],
+    );
+  }
+}
+
+class _FilterPill extends StatelessWidget {
+  const _FilterPill({
+    required this.label,
+    required this.value,
+    required this.active,
+    required this.onChanged,
+  });
+
+  final String label;
+  final String value;
+  final String active;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final bool selected = active == value;
+    return ChoiceChip(
+      label: Text(label),
+      selected: selected,
+      onSelected: (_) => onChanged(value),
+      selectedColor: const Color(0xFF0EA5E9),
+      labelStyle: TextStyle(
+        color: selected ? Colors.white : const Color(0xFF0F172A),
+        fontWeight: FontWeight.w600,
+      ),
+      backgroundColor: Colors.white,
+      side: const BorderSide(color: Color(0xFF0EA5E9)),
+    );
+  }
+}
+
 class _AgendaFeedback extends StatelessWidget {
   const _AgendaFeedback({
     required this.icon,
@@ -720,8 +918,8 @@ class _SearchBar extends StatelessWidget {
             controller: controller,
             onChanged: onChanged,
             decoration: InputDecoration(
-              hintText: 'Buscar por paciente, medico o motivo...',
-              hintStyle: TextStyle(color: Colors.grey[400]),
+            hintText: 'Buscar por paciente, RUT o motivo...',
+            hintStyle: TextStyle(color: Colors.grey[400]),
               prefixIcon: const Icon(Icons.search, color: Color(0xFF0EA5E9)),
               suffixIcon: value.text.isNotEmpty
                   ? IconButton(

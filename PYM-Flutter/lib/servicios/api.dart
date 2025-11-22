@@ -421,6 +421,45 @@ class ApiService {
     return await _getList('persona/$idPaciente', port: 3010);
   }
 
+  Future<List<dynamic>> obtenerConsultasPaciente(int idPaciente) async {
+    final todas = await _getList('', port: 3002);
+    return todas.where((c) => (c['idpersona'] ?? c['idpaciente']) == idPaciente).toList();
+  }
+
+  Future<List<dynamic>> obtenerAlergiasPaciente(int idPaciente) async {
+    final relaciones = await _getList('', port: 3004); // alergia_persona
+    final catalogo = await _getList('', port: 3001); // alergia
+    final mapaAlergia = {for (final a in catalogo) a['idalergia']: a['alergia']};
+    return relaciones
+        .where((a) => a['idpersona'] == idPaciente)
+        .map((a) => {
+              'idalergia': a['idalergia'],
+              'nombre': mapaAlergia[a['idalergia']] ?? 'Alergia ${a['idalergia']}',
+              'nota': a['nota']
+            })
+        .toList();
+  }
+
+  Future<List<dynamic>> obtenerContactosPaciente(int idPaciente) async {
+    final vinculos = await _getList('', port: 3017); // persona_contacto
+    final contactos = await _getList('', port: 3003); // contacto_emergencia
+    final mapa = {for (final c in contactos) c['idcontacto']: c};
+    return vinculos
+        .where((pc) => pc['idpersona'] == idPaciente)
+        .map((pc) {
+          final data = mapa[pc['idcontacto']] ?? {};
+          return {
+            'idcontacto': pc['idcontacto'],
+            'nombre': data['nombre'] ?? 'Contacto ${pc['idcontacto']}',
+            'apellido': data['apellido'],
+            'telefono': data['telefono'],
+            'direccion': data['direccion'],
+            'rut': data['rut'],
+          };
+        })
+        .toList();
+  }
+
   Future<Map<String, dynamic>> obtenerExamen(int idExamen) async {
     final Uri url = Uri.parse('$_baseHost:3010/$idExamen');
     print('GET -> $url');
