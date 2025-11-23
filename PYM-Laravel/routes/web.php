@@ -8,8 +8,12 @@ use App\Http\Controllers\ConsultaExportController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
+
+Route::get('/home', function () {
+    return view('welcome');
+})->middleware(['auth', 'verified'])->name('home');
 
 Route::get('/dashboard', [DashboardsController::class, 'index']
 )->middleware(['auth', 'verified'])->name('dashboard');
