@@ -17,7 +17,7 @@ class CRUDMedicosController extends Controller
     public function create()
     {
         $especialidades = Especialidades::all();
-        return view('crearMedico', compact('especialidades')); // ← NOMBRE CORREGIDO
+        return view('crearMedico', compact('especialidades'));
     }
 
     public function store(Request $request)
@@ -38,7 +38,7 @@ class CRUDMedicosController extends Controller
     public function edit(Medicos $medico)
     {
         $especialidades = Especialidades::all();
-        return view('editarMedico', compact('medico', 'especialidades')); // ← NOMBRE CORREGIDO
+        return view('editarMedico', compact('medico', 'especialidades'));
     }
 
     public function update(Request $request, Medicos $medico)
