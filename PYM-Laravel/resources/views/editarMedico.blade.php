@@ -35,6 +35,12 @@
         </div>
 
         <div class="mb-3">
+            <label class="form-label">Rut</label>
+            <input type="text" name="rut" class="form-control"
+                   value="{{ $medico->rut }}" required>
+        </div>
+
+        <div class="mb-3">
             <label class="form-label">Fecha nacimiento</label>
             <input type="date" name="fecha_nacimiento" class="form-control"
                    value="{{ $medico->fecha_nacimiento }}" required>
