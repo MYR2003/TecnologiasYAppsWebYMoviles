@@ -9,11 +9,11 @@ class Personas extends Model
 {
     use HasFactory;
 
-    protected $table = 'personas';
+    protected $table = 'persona';
 
     protected $primaryKey = 'id_persona';
 
-    protected $fillabel = ['nombre', 'apellido', 'fecha_nacimiento'];
+    protected $fillabel = ['nombre', 'apellido', 'fecha_nacimiento', 'rut'];
 
     public function alergias() {
         return $this->belongsToMany(

@@ -9,10 +9,10 @@ class Medicos extends Model
 {
     use HasFactory;
     
-    protected $table = 'medicos';
+    protected $table = 'medico';
     protected $primaryKey = 'id_medico';
     protected $fillable = [
-        'id_especialidad', 'nombre', 'apellido', 'fecha_nacimiento'
+        'id_especialidad', 'nombre', 'apellido', 'fecha_nacimiento', 'rut'
     ];
     
     public function especialidad()

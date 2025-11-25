@@ -8,11 +8,13 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('personas', function (Blueprint $table) {
+        Schema::create('persona', function (Blueprint $table) {
             $table->id('id_persona');
+
             $table->string('nombre', 255);
             $table->string('apellido', 255);
             $table->dateTime('fecha_nacimiento');
+            $table->string('rut',12)->unique();
 
             $table->timestamps();
         });
@@ -20,6 +22,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('personas');
+        Schema::dropIfExists('persona');
     }
 };

@@ -16,14 +16,14 @@ class DashboardsController extends Controller
                 'ficha_medica.altura',
                 'especialidades.especialidad'
             )
-            ->join('medicos', 'consulta.id_medico', '=', 'medicos.id_medico')
-            ->join('especialidades', 'medicos.id_especialidad', '=', 'especialidades.id_especialidad')
+            ->join('medico', 'consulta.id_medico', '=', 'medico.id_medico')
+            ->join('especialidades', 'medico.id_especialidad', '=', 'especialidades.id_especialidad')
             ->leftJoin('ficha_medica', 'consulta.id_ficha_medica', '=', 'ficha_medica.id_ficha_medica')
             ->get();
         
         $consultasPorEspecialidad = DB::table('consulta')
-            ->join('medicos', 'consulta.id_medico', '=', 'medicos.id_medico')
-            ->join('especialidades', 'medicos.id_especialidad', '=', 'especialidades.id_especialidad')
+            ->join('medico', 'consulta.id_medico', '=', 'medico.id_medico')
+            ->join('especialidades', 'medico.id_especialidad', '=', 'especialidades.id_especialidad')
             ->select('especialidades.especialidad', DB::raw('COUNT(*) as count'))
             ->groupBy('especialidades.especialidad')
             ->get();

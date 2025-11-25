@@ -9,7 +9,7 @@ class AlergiaPersonaSeeder extends Seeder
 {
     public function run(): void
     {
-        $personas = DB::table('personas')->pluck('id_persona');
+        $personas = DB::table('persona')->pluck('id_persona');
         $alergias = DB::table('alergias')->pluck('id_alergia');
 
         $data = [];

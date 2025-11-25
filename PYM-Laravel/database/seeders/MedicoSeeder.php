@@ -15,11 +15,12 @@ class MedicoSeeder extends Seeder
         $especialidades = DB::table('especialidades')->pluck('id_especialidad');
 
         for ($i = 0; $i < 15; $i++) {
-            DB::table('medicos')->insert([
+            DB::table('medico')->insert([
                 'id_especialidad' => $especialidades->random(),
                 'nombre' => $nombres[array_rand($nombres)],
                 'apellido' => $apellidos[array_rand($apellidos)],
                 'fecha_nacimiento' => now()->subYears(rand(30, 65))->subMonths(rand(0, 11))->subDays(rand(0, 30)),
+                'rut' => $this->faker->unique()->numerify('##.###.###-#'),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

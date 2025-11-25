@@ -9,8 +9,8 @@ class ConsultaSeeder extends Seeder
 {
     public function run(): void
     {
-        $personas = DB::table('personas')->pluck('id_persona');
-        $medicos = DB::table('medicos')->pluck('id_medico');
+        $personas = DB::table('persona')->pluck('id_persona');
+        $medicos = DB::table('medico')->pluck('id_medico');
         $fichas = DB::table('ficha_medica')->pluck('id_ficha_medica');
 
         for ($i = 0; $i < 40; $i++) {
