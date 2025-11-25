@@ -21,7 +21,7 @@ return new class extends Migration
                   
             $table->foreign('id_consulta')
                 ->references('id_consulta')
-                ->on('consultas')
+                ->on('consulta')
                 ->onDelete('cascade');
             
             $table->text('resultados_examen')->nullable();

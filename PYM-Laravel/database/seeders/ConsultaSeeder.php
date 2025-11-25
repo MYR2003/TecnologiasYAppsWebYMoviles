@@ -14,7 +14,7 @@ class ConsultaSeeder extends Seeder
         $fichas = DB::table('ficha_medica')->pluck('id_ficha_medica');
 
         for ($i = 0; $i < 40; $i++) {
-            DB::table('consultas')->insert([
+            DB::table('consulta')->insert([
                 'id_persona' => $personas->random(),
                 'id_medico' => $medicos->random(),
                 'id_ficha_medica' => $fichas->random(),

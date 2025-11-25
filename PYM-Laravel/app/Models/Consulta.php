@@ -9,7 +9,7 @@ class Consulta extends Model
 {
     use HasFactory;
 
-    protected $table = 'consultas';
+    protected $table = 'consulta';
     protected $primaryKey = 'id_consulta';
     
     protected $fillable = ['id_persona', 'id_medico', 'id_ficha_medica', 'fecha'];

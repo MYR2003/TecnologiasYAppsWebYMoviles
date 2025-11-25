@@ -8,21 +8,21 @@ use Illuminate\Support\Facades\DB;
 class DashboardsController extends Controller
 {
     public function index() {
-        $consultas = DB::table('consultas')
+        $consultas = DB::table('consulta')
             ->select(
-                'consultas.id_consulta',
-                'consultas.fecha',
+                'consulta.id_consulta',
+                'consulta.fecha',
                 'ficha_medica.peso',
                 'ficha_medica.altura',
                 'especialidades.especialidad'
             )
-            ->join('medicos', 'consultas.id_medico', '=', 'medicos.id_medico')
+            ->join('medicos', 'consulta.id_medico', '=', 'medicos.id_medico')
             ->join('especialidades', 'medicos.id_especialidad', '=', 'especialidades.id_especialidad')
-            ->leftJoin('ficha_medica', 'consultas.id_ficha_medica', '=', 'ficha_medica.id_ficha_medica')
+            ->leftJoin('ficha_medica', 'consulta.id_ficha_medica', '=', 'ficha_medica.id_ficha_medica')
             ->get();
         
-        $consultasPorEspecialidad = DB::table('consultas')
-            ->join('medicos', 'consultas.id_medico', '=', 'medicos.id_medico')
+        $consultasPorEspecialidad = DB::table('consulta')
+            ->join('medicos', 'consulta.id_medico', '=', 'medicos.id_medico')
             ->join('especialidades', 'medicos.id_especialidad', '=', 'especialidades.id_especialidad')
             ->select('especialidades.especialidad', DB::raw('COUNT(*) as count'))
             ->groupBy('especialidades.especialidad')
