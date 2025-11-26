@@ -1,4 +1,4 @@
-# Manual de Uso - Proyecto Ionic Angular
+# Manual de Uso - Ionic + Angular
 Este manual detalla cómo instalar, configurar y ejecutar el proyecto biblioteca-ms (Ionic Angular) junto con los microservicios y base de datos necesarios.
 
 ## Requisitos previos

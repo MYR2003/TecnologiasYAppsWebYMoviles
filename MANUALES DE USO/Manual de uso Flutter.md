@@ -1,4 +1,4 @@
-# Instructivo de Flutter
+# Manual de uso - Flutter
 En este archivo se detallan las instrucciones para descargar y usar Flutter de manera local y correr el proyecto PYM-Flutter, junto con los microservicios y los datos que consume.
 
 ## Requisitos

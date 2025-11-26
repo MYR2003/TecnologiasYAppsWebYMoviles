@@ -1,4 +1,4 @@
-# Instructivo de Laravel
+# Manual de uso - Laravel
 En el presente archivo se detallan las instrucciones para correr el proyecto en Laravel y como usando Laravel crear la base de datos y poblaela (se utiliza un simulador de datos en nodejs, debido a que este exitia desde antes de crear el proyecto en Laravel)
 ## Requisitos
 - Tener el repositorio descargado o clonado
