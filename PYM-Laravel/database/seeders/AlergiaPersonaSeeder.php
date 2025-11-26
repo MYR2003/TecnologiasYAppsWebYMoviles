@@ -9,8 +9,8 @@ class AlergiaPersonaSeeder extends Seeder
 {
     public function run(): void
     {
-        $personas = DB::table('persona')->pluck('id_persona');
-        $alergias = DB::table('alergias')->pluck('id_alergia');
+        $personas = DB::table('persona')->pluck('idpersona');
+        $alergias = DB::table('alergia')->pluck('idalergia');
 
         $data = [];
 
@@ -20,8 +20,8 @@ class AlergiaPersonaSeeder extends Seeder
                 
                 foreach ($alergiasAleatorias as $alergiaId) {
                     $data[] = [
-                        'id_persona' => $personaId,
-                        'id_alergia' => $alergiaId,
+                        'idpersona' => $personaId,
+                        'idalergia' => $alergiaId,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];

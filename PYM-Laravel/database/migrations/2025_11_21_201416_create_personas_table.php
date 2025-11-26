@@ -9,12 +9,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('persona', function (Blueprint $table) {
-            $table->id('id_persona');
+            $table->id('idpersona');
 
             $table->string('nombre', 255);
             $table->string('apellido', 255);
-            $table->dateTime('fecha_nacimiento');
+            $table->dateTime('fechanacimiento');
             $table->string('rut',12)->unique();
+            $table->string('sistemadesalud', 255)->nullable();
+            $table->string('domicilio', 255)->nullable();
+            $table->string('telefono', 20)->nullable();
 
             $table->timestamps();
         });

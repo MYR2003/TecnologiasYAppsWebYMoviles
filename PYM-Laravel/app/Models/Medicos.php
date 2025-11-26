@@ -10,18 +10,18 @@ class Medicos extends Model
     use HasFactory;
     
     protected $table = 'medico';
-    protected $primaryKey = 'id_medico';
+    protected $primaryKey = 'idmedico';
     protected $fillable = [
-        'id_especialidad', 'nombre', 'apellido', 'fecha_nacimiento', 'rut'
+        'idespecialidad', 'nombre', 'apellido', 'fechanacimiento', 'rut', 'telefono'
     ];
     
     public function especialidad()
     {
-        return $this->belongsTo(Especialidades::class, 'id_especialidad');
+        return $this->belongsTo(Especialidades::class, 'idespecialidad');
     }
     
     public function consultas()
     {
-        return $this->hasMany(Consulta::class, 'id_medico');
+        return $this->hasMany(Consulta::class, 'idmedico');
     }
 }

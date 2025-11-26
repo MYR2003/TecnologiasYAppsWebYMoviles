@@ -14,7 +14,7 @@ class AlergiaSeeder extends Seeder
         ];
 
         foreach ($alergias as $alergia) {
-            DB::table('alergias')->insert([
+            DB::table('alergia')->insert([
                 'alergia' => $alergia,
                 'created_at' => now(),
                 'updated_at' => now(),

@@ -10,7 +10,7 @@ class FichaMedicaSeeder extends Seeder
     public function run(): void
     {
         for ($i = 0; $i < 60; $i++) {
-            DB::table('ficha_medica')->insert([
+            DB::table('fichamedica')->insert([
                 'altura' => rand(150, 200) / 100,
                 'peso' => rand(450, 1200) / 10,
                 'created_at' => now(),

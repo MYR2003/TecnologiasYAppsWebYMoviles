@@ -8,8 +8,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('medicamentos', function (Blueprint $table) {
-            $table->id('id_medicamento');
+        Schema::create('medicamento', function (Blueprint $table) {
+            $table->id('idmedicamento');
             $table->string('medicamento', 100)->unique();
             $table->timestamps();
         });
@@ -17,6 +17,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('medicamentos');
+        Schema::dropIfExists('medicamento');
     }
 };

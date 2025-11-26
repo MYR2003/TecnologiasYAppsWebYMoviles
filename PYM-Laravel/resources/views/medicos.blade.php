@@ -29,22 +29,21 @@
         <tbody>
             @foreach($medicos as $medico)
             <tr>
-                <td>{{ $medico->id_medico }}</td>
+                <td>{{ $medico->idmedico }}</td>
 
                 <td>{{ $medico->nombre }} {{ $medico->apellido }}</td>
 
-                {{-- Mostrar especialidad correcta --}}
                 <td>
                     {{ $medico->especialidad->especialidad ?? 'Sin especialidad' }}
                 </td>
 
                 <td>
-                    <a href="{{ route('medicos.edit', $medico->id_medico) }}"
+                    <a href="{{ route('medicos.edit', $medico->idmedico) }}"
                        class="btn btn-warning btn-sm">
                         Editar
                     </a>
 
-                    <form action="{{ route('medicos.destroy', $medico->id_medico) }}"
+                    <form action="{{ route('medicos.destroy', $medico->idmedico) }}"
                           method="POST"
                           class="d-inline">
                         @csrf

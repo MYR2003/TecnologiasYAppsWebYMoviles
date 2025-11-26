@@ -9,12 +9,12 @@ class Especialidades extends Model
 {
     use HasFactory;
     
-    protected $table = 'especialidades';
-    protected $primaryKey = 'id_especialidad';
+    protected $table = 'especialidad';
+    protected $primaryKey = 'idespecialidad';
     protected $fillable = ['especialidad'];
     
     public function medicos()
     {
-        return $this->hasMany(Medico::class, 'id_especialidad');
+        return $this->hasMany(Medico::class, 'idespecialidad');
     }
 }

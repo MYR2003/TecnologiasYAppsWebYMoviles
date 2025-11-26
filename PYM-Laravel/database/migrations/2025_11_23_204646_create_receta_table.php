@@ -9,22 +9,24 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('receta', function (Blueprint $table) {
-            $table->primary(['id_medicamento', 'id_consulta']);
+            $table->primary(['idmedicamento', 'idconsulta']);
             
-            $table->unsignedBigInteger('id_medicamento');
-            $table->unsignedBigInteger('id_consulta');
+            $table->unsignedBigInteger('idmedicamento');
+            $table->unsignedBigInteger('idconsulta');
 
-            $table->foreign('id_medicamento')
-                ->references('id_medicamento')
-                ->on('medicamentos')
+            $table->foreign('idmedicamento')
+                ->references('idmedicamento')
+                ->on('medicamento')
                 ->onDelete('cascade');
                   
-            $table->foreign('id_consulta')
-                ->references('id_consulta')
+            $table->foreign('idconsulta')
+                ->references('idconsulta')
                 ->on('consulta')
                 ->onDelete('cascade');
             
             $table->integer('cantidad');
+            $table->string('medidas', 10);
+            $table->string('instrucciones', 255)->nullable();
             $table->timestamps();
         });
     }

@@ -11,10 +11,10 @@
 
         <div class="mb-3">
             <label class="form-label">Especialidad</label>
-            <select name="id_especialidad" class="form-select" required>
+            <select name="idespecialidad" class="form-select" required>
                 <option value="">Seleccione...</option>
                 @foreach($especialidades as $esp)
-                    <option value="{{ $esp->id_especialidad }}">
+                    <option value="{{ $esp->idespecialidad }}">
                         {{ $esp->especialidad }}
                     </option>
                 @endforeach
@@ -38,7 +38,7 @@
 
         <div class="mb-3">
             <label class="form-label">Fecha de nacimiento</label>
-            <input type="date" name="fecha_nacimiento" class="form-control" required>
+            <input type="date" name="fechanacimiento" class="form-control" required>
         </div>
 
         <button class="btn btn-primary">Crear</button>

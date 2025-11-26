@@ -23,10 +23,11 @@ class CRUDMedicosController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_especialidad' => 'required',
+            'idespecialidad' => 'required',
             'nombre' => 'required',
             'apellido' => 'required',
-            'fecha_nacimiento' => 'required|date',
+            'rut' => 'required',
+            'fechanacimiento' => 'required|date',
         ]);
 
         Medicos::create($request->all());
@@ -44,10 +45,11 @@ class CRUDMedicosController extends Controller
     public function update(Request $request, Medicos $medico)
     {
         $request->validate([
-            'id_especialidad' => 'required',
+            'idespecialidad' => 'required',
             'nombre' => 'required',
             'apellido' => 'required',
-            'fecha_nacimiento' => 'required|date',
+            'rut' => 'required',
+            'fechanacimiento' => 'required|date',
         ]);
 
         $medico->update($request->all());

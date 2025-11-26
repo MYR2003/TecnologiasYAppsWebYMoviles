@@ -8,8 +8,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('ficha_medica', function (Blueprint $table) {
-            $table->id('id_ficha_medica');
+        Schema::create('fichamedica', function (Blueprint $table) {
+            $table->id('idfichamedica');
             $table->decimal('altura', 5, 2); 
             $table->decimal('peso', 5, 1);   
             $table->timestamps();
@@ -18,6 +18,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('ficha_medica');
+        Schema::dropIfExists('fichamedica');
     }
 };

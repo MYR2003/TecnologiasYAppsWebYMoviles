@@ -32,7 +32,7 @@
                     <tbody>
                         @foreach($consultas as $consulta)
                         <tr>
-                            <td>{{ $consulta->id_consulta }}</td>
+                            <td>{{ $consulta->idconsulta }}</td>
                             <td>
                                 @if($consulta->especialidad)
                                     {{ $consulta->especialidad }}

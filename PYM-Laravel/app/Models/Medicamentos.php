@@ -9,14 +9,16 @@ class Medicamentos extends Model
 {
     use HasFactory;
     
-    protected $table = 'medicamentos';
-    protected $primaryKey = 'id_medicamento';
+    protected $table = 'medicamento';
+    protected $primaryKey = 'idmedicamento';
     protected $fillable = ['medicamento'];
     
     public function consultas()
     {
-        return $this->belongsToMany(Consulta::class, 'receta', 'id_medicamento', 'id_consulta')
+        return $this->belongsToMany(Consulta::class, 'receta', 'idmedicamento', 'idconsulta')
                     ->withPivot('cantidad')
+                    ->withPivot('medica')
+                    ->withPivot('instrucciones')
                     ->withTimestamps();
     }
 }

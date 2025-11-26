@@ -9,19 +9,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('alergia_persona', function (Blueprint $table) {
-            $table->primary(['id_alergia', 'id_persona']);
+            $table->primary(['idalergia', 'idpersona']);
             
-            $table->unsignedBigInteger('id_alergia');
-            $table->unsignedBigInteger('id_persona');
+            $table->unsignedBigInteger('idalergia');
+            $table->unsignedBigInteger('idpersona');
 
-            $table->foreign('id_alergia')
-                ->references('id_alergia')
-                ->on('alergias')
+            $table->foreign('idalergia')
+                ->references('idalergia')
+                ->on('alergia')
                 ->onDelete('cascade');
                   
-            $table->foreign('id_persona')
-                ->references('id_persona')
-                ->on('personas')
+            $table->foreign('idpersona')
+                ->references('idpersona')
+                ->on('persona')
                 ->onDelete('cascade');
             
             $table->timestamps();

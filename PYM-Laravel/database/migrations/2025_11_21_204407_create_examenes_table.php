@@ -8,23 +8,23 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('examenes', function (Blueprint $table) {
-            $table->id('id_examen');
+        Schema::create('examen', function (Blueprint $table) {
+            $table->id('idexamen');
 
-            $table->unsignedBigInteger('id_tipo_examen');
+            $table->unsignedBigInteger('idtipoexamen');
 
             $table->string('examen', 100);
             $table->timestamps();
 
-            $table->foreign('id_tipo_examen')
-                ->references('id_tipo_examen')
-                ->on('tipo_examenes')
+            $table->foreign('idtipoexamen')
+                ->references('idtipoexamen')
+                ->on('tipoexamen')
                 ->onDelete('cascade');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('examenes');
+        Schema::dropIfExists('examen');
     }
 };

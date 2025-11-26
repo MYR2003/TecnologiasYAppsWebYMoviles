@@ -11,16 +11,18 @@ class Personas extends Model
 
     protected $table = 'persona';
 
-    protected $primaryKey = 'id_persona';
+    protected $primaryKey = 'idpersona';
 
-    protected $fillabel = ['nombre', 'apellido', 'fecha_nacimiento', 'rut'];
+    protected $fillabel = [
+        'nombre', 'apellido', 'fechanacimiento', 'rut', 'sistemadesalud', 'domicilio', 'telefono',
+    ];
 
     public function alergias() {
         return $this->belongsToMany(
             Alergia::class,
             'alergia_persona',
-            'id_persona',
-            'id_alergia'
+            'idpersona',
+            'idalergia'
         )->withTimestamps();
     }
 }

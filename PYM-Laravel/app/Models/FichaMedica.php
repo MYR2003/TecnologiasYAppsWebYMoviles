@@ -9,8 +9,8 @@ class FichaMedica extends Model
 {
     use HasFactory;
     
-    protected $table = 'ficha_medica';
-    protected $primaryKey = 'id_ficha_medica';
+    protected $table = 'fichamedica';
+    protected $primaryKey = 'idfichamedica';
     public $incrementing = true;
     
     protected $fillable = [
@@ -20,6 +20,6 @@ class FichaMedica extends Model
     
     public function consulta()
     {
-        return $this->hasOne(Consulta::class, 'id_ficha_medica');
+        return $this->hasOne(Consulta::class, 'idfichamedica');
     }
 }

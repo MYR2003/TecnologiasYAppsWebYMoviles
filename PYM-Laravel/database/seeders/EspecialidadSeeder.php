@@ -23,7 +23,7 @@ class EspecialidadSeeder extends Seeder
         ];
 
         foreach ($especialidades as $especialidad) {
-            DB::table('especialidades')->insert([
+            DB::table('especialidad')->insert([
                 'especialidad' => $especialidad,
                 'created_at' => now(),
                 'updated_at' => now(),

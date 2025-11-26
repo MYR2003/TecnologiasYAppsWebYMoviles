@@ -9,19 +9,19 @@ class Examenes extends Model
 {
     use HasFactory;
     
-    protected $table = 'examenes';
-    protected $primaryKey = 'id_examen';
-    protected $fillable = ['id_tipo_examen', 'examen'];
+    protected $table = 'examen';
+    protected $primaryKey = 'idexamen';
+    protected $fillable = ['idtipoexamen', 'examen'];
     
     public function tipoExamen()
     {
-        return $this->belongsTo(TipoExamen::class, 'id_tipo_examen');
+        return $this->belongsTo(TipoExamen::class, 'idtipoexamen');
     }
     
     public function consultas()
     {
-        return $this->belongsToMany(Consulta::class, 'examen_consulta', 'id_examen', 'id_consulta')
-                    ->withPivot('resultados_examen')
+        return $this->belongsToMany(Consulta::class, 'examen_consulta', 'idexamen', 'idconsulta')
+                    ->withPivot('resultadosexamen')
                     ->withTimestamps();
     }
 }

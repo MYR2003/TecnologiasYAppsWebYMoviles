@@ -10,11 +10,11 @@ class TipoExamenes extends Model
     use HasFactory;
     
     protected $table = 'tipo_examenes';
-    protected $primaryKey = 'id_tipo_examen';
-    protected $fillable = ['tipo_examen'];
+    protected $primaryKey = 'idtipoexamen';
+    protected $fillable = ['tipoexamen'];
     
     public function examenes()
     {
-        return $this->hasMany(Examen::class, 'id_tipo_examen');
+        return $this->hasMany(Examen::class, 'idtipoexamen');
     }
 }

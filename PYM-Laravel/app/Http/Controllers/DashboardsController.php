@@ -10,22 +10,22 @@ class DashboardsController extends Controller
     public function index() {
         $consultas = DB::table('consulta')
             ->select(
-                'consulta.id_consulta',
+                'consulta.idconsulta',
                 'consulta.fecha',
-                'ficha_medica.peso',
-                'ficha_medica.altura',
-                'especialidades.especialidad'
+                'fichamedica.peso',
+                'fichamedica.altura',
+                'especialidad.especialidad'
             )
-            ->join('medico', 'consulta.id_medico', '=', 'medico.id_medico')
-            ->join('especialidades', 'medico.id_especialidad', '=', 'especialidades.id_especialidad')
-            ->leftJoin('ficha_medica', 'consulta.id_ficha_medica', '=', 'ficha_medica.id_ficha_medica')
+            ->join('medico', 'consulta.idmedico', '=', 'medico.idmedico')
+            ->join('especialidad', 'medico.idespecialidad', '=', 'especialidad.idespecialidad')
+            ->leftJoin('fichamedica', 'consulta.idfichamedica', '=', 'fichamedica.idfichamedica')
             ->get();
         
         $consultasPorEspecialidad = DB::table('consulta')
-            ->join('medico', 'consulta.id_medico', '=', 'medico.id_medico')
-            ->join('especialidades', 'medico.id_especialidad', '=', 'especialidades.id_especialidad')
-            ->select('especialidades.especialidad', DB::raw('COUNT(*) as count'))
-            ->groupBy('especialidades.especialidad')
+            ->join('medico', 'consulta.idmedico', '=', 'medico.idmedico')
+            ->join('especialidad', 'medico.idespecialidad', '=', 'especialidad.idespecialidad')
+            ->select('especialidad.especialidad', DB::raw('COUNT(*) as count'))
+            ->groupBy('especialidad.especialidad')
             ->get();
         
         $chartData = [

@@ -9,28 +9,28 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('consulta', function (Blueprint $table) {
-            $table->id('id_consulta');
+            $table->id('idconsulta');
             
-            $table->unsignedBigInteger('id_persona');
-            $table->unsignedBigInteger('id_medico');
-            $table->unsignedBigInteger('id_ficha_medica');
+            $table->unsignedBigInteger('idpersona');
+            $table->unsignedBigInteger('idmedico');
+            $table->unsignedBigInteger('idfichamedica');
             
             $table->dateTime('fecha');
             $table->timestamps();
 
-            $table->foreign('id_persona')
-                ->references('id_persona')
-                ->on('personas')
+            $table->foreign('idpersona')
+                ->references('idpersona')
+                ->on('persona')
                 ->onDelete('cascade');
                 
-            $table->foreign('id_medico')
-                ->references('id_medico')
-                ->on('medicos')
+            $table->foreign('idmedico')
+                ->references('idmedico')
+                ->on('medico')
                 ->onDelete('cascade');
                 
-            $table->foreign('id_ficha_medica')
-                ->references('id_ficha_medica')
-                ->on('ficha_medica')
+            $table->foreign('idfichamedica')
+                ->references('idfichamedica')
+                ->on('fichamedica')
                 ->onDelete('cascade');
         });
     }

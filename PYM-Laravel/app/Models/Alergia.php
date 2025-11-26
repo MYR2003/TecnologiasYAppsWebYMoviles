@@ -9,9 +9,9 @@ class Alergia extends Model
 {
     use HasFactory;
 
-    protected $table = 'alergias';
+    protected $table = 'alergia';
 
-    protected $primaryKey = 'id_alergia';
+    protected $primaryKey = 'idalergia';
 
     protected $fillable = ['alergia'];
 
@@ -19,8 +19,8 @@ class Alergia extends Model
         return $this->belongsToMany(
             Personas::class,
             'alergia_persona',
-            'id_alergia',
-            'id_persona'
+            'idalergia',
+            'idpersona'
         )->withTimestamps();
     }
 }

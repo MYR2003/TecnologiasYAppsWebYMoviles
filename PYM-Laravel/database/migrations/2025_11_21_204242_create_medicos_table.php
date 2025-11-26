@@ -9,19 +9,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('medico', function (Blueprint $table) {
-            $table->id('id_medico');
+            $table->id('idmedico');
             
-            $table->unsignedBigInteger('id_especialidad');
+            $table->unsignedBigInteger('idespecialidad');
             
             $table->string('nombre', 50);
             $table->string('apellido', 50);
-            $table->date('fecha_nacimiento');
+            $table->dateTime('fechanacimiento');
             $table->string('rut',12)->unique();
+            $table->string('telefono', 20)->nullable();
             $table->timestamps();
 
-            $table->foreign('id_especialidad')
-                  ->references('id_especialidad')
-                  ->on('especialidades')
+            $table->foreign('idespecialidad')
+                  ->references('idespecialidad')
+                  ->on('especialidad')
                   ->onDelete('cascade');
         });
     }

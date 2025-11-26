@@ -9,22 +9,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('examen_consulta', function (Blueprint $table) {
-            $table->primary(['id_examen', 'id_consulta']);
+            $table->primary(['idexamen', 'idconsulta']);
             
-            $table->unsignedBigInteger('id_examen');
-            $table->unsignedBigInteger('id_consulta');
+            $table->unsignedBigInteger('idexamen');
+            $table->unsignedBigInteger('idconsulta');
 
-            $table->foreign('id_examen')
-                ->references('id_examen')
-                ->on('examenes')
+            $table->foreign('idexamen')
+                ->references('idexamen')
+                ->on('examen')
                 ->onDelete('cascade');
                   
-            $table->foreign('id_consulta')
-                ->references('id_consulta')
+            $table->foreign('idconsulta')
+                ->references('idconsulta')
                 ->on('consulta')
                 ->onDelete('cascade');
             
-            $table->text('resultados_examen')->nullable();
+            $table->text('resultadosexamen')->nullable();
             $table->timestamps();
         });
     }

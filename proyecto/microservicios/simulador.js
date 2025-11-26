@@ -14,6 +14,8 @@ client.connect();
 const nombres = ['Martin', 'Antonio', 'Francisco', 'Ignacio', 'Benjamín', 'Tomás']
 const apellidos = ['Mendez', 'Solano', 'Yunge', 'Sanchez', 'Polo', 'Pavez']
 const sistemasSalud = ['Isapre', 'Fonasa']
+const relaciones = ['Familiar', 'Amigo', 'Pareja', 'Conocido']
+const medidas = ['ml', 'gr']
 
 function BooleanoRandom(proba = 0.5) {
     if (typeof proba != Number) {
@@ -40,24 +42,35 @@ function NumeroEntreNumerosRandom(min = 10000000, max = 28000000) {
     return temp
 }
 
-function FechaRandom(desde, hasta) {
-
+function RandomFecha(desde, hasta){
+    var desde = desde || '1960-01-01'
+    var hasta = hasta || '2000-12-31'
+    desde = new Date(desde).getTime()
+    hasta = new Date(hasta).getTime()
+    if (desde>hasta){
+        return new Date(NumeroEntreNumerosRandom(hasta, desde)).toLocaleDateString()
+    } else {
+        return new Date(NumeroEntreNumerosRandom(desde, hasta)).toLocaleDateString()
+    }
 }
 
 function Persona() {
     let temp = {
         nombre: '',
         apellido: '',
-        rut: 0,/*
+        rut: 0,
         fechaNacimiento: 0,
         sistemaSalud: '',
-        domicilio: '',
-        telefono: 0* */
+        //domicilio: '',
+        telefono: 0
     }
 
     temp.nombre = SeleccionRandom(nombres)
     temp.apellido = SeleccionRandom(apellidos)
     temp.rut = NumeroEntreNumerosRandom(10000000, 28000000)
+    temp.fechaNacimiento = RandomFecha('1960-01-01', '2000-12-31')
+    temp.sistemaSalud = SeleccionRandom(sistemasSalud)
+    temp.telefono = NumeroEntreNumerosRandom(900000000, 999999999)
     return temp
 }
 
@@ -65,15 +78,17 @@ function Contacto() {
     let temp = {
         nombre: '',
         apellido: '',
-        telefono: 0,/**
+        telefono: 0,
         rut:0,
         fechaNacimiento:0,
-        direccion:'' */
+        direccion:''
     }
 
     temp.nombre = SeleccionRandom(nombres)
     temp.apellido = SeleccionRandom(apellidos)
-    temp.telefono = NumeroEntreNumerosRandom(10000000, 99999999)
+    temp.telefono = NumeroEntreNumerosRandom(900000000, 999999999)
+    temp.rut = NumeroEntreNumerosRandom(10000000, 28000000)
+    temp.fechaNacimiento = RandomFecha('1960-01-01', '2000-12-31')
     return temp
 }
 
@@ -81,7 +96,6 @@ function FichaMedica() {
     let temp = {
         altura: 0,
         peso: 0,
-        //presion:0
     }
     temp.altura = NumeroEntreNumerosRandom(160, 190)
     temp.peso = NumeroEntreNumerosRandom(50, 90)
@@ -92,7 +106,6 @@ async function AlergiaPersona() {
     let temp = {
         idpersona: 0,
         idalergia: 0,
-        //nota: ''
     }
     const alergias = await client.query('SELECT * FROM alergia')
     const personas = await client.query('SELECT * FROM persona')
@@ -109,9 +122,6 @@ async function Consulta() {
         idmedico: 0,
         fecha: 0,
         idfichamedica: 0,
-        /*motivo: '',
-        duracionminutos:0,
-        observaciones:'',*/
     }
     const personas = await client.query('SELECT * FROM persona')
     const medicos = await client.query('SELECT * FROM medico')
@@ -130,7 +140,6 @@ async function ConsultaDiagnostico() {
     let temp = {
         idconsulta: 0,
         iddiagnostico: 0,
-        //esprincipal,''
     }
     const consultas = await client.query('SELECT * FROM consulta')
     const diagnosticos = await client.query('SELECT * FROM diagnostico')
@@ -145,10 +154,6 @@ async function ConsultaSintoma() {
     let temp = {
         idconsulta: 0,
         idsintoma: 0,
-        /*
-        severidad:'',
-        nota:''
-        */
     }
     const consultas = await client.query('SELECT * FROM consulta')
     const sintomas = await client.query('SELECT * FROM sintoma')
@@ -163,11 +168,6 @@ async function ConsultaTratamiento() {
     let temp = {
         idconsulta: 0,
         idtratamiento: 0,
-        /*
-        instrucciones:'',
-        fechainicio:0,
-        fechafin:0
-        */
     }
     const consultas = await client.query('SELECT * FROM consulta')
     const tratamientos = await client.query('SELECT * FROM tratamiento')
@@ -182,9 +182,7 @@ async function ExamenConsulta() {
     let temp = {
         idconsulta: 0,
         idexamen: 0,
-        /*
         resultadosexamen:''
-        */
     }
     const consultas = await client.query('SELECT * FROM consulta')
     const examenes = await client.query('SELECT * FROM examen')
@@ -202,11 +200,8 @@ async function Medico() {
         nombre: '',
         apellido: '',
         rut: 0,
-        /*
         fechanacimiento:0,
-        telefono:0,
-        email:''
-        */
+        telefono:0
     }
     const especialidades = await client.query('SELECT * FROM especialidad')
     let tempEspecialidad = SeleccionRandom(especialidades.rows)
@@ -214,6 +209,8 @@ async function Medico() {
     temp.nombre = SeleccionRandom(nombres)
     temp.apellido = SeleccionRandom(apellidos)
     temp.rut = NumeroEntreNumerosRandom(10000000, 28000000)
+    temp.fechanacimiento = RandomFecha('1960-01-01', '2000-12-31')
+    temp.telefono = NumeroEntreNumerosRandom(900000000, 999999999)
     return temp
 }
 
@@ -221,17 +218,15 @@ async function PersonaContacto() {
     let temp = {
         idpersona: 0,
         idcontacto: 0,
-        /*
         relacion:'',
-        esprincipal:false
-        */
     }
     const personas = await client.query('SELECT * FROM persona')
-    const contacto = await client.query('SELECT * FROM contacto_emergencia')
+    const contacto = await client.query('SELECT * FROM contactoemergencia')
     let tempPersona = SeleccionRandom(personas.rows)
     let tempContacto = SeleccionRandom(contacto.rows)
     temp.idpersona = tempPersona.idpersona
     temp.idcontacto = tempContacto.idcontacto
+    temp.relacion = SeleccionRandom(relaciones)
     return temp
 }
 
@@ -239,11 +234,9 @@ async function Receta() {
     let temp = {
         idmedicamento: 0,
         idconsulta: 0,
-        /*
         cantidad:0,
         medidas:'',
         instrucciones:''
-        */
     }
     const medicamentos = await client.query('SELECT * FROM medicamento')
     const consultas = await client.query('SELECT * FROM consulta')
@@ -251,6 +244,8 @@ async function Receta() {
     let tempConsulta = SeleccionRandom(consultas.rows)
     temp.idmedicamento = tempMedicamento.idmedicamento
     temp.idconsulta = tempConsulta.idconsulta
+    temp.cantidad = NumeroEntreNumerosRandom(100, 1000)
+    temp.medidas = SeleccionRandom(medidas)
     return temp
 }
 
@@ -461,15 +456,15 @@ app.post('/', async (req, res) => {
 
 app.post('/persona', async (req, res) => {
     const persona = Persona()
-    const query = 'INSERT INTO persona(nombre,apellido,rut) VALUES ($1,$2,$3)';
-    const result = await client.query(query, [persona.nombre, persona.apellido, persona.rut])
+    const query = 'INSERT INTO persona(nombre,apellido,rut, fechanacimiento, sistemadesalud, telefono) VALUES ($1,$2,$3,$4,$5,$6)';
+    const result = await client.query(query, [persona.nombre, persona.apellido, persona.rut, persona.fechaNacimiento, persona.sistemaSalud, persona.telefono])
     res.json(result.rows)
 })
 
 app.post('/contacto', async (req, res) => {
     const contacto = Contacto()
-    const query = 'INSERT INTO contacto_emergencia(nombre,apellido,telefono) VALUES ($1,$2,$3)';
-    const result = await client.query(query, [contacto.nombre, contacto.apellido, contacto.telefono])
+    const query = 'INSERT INTO contactoemergencia(nombre,apellido,telefono,rut,fechanacimiento) VALUES ($1,$2,$3,$4,$5)';
+    const result = await client.query(query, [contacto.nombre, contacto.apellido, contacto.telefono, contacto.rut, contacto.fechaNacimiento])
     res.json(result.rows)
 })
 
@@ -517,29 +512,29 @@ app.post('/consultaTratamiento', async (req, res) => {
 
 app.post('/examenConsulta', async (req, res) => {
     const examenConsulta = await ExamenConsulta()
-    const query = 'INSERT INTO examenconsulta(idconsulta, idexamen) VALUES ($1,$2)'
+    const query = 'INSERT INTO examen_consulta(idconsulta, idexamen) VALUES ($1,$2)'
     const result = await client.query(query, [examenConsulta.idconsulta, examenConsulta.idexamen])
     res.json(result.rows)
 })
 
 app.post('/medico', async (req, res) => {
     const medico = await Medico()
-    const query = 'INSERT INTO medico(idespecialidad, nombre, apellido, rut) VALUES ($1, $2, $3, $4)'
-    const result = await client.query(query, [medico.idespecialidad, medico.nombre, medico.apellido, medico.rut])
+    const query = 'INSERT INTO medico(idespecialidad, nombre, apellido, rut, fechanacimiento, telefono) VALUES ($1, $2, $3, $4, $5, $6)'
+    const result = await client.query(query, [medico.idespecialidad, medico.nombre, medico.apellido, medico.rut, medico.fechanacimiento, medico.telefono])
     res.json(result.rows)
 })
 
 app.post('/personaContacto', async (req, res) => {
     const personaContacto = await PersonaContacto()
-    const query = 'INSERT INTO persona_contacto(idpersona, idcontacto) VALUES ($1, $2)'
-    const result = await client.query(query, [personaContacto.idpersona, personaContacto.idcontacto])
+    const query = 'INSERT INTO persona_contacto(idpersona, idcontacto, relacion) VALUES ($1, $2, $3)'
+    const result = await client.query(query, [personaContacto.idpersona, personaContacto.idcontacto, personaContacto.relacion])
     res.json(result.rows)
 })
 
 app.post('/receta', async (req, res) => {
     const receta = await Receta()
-    const query = 'INSERT INTO receta(idmedicamento, idconsulta) VALUES ($1, $2)'
-    const result = await client.query(query, [receta.idmedicamento, receta.idconsulta])
+    const query = 'INSERT INTO receta(idmedicamento, idconsulta, cantidad, medidas) VALUES ($1, $2, $3, $4)'
+    const result = await client.query(query, [receta.idmedicamento, receta.idconsulta, receta.cantidad, receta.medidas])
     res.json(result.rows)
 })
 

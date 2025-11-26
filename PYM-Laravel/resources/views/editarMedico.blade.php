@@ -6,16 +6,16 @@
 <div class="container mt-4">
     <h2>Editar Médico</h2>
 
-    <form action="{{ route('medicos.update', $medico->id_medico) }}" method="POST">
+    <form action="{{ route('medicos.update', $medico->idmedico) }}" method="POST">
         @csrf
         @method('PUT')
 
         <div class="mb-3">
             <label class="form-label">Especialidad</label>
-            <select name="id_especialidad" class="form-select" required>
+            <select name="idespecialidad" class="form-select" required>
                 @foreach($especialidades as $esp)
-                    <option value="{{ $esp->id_especialidad }}"
-                        {{ $esp->id_especialidad == $medico->id_especialidad ? 'selected' : '' }}>
+                    <option value="{{ $esp->idespecialidad }}"
+                        {{ $esp->idespecialidad == $medico->idespecialidad ? 'selected' : '' }}>
                         {{ $esp->especialidad }}
                     </option>
                 @endforeach
@@ -42,8 +42,8 @@
 
         <div class="mb-3">
             <label class="form-label">Fecha nacimiento</label>
-            <input type="date" name="fecha_nacimiento" class="form-control"
-                   value="{{ $medico->fecha_nacimiento }}" required>
+            <input type="date" name="fechanacimiento" class="form-control"
+                   value="{{ $medico->fechanacimiento }}" required>
         </div>
 
         <button class="btn btn-success">Actualizar</button>
